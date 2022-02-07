@@ -1,11 +1,8 @@
-package com.example.weather.api;
+package com.example.weather.data.network.api;
 
-import com.example.weather.model.WeatherData;
-
-import java.util.Queue;
+import com.example.weather.data.db.entity.ForecastData;
 
 import io.reactivex.Observable;
-import okhttp3.OkHttp;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -18,7 +15,7 @@ public interface ForecastApi {
     static String DOMAIN= "http://api.openweathermap.org/";
 
     @GET("data/2.5/weather")
-    Observable<WeatherData> getWeatherDataByCoord(@Query("lat") String lat, @Query("lon") String lon, @Query("appid") String apiKey, @Query("units")String units);
+    Observable<ForecastData> getWeatherDataByCoord(@Query("lat") String lat, @Query("lon") String lon, @Query("appid") String apiKey, @Query("units")String units);
 
     class Instance{
         private static Retrofit getRetrofit(){

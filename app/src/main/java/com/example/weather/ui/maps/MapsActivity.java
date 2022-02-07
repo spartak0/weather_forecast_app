@@ -1,23 +1,26 @@
-package com.example.weather;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
+package com.example.weather.ui.maps;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.weather.api.ForecastApi;
-import com.example.weather.model.WeatherData;
-import com.example.weather.model.WeatherDetail.Coord;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+
+import com.example.weather.R;
+import com.example.weather.data.network.api.ForecastApi;
+import com.example.weather.databinding.ActivityMapsBinding;
+import com.example.weather.data.db.entity.ForecastData;
+import com.example.weather.data.db.entity.ForecastDetail.Coord;
+import com.example.weather.ui.Forecast.ForecastActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.example.weather.databinding.ActivityMapsBinding;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -50,27 +53,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         "6d0dbf434f8a30b4004d1a5cdf685d57", "metric")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<WeatherData>() {
+                        .subscribe(new Consumer<ForecastData>() {
                             @Override
-                            public void accept(@NonNull WeatherData weatherData) throws Exception {
-                                Toast.makeText(getApplicationContext(),""+weatherData.getMain().getTemp(), Toast.LENGTH_SHORT).show();
+                            public void accept(@NonNull ForecastData forecastData) throws Exception {
+                                String locationName= getIntent().getStringExtra("locationName");
+                                Toast.makeText(getApplicationContext(), ""+ forecastData.getMain().getTemp()+" "+locationName, Toast.LENGTH_SHORT).show();
+                                //todo изменить лайв дату.
                             }
                         });
+                Intent intent = new Intent(getApplicationContext(), ForecastActivity.class);
+                startActivity(intent);
             }
         });
 
 
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
