@@ -25,8 +25,7 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.binding.tvCity.setText("123");
-        holder.binding.tvIndex.setText(""+position);
+        holder.bind("123",position);
     }
 
     @Override
@@ -35,11 +34,17 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
     }
 
 
+
     class MyViewHolder extends RecyclerView.ViewHolder {
         public ItemForecastBinding binding;
         public MyViewHolder(ItemForecastBinding itemForecastBinding) {
             super(itemForecastBinding.getRoot());
             this.binding=itemForecastBinding;
+        }
+
+        public void bind(String text, int position){
+            this.binding.tvIndex.setText(""+position);
+            this.binding.tvCity.setText(text);
         }
     }
 

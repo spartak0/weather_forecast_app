@@ -1,11 +1,11 @@
-package com.example.weather.model;
+package com.example.weather.domain.model.Forecast;
 
-import com.example.weather.model.WeatherDetail.Coord;
-import com.example.weather.model.WeatherDetail.Main;
+import com.example.weather.domain.model.Forecast.WeatherDetail.Coord;
+import com.example.weather.domain.model.Forecast.WeatherDetail.Temp;
 
 public class WeatherData {
     private Coord coord;
-    private Main main;
+    private Temp temp;
     private String name;
 
     public Coord getCoord() {
@@ -16,12 +16,12 @@ public class WeatherData {
         this.coord = coord;
     }
 
-    public Main getMain() {
-        return main;
+    public Temp getMain() {
+        return temp;
     }
 
-    public void setMain(Main main) {
-        this.main = main;
+    public void setMain(Temp temp) {
+        this.temp = temp;
     }
 
     public String getName() {

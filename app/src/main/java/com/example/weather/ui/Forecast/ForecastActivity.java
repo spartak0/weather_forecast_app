@@ -24,7 +24,7 @@ public class ForecastActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityForecastBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        aboba= new ArrayList<>();
+      //  aboba= new ArrayList<>();
        // Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
     }

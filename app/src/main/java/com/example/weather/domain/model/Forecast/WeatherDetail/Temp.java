@@ -1,6 +1,6 @@
-package com.example.weather.model.WeatherDetail;
+package com.example.weather.domain.model.Forecast.WeatherDetail;
 
-public class Main {
+public class Temp {
     private float temp;
 
     public float getTemp() {

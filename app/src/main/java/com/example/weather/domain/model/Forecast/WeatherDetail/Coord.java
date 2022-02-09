@@ -1,4 +1,4 @@
-package com.example.weather.model.WeatherDetail;
+package com.example.weather.domain.model.Forecast.WeatherDetail;
 
 public class Coord {
     private double lat;

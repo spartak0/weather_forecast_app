@@ -3,11 +3,14 @@ package com.example.weather.ui.maps;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.weather.R;
 import com.example.weather.data.network.api.ForecastApi;
@@ -15,6 +18,7 @@ import com.example.weather.databinding.ActivityMapsBinding;
 import com.example.weather.data.db.entity.ForecastData;
 import com.example.weather.data.db.entity.ForecastDetail.Coord;
 import com.example.weather.ui.Forecast.ForecastActivity;
+import com.example.weather.utils.Constant;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -31,12 +35,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
     private ForecastApi forecastApi= ForecastApi.Instance.getForecastApi();
-    Coord marker=new Coord();
+    private MapsViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -45,44 +48,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        viewModel = new ViewModelProvider(this).get(MapsViewModel.class);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         binding.floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("CheckResult")
             @Override
             public void onClick(View view) {
-                forecastApi.getWeatherDataByCoord(""+marker.getLat(),""+marker.getLon(),
-                        "6d0dbf434f8a30b4004d1a5cdf685d57", "metric")
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<ForecastData>() {
-                            @Override
-                            public void accept(@NonNull ForecastData forecastData) throws Exception {
-                                String locationName= getIntent().getStringExtra("locationName");
-                                Toast.makeText(getApplicationContext(), ""+ forecastData.getMain().getTemp()+" "+locationName, Toast.LENGTH_SHORT).show();
-                                //todo изменить лайв дату.
-                            }
-                        });
+                viewModel.getWeatherDataByCoord(getIntent());
                 Intent intent = new Intent(getApplicationContext(), ForecastActivity.class);
                 startActivity(intent);
             }
         });
-
-
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        setDefaultMarker();
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(@NonNull LatLng latLng) {
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(latLng));
+                viewModel.setMarker(latLng);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                System.out.println(latLng.latitude+"\t"+latLng.longitude);
-                marker.setLat(latLng.latitude);
-                marker.setLon(latLng.longitude);
+                Log.d("A", "onMapClick:"+latLng.latitude+"\t"+latLng.longitude);
             }
         });
+    }
+
+    private void setDefaultMarker() {
+        mMap.clear();
+        LatLng latLng=new LatLng(Constant.moscowLan, Constant.moscowLon);
+        mMap.addMarker(new MarkerOptions().position(latLng));
+        viewModel.setMarker(latLng);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 }
