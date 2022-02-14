@@ -5,18 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.weather.R;
+import com.example.weather.data.db.database.WeatherDatabase;
+import com.example.weather.data.db.entity.WeatherEntity;
 import com.example.weather.data.network.api.ForecastApi;
 import com.example.weather.databinding.ActivityMapsBinding;
-import com.example.weather.data.db.entity.ForecastData;
-import com.example.weather.data.db.entity.ForecastDetail.Coord;
+import com.example.weather.domain.model.Forecast.WeatherData;
 import com.example.weather.ui.Forecast.ForecastActivity;
 import com.example.weather.utils.Constant;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,10 +24,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -58,7 +53,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @SuppressLint("CheckResult")
             @Override
             public void onClick(View view) {
-                viewModel.getWeatherDataByCoord(getIntent());
+                //todo здесь должны быть не ентити
+                String locationName= getIntent().getStringExtra(Constant.locationName);
+                WeatherEntity weatherEntity= new WeatherEntity(locationName,viewModel.getMarkerLat(),viewModel.getMarkerLon());
+                WeatherDatabase.getInstance(getApplication().getApplicationContext()).
+                        weatherDao().addWeather(weatherEntity);
                 Intent intent = new Intent(getApplicationContext(), ForecastActivity.class);
                 startActivity(intent);
             }

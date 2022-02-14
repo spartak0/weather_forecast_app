@@ -7,10 +7,10 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the "MyLocation" functionality.
     -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
         tools:ignore="CoarseFineLocation" />
     <uses-permission android:name="android.permission.INTERNET" />
-
 
     <application
         android:allowBackup="true"
@@ -19,6 +19,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Weather">
+        <activity
+            android:name=".ui.Temp.TempActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.Temp.MainActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.SetLocationName.SetLocationNameActivity"
             android:exported="false" />
