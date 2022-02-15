@@ -22,14 +22,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class MapsViewModel extends AndroidViewModel {
+public class MapsViewModel extends ViewModel {
 
     Coord marker=new Coord();
     ForecastApi forecastApi= ForecastApi.Instance.getForecastApi();
 
-    public MapsViewModel(@NonNull Application application) {
-        super(application);
-    }
 
 
     public void setMarker(LatLng latLng) {

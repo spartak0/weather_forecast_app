@@ -1,6 +1,7 @@
 package com.example.weather.ui.Forecast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.view.View;
 import com.example.weather.data.db.database.WeatherDatabase;
 import com.example.weather.data.db.entity.WeatherEntity;
 import com.example.weather.databinding.ActivityForecastBinding;
+import com.example.weather.domain.model.Forecast.WeatherData;
 import com.example.weather.ui.SetLocationName.SetLocationNameActivity;
 import com.example.weather.utils.Constant;
 
@@ -29,18 +32,16 @@ import io.reactivex.schedulers.Schedulers;
 public class ForecastActivity extends AppCompatActivity {
 
     ActivityForecastBinding binding;
-    ArrayList<String> aboba;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityForecastBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-      //  aboba= new ArrayList<>();
-       // Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint("CheckResult")
     @Override
     protected void onStart() {
@@ -56,15 +57,14 @@ public class ForecastActivity extends AppCompatActivity {
 
 
         ForecastViewModel viewModel = new ViewModelProvider(this).get(ForecastViewModel.class);
-        viewModel.getLiveData().observe(this, new Observer<List<WeatherEntity>>() {
+        viewModel.getLiveData().observe(this, new Observer<List<WeatherData>>() {
             @Override
-            public void onChanged(List<WeatherEntity> weatherEntities) {
-                setAdapter(binding.recycler,weatherEntities);
-                Log.d("A", "onChanged: ХУЕТА");
+            public void onChanged(List<WeatherData> weatherData) {
+                setAdapter(binding.recycler,weatherData);
             }
         });
     }
-    private void setAdapter(View view, List<WeatherEntity> list){
+    private void setAdapter(View view, List<WeatherData> list){
         ForecastItemAdapter adapter=new ForecastItemAdapter(list);
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(view.getContext());
         binding.recycler.setLayoutManager(layoutManager);

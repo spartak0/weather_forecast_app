@@ -26,9 +26,9 @@ interface WeatherDao {
     void addWeather(WeatherEntity weatherEntity);
 
     @Delete
-    Completable deleteWeather(WeatherEntity weatherEntity);
+    void deleteWeather(WeatherEntity weatherEntity);
 
     @Update
-    Completable updateWeather(WeatherEntity weatherEntity);
+    void updateWeather(WeatherEntity weatherEntity);
 
 }

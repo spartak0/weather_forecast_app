@@ -13,14 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.weather.data.db.entity.WeatherEntity;
 import com.example.weather.databinding.ItemForecastBinding;
+import com.example.weather.domain.model.Forecast.WeatherData;
 import com.example.weather.ui.Temp.TempActivity;
 
 import java.util.List;
 
 public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapter.MyViewHolder> {
-    private final List<WeatherEntity> forecasts;
+    private final List<WeatherData> forecasts;
 
-    public ForecastItemAdapter(List<WeatherEntity> forecast) {
+    public ForecastItemAdapter(List<WeatherData> forecast) {
         this.forecasts = forecast;
     }
 
@@ -32,7 +33,7 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.bind(forecasts.get(position).getName(), position);
+        holder.bind(forecasts.get(position),position);
 
     }
 
@@ -54,6 +55,12 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
             this.binding.tvIndex.setText("" + position);
             this.binding.tvCity.setText(text);
             this.binding.layout.setOnClickListener(new onClickListener(forecasts.get(position).getId()));
+
+        }
+        public void bind(WeatherData weatherData, int position) {
+            this.binding.tvIndex.setText((position+1)+"");
+            this.binding.tvCity.setText(weatherData.getName());
+            this.binding.layout.setOnClickListener(new onClickListener(weatherData.getId()));
 
         }
 

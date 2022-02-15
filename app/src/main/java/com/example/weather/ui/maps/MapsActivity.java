@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.weather.R;
+import com.example.weather.data.RepositoryImpl;
 import com.example.weather.data.db.database.WeatherDatabase;
 import com.example.weather.data.db.entity.WeatherEntity;
 import com.example.weather.data.network.api.ForecastApi;
@@ -53,11 +54,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @SuppressLint("CheckResult")
             @Override
             public void onClick(View view) {
-                //todo здесь должны быть не ентити
                 String locationName= getIntent().getStringExtra(Constant.locationName);
-                WeatherEntity weatherEntity= new WeatherEntity(locationName,viewModel.getMarkerLat(),viewModel.getMarkerLon());
-                WeatherDatabase.getInstance(getApplication().getApplicationContext()).
-                        weatherDao().addWeather(weatherEntity);
+                WeatherData weatherData= new WeatherData(locationName,viewModel.getMarkerLat(),viewModel.getMarkerLon());
+                RepositoryImpl.getInstance().addWeather(weatherData);
                 Intent intent = new Intent(getApplicationContext(), ForecastActivity.class);
                 startActivity(intent);
             }
