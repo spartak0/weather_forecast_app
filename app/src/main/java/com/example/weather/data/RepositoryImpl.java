@@ -83,7 +83,7 @@ public class RepositoryImpl implements Repository {
     public static RepositoryImpl getInstance() {
         return instance;
     }
-    public static void Init(Context context) {
+    public static void init(Context context) {
         instance= new RepositoryImpl(context);
     }
 
