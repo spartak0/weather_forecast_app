@@ -21,13 +21,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Weather">
         <activity
-            android:name=".ui.Temp.TempActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.Temp.MainActivity"
+            android:name=".ui.temp.TempFragment"
             android:exported="false" />
         <activity
-            android:name=".ui.SetLocationName.SetLocationNameActivity"
+            android:name=".ui.forecast.ForecastFragment"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.setLocationName.SetLocationNameFragment"
             android:exported="false" />
         <activity
             android:name=".ui.maps.MapsActivity"
@@ -36,17 +45,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-        <activity
-            android:name=".ui.Forecast.ForecastActivity"
-            android:exported="true"
-            android:label="@string/title_activity_maps">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

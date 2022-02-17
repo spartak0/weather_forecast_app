@@ -6,7 +6,7 @@
     android:layout_height="80dp"
     android:id="@+id/layout"
     android:clickable="true"
-    tools:context=".ui.Forecast.ForecastActivity"
+    tools:context=".ui.forecast.ForecastFragment"
     android:focusable="true">
 
     <TextView

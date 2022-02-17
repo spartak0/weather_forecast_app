@@ -1,10 +1,16 @@
-package com.example.weather.ui.Forecast;
+package com.example.weather.ui.forecast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavControllerViewModel;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,46 +18,44 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
-import com.example.weather.data.db.database.WeatherDatabase;
-import com.example.weather.data.db.entity.WeatherEntity;
-import com.example.weather.databinding.ActivityForecastBinding;
+import com.example.weather.R;
+import com.example.weather.databinding.FragmentForecastBinding;
 import com.example.weather.domain.model.Forecast.WeatherData;
-import com.example.weather.ui.SetLocationName.SetLocationNameActivity;
-import com.example.weather.utils.Constant;
+import com.example.weather.ui.main.MainActivity;
+import com.example.weather.ui.setLocationName.SetLocationNameFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+public class ForecastFragment extends Fragment {
 
-public class ForecastActivity extends AppCompatActivity {
+    FragmentForecastBinding binding;
 
-    ActivityForecastBinding binding;
-
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityForecastBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentForecastBinding.inflate(inflater,container, false);
+        View view = binding.getRoot();
+        return view;
 
     }
+
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint("CheckResult")
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
 
         binding.addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SetLocationNameActivity.class);
-                startActivity(intent);
+                Navigation.findNavController(view.getRootView()).navigate(R.id.action_forecastFragment_to_setLocationNameFragment);
             }
         });
 
@@ -70,5 +74,6 @@ public class ForecastActivity extends AppCompatActivity {
         binding.recycler.setLayoutManager(layoutManager);
         binding.recycler.setAdapter(adapter);
     }
+
 
 }

@@ -14,7 +14,7 @@ import com.example.weather.data.db.entity.WeatherEntity;
 import com.example.weather.data.network.api.ForecastApi;
 import com.example.weather.domain.mapper.WeatherMapper;
 import com.example.weather.domain.model.Forecast.WeatherData;
-import com.example.weather.utils.Repository;
+import com.example.weather.domain.Repository;
 
 import java.util.List;
 import java.util.stream.Collectors;

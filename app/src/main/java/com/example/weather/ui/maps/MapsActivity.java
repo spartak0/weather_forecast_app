@@ -12,12 +12,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.weather.R;
 import com.example.weather.data.RepositoryImpl;
-import com.example.weather.data.db.database.WeatherDatabase;
-import com.example.weather.data.db.entity.WeatherEntity;
 import com.example.weather.data.network.api.ForecastApi;
 import com.example.weather.databinding.ActivityMapsBinding;
 import com.example.weather.domain.model.Forecast.WeatherData;
-import com.example.weather.ui.Forecast.ForecastActivity;
+import com.example.weather.ui.forecast.ForecastFragment;
 import com.example.weather.utils.Constant;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -57,7 +55,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String locationName= getIntent().getStringExtra(Constant.locationName);
                 WeatherData weatherData= new WeatherData(locationName,viewModel.getMarkerLat(),viewModel.getMarkerLon());
                 RepositoryImpl.getInstance().addWeather(weatherData);
-                Intent intent = new Intent(getApplicationContext(), ForecastActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ForecastFragment.class);
                 startActivity(intent);
             }
         });

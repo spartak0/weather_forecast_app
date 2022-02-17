@@ -1,20 +1,17 @@
-package com.example.weather.ui.Forecast;
+package com.example.weather.ui.forecast;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.weather.data.db.entity.WeatherEntity;
+import com.example.weather.R;
 import com.example.weather.databinding.ItemForecastBinding;
 import com.example.weather.domain.model.Forecast.WeatherData;
-import com.example.weather.ui.Temp.TempActivity;
 
 import java.util.List;
 
@@ -51,12 +48,7 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
             this.binding = itemForecastBinding;
         }
 
-        public void bind(String text, int position) {
-            this.binding.tvIndex.setText("" + position);
-            this.binding.tvCity.setText(text);
-            this.binding.layout.setOnClickListener(new onClickListener(forecasts.get(position).getId()));
 
-        }
         public void bind(WeatherData weatherData, int position) {
             this.binding.tvIndex.setText((position+1)+"");
             this.binding.tvCity.setText(weatherData.getName());
@@ -74,10 +66,9 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
 
             @Override
             public void onClick(View view) {
-                Context context = view.getContext().getApplicationContext();
-                Intent intent = new Intent(context, TempActivity.class);
-                intent.putExtra("id", id);
-                context.startActivity(intent);
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", id);
+                Navigation.findNavController(view.getRootView()).navigate(R.id.action_forecastFragment_to_tempActivity, bundle);
             }
         }
 
