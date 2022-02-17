@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    tools:context=".ui.Forecast.ForecastActivity">
+    android:id="@+id/layout"
+    android:clickable="true"
+    tools:context=".ui.forecast.ForecastFragment"
+    android:focusable="true">
 
     <TextView
         android:id="@+id/tv_city"

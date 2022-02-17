@@ -2,8 +2,7 @@ package com.example.weather.data.network.api;
 
 import androidx.annotation.NonNull;
 
-import com.example.weather.R;
-import com.example.weather.data.db.entity.ForecastData;
+import com.example.weather.data.db.entity.WeatherEntity;
 import com.example.weather.utils.Constant;
 
 import java.io.IOException;
@@ -14,7 +13,6 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -24,7 +22,7 @@ import retrofit2.http.Query;
 public interface ForecastApi {
 
     @GET("data/2.5/weather")
-    Observable<ForecastData> getWeatherDataByCoord(@Query("lat") String lat, @Query("lon") String lon, @Query("units")String units);
+    Observable<WeatherEntity> getWeatherDataByCoord(@Query("lat") String lat, @Query("lon") String lon, @Query("units")String units);
 
     class Instance{
         private static Retrofit getRetrofit(){
