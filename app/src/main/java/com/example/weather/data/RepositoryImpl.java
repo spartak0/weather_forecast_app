@@ -15,7 +15,9 @@ import com.example.weather.data.network.api.ForecastApi;
 import com.example.weather.domain.mapper.WeatherMapper;
 import com.example.weather.domain.model.Forecast.WeatherData;
 import com.example.weather.domain.Repository;
+import com.example.weather.utils.Constant;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,16 +68,32 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public Observable<Float> getWeatherDataByCoord(String lat, String lon, String units) {
+    public Observable<Float> getCurrentWeatherDataByCoord(String lat, String lon, String units) {
         Observable<Float> floatObservable= ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat, lon, units).map(
                 new Function<WeatherEntity, Float>() {
                     @Override
                     public Float apply(@NonNull WeatherEntity weatherEntity) throws Exception {
-                        Float tmp = weatherEntity.getMain().getTemp();
-                        return weatherEntity.getMain().getTemp();
+                        return weatherEntity.getCurrent().getTemp();
                     }
                 }
         );
+        return floatObservable;
+    }
+
+    @Override
+    public Observable<HashMap<String, Float>> getDailyWeatherDataByCoord(String lat, String lon, String units) {
+        Observable<HashMap<String, Float>> floatObservable= ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat, lon, units).map(
+                new Function<WeatherEntity, HashMap<String, Float>>() {
+                    @Override
+                    public HashMap<String, Float> apply(@NonNull WeatherEntity weatherEntity) throws Exception {
+                        HashMap<String,Float> dailyForecast= new HashMap<>();
+                        dailyForecast.put(Constant.day, weatherEntity.getDaily()[0].getTemp().getDay());
+                        dailyForecast.put(Constant.eve, weatherEntity.getDaily()[0].getTemp().getEve());
+                        dailyForecast.put(Constant.morn, weatherEntity.getDaily()[0].getTemp().getMorn());
+                        dailyForecast.put(Constant.night, weatherEntity.getDaily()[0].getTemp().getNight());
+                        return dailyForecast;
+                    }
+                });
         return floatObservable;
     }
 

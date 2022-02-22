@@ -8,8 +8,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.ActionOnlyNavDirections;
 import androidx.navigation.NavController;
-import androidx.navigation.NavControllerViewModel;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +18,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,10 +53,11 @@ public class ForecastFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+
         binding.addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(view.getRootView()).navigate(R.id.action_forecastFragment_to_setLocationNameFragment);
+                Navigation.findNavController(view).navigate(R.id.action_forecastFragment_to_setLocationNameFragment);
             }
         });
 
@@ -64,12 +66,14 @@ public class ForecastFragment extends Fragment {
         viewModel.getLiveData().observe(this, new Observer<List<WeatherData>>() {
             @Override
             public void onChanged(List<WeatherData> weatherData) {
-                setAdapter(binding.recycler,weatherData);
+                setAdapter(binding.recycler,weatherData, viewModel);
             }
         });
     }
-    private void setAdapter(View view, List<WeatherData> list){
-        ForecastItemAdapter adapter=new ForecastItemAdapter(list);
+
+
+    private void setAdapter(View view, List<WeatherData> list, ForecastViewModel viewModel){
+        ForecastItemAdapter adapter=new ForecastItemAdapter(list,viewModel);
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(view.getContext());
         binding.recycler.setLayoutManager(layoutManager);
         binding.recycler.setAdapter(adapter);

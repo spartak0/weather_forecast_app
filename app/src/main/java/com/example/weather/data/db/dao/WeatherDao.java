@@ -11,8 +11,6 @@ import com.example.weather.data.db.entity.WeatherEntity;
 
 import java.util.List;
 
-import io.reactivex.Completable;
-
 @Dao
 public
 interface WeatherDao {

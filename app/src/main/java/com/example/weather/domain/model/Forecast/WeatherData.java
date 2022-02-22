@@ -9,16 +9,16 @@ public class WeatherData {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String name;
-    private double lan;
-    private double lon;
+    private float lan;
+    private float lon;
 
-    public WeatherData(int id, String name, double lan, double lon) {
+    public WeatherData(int id, String name, float lan, float lon) {
         this.id = id;
         this.name = name;
         this.lan = lan;
         this.lon = lon;
     }
-    public WeatherData(String name, double lan, double lon) {
+    public WeatherData(String name, float lan, float lon) {
         this.id=0;
         this.name = name;
         this.lan = lan;
@@ -34,7 +34,7 @@ public class WeatherData {
         this.id = id;
     }
 
-    public double getLan() {
+    public float getLan() {
         return lan;
     }
 
@@ -42,7 +42,7 @@ public class WeatherData {
         this.lan = lan;
     }
 
-    public double getLon() {
+    public float getLon() {
         return lon;
     }
 

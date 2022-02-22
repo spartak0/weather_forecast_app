@@ -17,9 +17,11 @@ import java.util.List;
 
 public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapter.MyViewHolder> {
     private final List<WeatherData> forecasts;
+    private ForecastViewModel viewModel;
 
-    public ForecastItemAdapter(List<WeatherData> forecast) {
+    public ForecastItemAdapter(List<WeatherData> forecast,ForecastViewModel viewModel) {
         this.forecasts = forecast;
+        this.viewModel=viewModel;
     }
 
     @NonNull
@@ -53,6 +55,7 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
             this.binding.tvIndex.setText((position+1)+"");
             this.binding.tvCity.setText(weatherData.getName());
             this.binding.layout.setOnClickListener(new onClickListener(weatherData.getId()));
+            viewModel.getCurrentWeatherByCoord(weatherData.getLan(),weatherData.getLon(),this.binding.tvCurrentTemp);
 
         }
 
@@ -68,7 +71,7 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putInt("id", id);
-                Navigation.findNavController(view.getRootView()).navigate(R.id.action_forecastFragment_to_tempActivity, bundle);
+                Navigation.findNavController(view).navigate(R.id.action_forecastFragment_to_tempActivity, bundle);
             }
         }
 

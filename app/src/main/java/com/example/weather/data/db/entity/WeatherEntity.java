@@ -2,10 +2,11 @@ package com.example.weather.data.db.entity;
 
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.example.weather.data.db.entity.ForecastDetail.Coord;
-import com.example.weather.data.db.entity.ForecastDetail.Main;
+import com.example.weather.data.db.entity.ForecastDetail.Current;
+import com.example.weather.data.db.entity.ForecastDetail.Daily;
 
 @Entity
 public class WeatherEntity {
@@ -13,45 +14,25 @@ public class WeatherEntity {
     @PrimaryKey(autoGenerate = true)
     private int id=0;
 
-    @Embedded
-    private Coord coord;
-
-    @Embedded
-    private Main main;
-
+    private float lat;
+    private float lon;
     private String name;
 
-    public WeatherEntity(int id, Coord coord, Main main, String name) {
-        this.id = id;
-        this.coord = coord;
-        this.main = main;
-        this.name = name;
+    @Ignore
+    private Current current;
+
+    @Ignore
+    private Daily[] daily;
+
+
+
+    public Daily[] getDaily() {
+        return daily;
     }
 
-    public WeatherEntity(String name, Double lat, Double lon) {
-        this.name=name;
-        coord=new Coord(lat,lon);
-        //coord.setLat(lat);
-        //coord.setLon(lon);
+    public void setDaily(Daily[] daily) {
+        this.daily = daily;
     }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Coord getCoord() {
-        return coord;
-    }
-
-    public void setCoord(Coord coord) {
-        this.coord = coord;
-    }
-
 
     public int getId() {
         return id;
@@ -61,12 +42,47 @@ public class WeatherEntity {
         this.id = id;
     }
 
-    public Main getMain() {
-        return main;
+    public Current getCurrent() {
+        return current;
     }
 
-    public void setMain(Main main) {
-        this.main = main;
+    public void setCurrent(Current current) {
+        this.current = current;
     }
 
+    public float getLat() {
+        return lat;
+    }
+
+    public void setLat(float lat) {
+        this.lat = lat;
+    }
+
+    public float getLon() {
+        return lon;
+    }
+
+    public void setLon(float lon) {
+        this.lon = lon;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public WeatherEntity(int id, float lat, float lon, String name, Current current, Daily[] daily) {
+        this.id = id;
+        this.lat = lat;
+        this.lon = lon;
+        this.name = name;
+        this.current = current;
+        this.daily = daily;
+    }
+
+    public WeatherEntity() {
+    }
 }

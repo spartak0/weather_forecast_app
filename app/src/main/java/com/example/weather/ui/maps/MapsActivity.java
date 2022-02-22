@@ -15,7 +15,7 @@ import com.example.weather.data.RepositoryImpl;
 import com.example.weather.data.network.api.ForecastApi;
 import com.example.weather.databinding.ActivityMapsBinding;
 import com.example.weather.domain.model.Forecast.WeatherData;
-import com.example.weather.ui.forecast.ForecastFragment;
+import com.example.weather.ui.main.MainActivity;
 import com.example.weather.utils.Constant;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -53,10 +53,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 String locationName= getIntent().getStringExtra(Constant.locationName);
-                WeatherData weatherData= new WeatherData(locationName,viewModel.getMarkerLat(),viewModel.getMarkerLon());
+                WeatherData weatherData= new WeatherData(locationName, viewModel.getMarkerLat(),viewModel.getMarkerLon());
                 RepositoryImpl.getInstance().addWeather(weatherData);
-                Intent intent = new Intent(getApplicationContext(), ForecastFragment.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
             }
         });
     }
