@@ -13,12 +13,14 @@
         android:gravity="center_horizontal"
         android:minHeight="?attr/actionBarSize"
         android:foregroundGravity="center_vertical"
-        android:theme="@style/Widget.MaterialComponents.Toolbar"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
         app:titleTextColor="@color/design_default_color_on_primary"
         android:background="@color/design_default_color_primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/main_menu"/>
+
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"

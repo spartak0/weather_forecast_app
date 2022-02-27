@@ -29,19 +29,23 @@ import com.example.weather.domain.model.Forecast.WeatherData;
 import com.example.weather.ui.main.MainActivity;
 import com.example.weather.ui.setLocationName.SetLocationNameFragment;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ForecastFragment extends Fragment {
 
     FragmentForecastBinding binding;
+    private ForecastViewModel viewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentForecastBinding.inflate(inflater,container, false);
         View view = binding.getRoot();
-        return view;
+        getActivity().setTitle(R.string.location);
 
+        return view;
     }
 
 
@@ -52,6 +56,8 @@ public class ForecastFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        viewModel = new ViewModelProvider(this).get(ForecastViewModel.class);
+
 
 
         binding.addBtn.setOnClickListener(new View.OnClickListener() {
@@ -61,23 +67,22 @@ public class ForecastFragment extends Fragment {
             }
         });
 
+        ForecastItemAdapter adapter=new ForecastItemAdapter(new ArrayList<>(),viewModel);
+        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(binding.recycler.getContext());
+        binding.recycler.setLayoutManager(layoutManager);
+        binding.recycler.setAdapter(adapter);
 
-        ForecastViewModel viewModel = new ViewModelProvider(this).get(ForecastViewModel.class);
+
         viewModel.getLiveData().observe(this, new Observer<List<WeatherData>>() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChanged(List<WeatherData> weatherData) {
-                setAdapter(binding.recycler,weatherData, viewModel);
+                adapter.update(weatherData);
             }
         });
     }
 
 
-    private void setAdapter(View view, List<WeatherData> list, ForecastViewModel viewModel){
-        ForecastItemAdapter adapter=new ForecastItemAdapter(list,viewModel);
-        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(view.getContext());
-        binding.recycler.setLayoutManager(layoutManager);
-        binding.recycler.setAdapter(adapter);
-    }
 
 
 }

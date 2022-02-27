@@ -11,6 +11,7 @@ import com.example.weather.utils.Constant;
 
 import java.util.HashMap;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -18,19 +19,8 @@ import io.reactivex.schedulers.Schedulers;
 public class TempViewModel extends ViewModel {
 
     @SuppressLint("CheckResult")
-    public void getDailyWeatherByCoord(double lat, double lon,TextView morn, TextView day, TextView eve, TextView night){
-        RepositoryImpl.getInstance().getDailyWeatherDataByCoord(""+lat,""+lon, "metric")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<HashMap<String, Float>>() {
-                    @Override
-                    public void accept(HashMap<String, Float> stringFloatHashMap) throws Exception {
-                            morn.setText(""+stringFloatHashMap.get(Constant.morn));
-                            day.setText(""+stringFloatHashMap.get(Constant.day));
-                            eve.setText(""+stringFloatHashMap.get(Constant.eve));
-                            night.setText(""+stringFloatHashMap.get(Constant.night));
-                    }
-                });
+    public Observable<HashMap<String, String>> getDailyWeatherByCoord(double lat, double lon){
+       return RepositoryImpl.getInstance().getDailyWeatherDataByCoord(""+lat,""+lon, "metric");
     }
 
     public WeatherData getWeatherById(int id) {

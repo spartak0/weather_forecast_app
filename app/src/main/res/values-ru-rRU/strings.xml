@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">weather</string>
+    <string name="title_activity_maps">Карта</string>
+    <string name="hint_location_name">Название локации</string>
+    <string name="ok">Ок, бро</string>
+    <string name="morning">Утречко</string>
+    <string name="day">Денёк</string>
+    <string name="evening">Вечерок</string>
+    <string name="night">Ночушка</string>
+    <string name="location">Локации</string>
+    <string name="settings">Настройки</string>
+    <string name="weather_forecast">Прогноз погоды</string>
+    <string name="hint_index">индекс</string>
+    <string name="hint_city">город</string>
+    <string name="hint_current_temp">текущая</string>
+    <string name="delete">Удалить</string>
+</resources>

@@ -8,14 +8,15 @@
         <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/drawable/ic_launcher_background.xml" value="0.14635416666666667" />
         <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/drawable/style_toolbar.xml" value="0.21851851851851853" />
         <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/activity_forecast.xml" value="0.13020833333333334" />
-        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/activity_maps.xml" value="0.21481481481481482" />
         <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/activity_set_location_name.xml" value="0.20462962962962963" />
         <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/activity_temp.xml" value="0.1265625" />
-        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/fragment_forecast.xml" value="0.18541666666666667" />
+        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/fragment_forecast.xml" value="0.43532560214094557" />
         <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/fragment_set_location_name.xml" value="0.16111111111111112" />
-        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/fragment_temp.xml" value="0.2" />
-        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/item_forecast.xml" value="0.536" />
+        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/fragment_temp.xml" value="0.1" />
+        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/item_forecast.xml" value="0.264" />
+        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/menu/main_menu.xml" value="0.23854166666666668" />
       </map>
     </option>
   </component>

@@ -15,7 +15,7 @@
         android:layout_marginBottom="200dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="Location name"
+        android:hint="@string/hint_location_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:text="Ok,bro"
+        android:text="@string/ok"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_name" />

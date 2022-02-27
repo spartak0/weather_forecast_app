@@ -12,6 +12,7 @@ import androidx.lifecycle.Transformations;
 import com.example.weather.data.db.database.WeatherDatabase;
 import com.example.weather.data.db.entity.WeatherEntity;
 import com.example.weather.data.network.api.ForecastApi;
+import com.example.weather.domain.mapper.DailyMapper;
 import com.example.weather.domain.mapper.WeatherMapper;
 import com.example.weather.domain.model.Forecast.WeatherData;
 import com.example.weather.domain.Repository;
@@ -26,6 +27,7 @@ import io.reactivex.functions.Function;
 
 public class RepositoryImpl implements Repository {
     final WeatherMapper weatherMapper= new WeatherMapper();
+    final DailyMapper dailyMapper= new DailyMapper();
     Context context;
     @SuppressLint("StaticFieldLeak")
     static RepositoryImpl instance;
@@ -81,17 +83,12 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public Observable<HashMap<String, Float>> getDailyWeatherDataByCoord(String lat, String lon, String units) {
-        Observable<HashMap<String, Float>> floatObservable= ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat, lon, units).map(
-                new Function<WeatherEntity, HashMap<String, Float>>() {
+    public Observable<HashMap<String, String>> getDailyWeatherDataByCoord(String lat, String lon, String units) {
+        Observable<HashMap<String, String>> floatObservable= ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat, lon, units).map(
+                new Function<WeatherEntity, HashMap<String, String>>() {
                     @Override
-                    public HashMap<String, Float> apply(@NonNull WeatherEntity weatherEntity) throws Exception {
-                        HashMap<String,Float> dailyForecast= new HashMap<>();
-                        dailyForecast.put(Constant.day, weatherEntity.getDaily()[0].getTemp().getDay());
-                        dailyForecast.put(Constant.eve, weatherEntity.getDaily()[0].getTemp().getEve());
-                        dailyForecast.put(Constant.morn, weatherEntity.getDaily()[0].getTemp().getMorn());
-                        dailyForecast.put(Constant.night, weatherEntity.getDaily()[0].getTemp().getNight());
-                        return dailyForecast;
+                    public HashMap<String, String> apply(@NonNull WeatherEntity weatherEntity) throws Exception {
+                        return dailyMapper.toDomain(weatherEntity);
                     }
                 });
         return floatObservable;

@@ -1,11 +1,14 @@
 package com.example.weather.ui.forecast;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,7 +16,12 @@ import com.example.weather.R;
 import com.example.weather.databinding.ItemForecastBinding;
 import com.example.weather.domain.model.Forecast.WeatherData;
 
+import java.util.Collections;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapter.MyViewHolder> {
     private final List<WeatherData> forecasts;
@@ -41,6 +49,13 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
         return forecasts.size();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    void update(List<WeatherData> list){
+        forecasts.clear();
+        forecasts.addAll(list);
+        notifyDataSetChanged();
+    }
+
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         public ItemForecastBinding binding;
@@ -51,11 +66,22 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
         }
 
 
+        @SuppressLint("CheckResult")
+        @RequiresApi(api = Build.VERSION_CODES.N)
         public void bind(WeatherData weatherData, int position) {
             this.binding.tvIndex.setText((position+1)+"");
             this.binding.tvCity.setText(weatherData.getName());
             this.binding.layout.setOnClickListener(new onClickListener(weatherData.getId()));
-            viewModel.getCurrentWeatherByCoord(weatherData.getLan(),weatherData.getLon(),this.binding.tvCurrentTemp);
+            viewModel.getCurrentWeatherByCoord(weatherData.getLan(),weatherData.getLon())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<Float>() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void accept(Float aFloat) throws Exception {
+                            binding.tvCurrentTemp.setText(""+aFloat);
+                        }
+                    });
 
         }
 

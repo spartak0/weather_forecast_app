@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -15,15 +16,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.example.weather.R;
 import com.example.weather.databinding.FragmentTempBinding;
 import com.example.weather.domain.model.Forecast.WeatherData;
 import com.example.weather.ui.maps.MapsViewModel;
+import com.example.weather.utils.Constant;
+
+import java.util.HashMap;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class TempFragment extends Fragment {
 
     private FragmentTempBinding binding;
     private TempViewModel viewModel;
+
 
     @Nullable
     @Override
@@ -31,16 +41,35 @@ public class TempFragment extends Fragment {
         binding = FragmentTempBinding.inflate(inflater, container, false);
         View view= binding.getRoot();
         viewModel = new ViewModelProvider(this).get(TempViewModel.class);
+        getActivity().setTitle(R.string.weather_forecast);
         return view;
     }
 
 
+    @SuppressLint("CheckResult")
     @Override
     public void onStart() {
         super.onStart();
         int id= getArguments().getInt("id",0);
         WeatherData tmp = viewModel.getWeatherById( id);
-        viewModel.getDailyWeatherByCoord(tmp.getLan(), tmp.getLon(),binding.tvMorningValue, binding.tvDayValue, binding.tvEveValue, binding.tvNightValue);
+        viewModel.getDailyWeatherByCoord(tmp.getLan(), tmp.getLon())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<HashMap<String, String>>() {
+                    @Override
+                    public void accept(HashMap<String, String> stringFloatHashMap) throws Exception {
+                        binding.tvMorningValue.setText(stringFloatHashMap.get(Constant.morn));
+                        binding.tvDayValue.setText(stringFloatHashMap.get(Constant.day));
+                        binding.tvEveValue.setText(stringFloatHashMap.get(Constant.eve));
+                        binding.tvNightValue .setText(stringFloatHashMap.get(Constant.night));
+                        System.out.println(stringFloatHashMap.get(Constant.dailyIcon));
+                        Glide.with(getActivity())
+                                .load(Constant.prefix_url_icon+
+                                        stringFloatHashMap.get(Constant.dailyIcon)+
+                                        Constant.postfix_url_icon)
+                        .into(binding.dailyIcon);
+                    }
+                });
 
         binding.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override

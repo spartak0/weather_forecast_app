@@ -30,6 +30,7 @@ public class SetLocationNameFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding= FragmentSetLocationNameBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+        getActivity().setTitle(R.string.settings);
         return view;
     }
 
@@ -52,6 +53,7 @@ public class SetLocationNameFragment extends Fragment {
                 }
         );
     }
+
 
 
 }

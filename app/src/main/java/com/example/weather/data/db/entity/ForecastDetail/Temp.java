@@ -6,6 +6,15 @@ public class Temp {
     float eve;
     float morn;
 
+    public Temp(float day, float night, float eve, float morn) {
+        this.day = day;
+        this.night = night;
+        this.eve = eve;
+        this.morn = morn;
+    }
+
+
+
     public float getDay() {
         return day;
     }

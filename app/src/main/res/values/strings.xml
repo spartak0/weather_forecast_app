@@ -1,6 +1,17 @@
 <resources>
     <string name="app_name">weather</string>
     <string name="title_activity_maps">MapsActivity</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_location_name">Location name</string>
+    <string name="ok">Ok,bro</string>
+    <string name="morning">morning</string>
+    <string name="day">day</string>
+    <string name="evening">evening</string>
+    <string name="night">night</string>
+    <string name="location">Location</string>
+    <string name="settings">Settings</string>
+    <string name="weather_forecast">Weather forecast</string>
+    <string name="hint_index">index</string>
+    <string name="hint_city">City</string>
+    <string name="hint_current_temp">Current</string>
+    <string name="delete">Delete</string>
 </resources>

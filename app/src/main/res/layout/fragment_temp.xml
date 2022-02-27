@@ -7,10 +7,11 @@
     tools:context=".ui.temp.TempFragment">
 
     <TableLayout
-        android:stretchColumns="*"
+        android:id="@+id/tableLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/btn_delete"
+        android:stretchColumns="*"
+        app:layout_constraintBottom_toTopOf="@+id/daily_icon"
         app:layout_constraintTop_toTopOf="parent">
 
         <TableRow
@@ -22,30 +23,30 @@
                 android:id="@+id/tv_morning"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:layout_weight="1"
-                android:text="morning" />
+                android:gravity="center_horizontal"
+                android:text="@string/morning" />
 
             <TextView
                 android:id="@+id/tv_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="day" />
+                android:text="@string/day" />
 
             <TextView
                 android:id="@+id/tv_eve"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="evening" />
+                android:text="@string/evening" />
 
             <TextView
                 android:id="@+id/tv_night"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="night" />
+                android:text="@string/night" />
         </TableRow>
 
         <TableRow
@@ -100,9 +101,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
-        android:text="Delete"
+        android:text="@string/delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/daily_icon"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="?android:attr/listDivider"
+        app:layout_constraintBottom_toTopOf="@+id/btn_delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

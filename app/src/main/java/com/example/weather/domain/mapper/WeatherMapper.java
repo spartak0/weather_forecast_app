@@ -15,8 +15,6 @@ public class WeatherMapper implements Mapper<WeatherData, WeatherEntity> {
 
     @Override
     public WeatherEntity fromDomain(WeatherData weatherData) {
-        //Coord coord = new Coord(weatherData.getLan(),weatherData.getLon());
         return new WeatherEntity(weatherData.getId(), weatherData.getLan(), weatherData.getLon(),weatherData.getName(), new Current(), new Daily[]{});
-        //return new WeatherEntity(weatherData.getId(),coord,new Main(), weatherData.getName() );
     }
 }

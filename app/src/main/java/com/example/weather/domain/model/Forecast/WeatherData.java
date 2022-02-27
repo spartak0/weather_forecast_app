@@ -3,10 +3,8 @@ package com.example.weather.domain.model.Forecast;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
 public class WeatherData {
 
-    @PrimaryKey(autoGenerate = true)
     private int id;
     private String name;
     private float lan;
