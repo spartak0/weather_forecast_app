@@ -11,8 +11,14 @@ import com.example.weather.data.RepositoryImpl;
 import com.example.weather.domain.model.Forecast.WeatherData;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ForecastViewModel extends ViewModel {
@@ -30,6 +36,8 @@ public class ForecastViewModel extends ViewModel {
 
     @SuppressLint("CheckResult")
     public Observable<Float> getCurrentWeatherByCoord(double lat, double lon){
-       return RepositoryImpl.getInstance().getCurrentWeatherDataByCoord(""+lat,""+lon, "metric");
+       return RepositoryImpl.getInstance().getCurrentWeatherDataByCoord(""+lat,""+lon, "metric")
+               .subscribeOn(Schedulers.io())
+               .observeOn(AndroidSchedulers.mainThread());
     }
 }

@@ -14,4 +14,10 @@
         <!-- Customize your theme here. -->
         <item name="colorControlNormal">#FFFFFF</item>
     </style>
+    <style name="Theme.Weather.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.Weather.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.Weather.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

@@ -20,7 +20,9 @@ public class TempViewModel extends ViewModel {
 
     @SuppressLint("CheckResult")
     public Observable<HashMap<String, String>> getDailyWeatherByCoord(double lat, double lon){
-       return RepositoryImpl.getInstance().getDailyWeatherDataByCoord(""+lat,""+lon, "metric");
+       return RepositoryImpl.getInstance().getDailyWeatherDataByCoord(""+lat,""+lon, "metric")
+               .subscribeOn(Schedulers.io())
+               .observeOn(AndroidSchedulers.mainThread());
     }
 
     public WeatherData getWeatherById(int id) {

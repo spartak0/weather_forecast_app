@@ -19,17 +19,18 @@ import com.example.weather.domain.model.Forecast.WeatherData;
 import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapter.MyViewHolder> {
     private final List<WeatherData> forecasts;
-    private ForecastViewModel viewModel;
+    private final List<Observable<Float>> currentTemp;
 
-    public ForecastItemAdapter(List<WeatherData> forecast,ForecastViewModel viewModel) {
+    public ForecastItemAdapter(List<WeatherData> forecast, List<Observable<Float>> currentTemp) {
         this.forecasts = forecast;
-        this.viewModel=viewModel;
+        this.currentTemp = currentTemp;
     }
 
     @NonNull
@@ -72,17 +73,9 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
             this.binding.tvIndex.setText((position+1)+"");
             this.binding.tvCity.setText(weatherData.getName());
             this.binding.layout.setOnClickListener(new onClickListener(weatherData.getId()));
-            viewModel.getCurrentWeatherByCoord(weatherData.getLan(),weatherData.getLon())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<Float>() {
-                        @SuppressLint("SetTextI18n")
-                        @Override
-                        public void accept(Float aFloat) throws Exception {
-                            binding.tvCurrentTemp.setText(""+aFloat);
-                        }
-                    });
-
+            currentTemp.get(position).subscribe(x -> {
+                binding.tvCurrentTemp.setText(""+x);
+            });
         }
 
         public class onClickListener implements View.OnClickListener

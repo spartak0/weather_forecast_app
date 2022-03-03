@@ -25,12 +25,14 @@ import com.example.weather.databinding.ActivityMainBinding;
 import com.example.weather.databinding.ActivityMapsBinding;
 import com.example.weather.databinding.ItemForecastBinding;
 import com.example.weather.ui.setLocationName.SetLocationNameFragment;
+import com.example.weather.utils.SettingManager;
 
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
+    SettingManager settingManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
+        settingManager= new SettingManager(getBaseContext());
         settingsToolbar();
-        loadLocale();
+        settingManager.loadLocale();
     }
 
     private void settingsToolbar() {
@@ -59,11 +61,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.russian:
-                setLocale("ru");
+                settingManager.setLocale("ru");
                 recreate();
                 break;
             case R.id.english:
-                setLocale("en");
+                 settingManager.setLocale("en");
                 recreate();
                 break;
             case android.R.id.home:
@@ -73,23 +75,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-
-    void setLocale(String lang){
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = getBaseContext().getResources().getConfiguration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config,
-                getBaseContext().getResources().getDisplayMetrics());
-        SharedPreferences.Editor editor= getSharedPreferences("Settings", MODE_PRIVATE).edit();
-        editor.putString("MyLang", lang);
-        editor.apply();
-    }
-    public void loadLocale(){
-        SharedPreferences preferences = getSharedPreferences("Settings", MODE_PRIVATE);
-        String language = preferences.getString("MyLang","");
-        setLocale(language);
-    }
-
-
 }

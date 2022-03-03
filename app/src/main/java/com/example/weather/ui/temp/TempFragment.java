@@ -53,23 +53,19 @@ public class TempFragment extends Fragment {
         int id= getArguments().getInt("id",0);
         WeatherData tmp = viewModel.getWeatherById( id);
         viewModel.getDailyWeatherByCoord(tmp.getLan(), tmp.getLon())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<HashMap<String, String>>() {
-                    @Override
-                    public void accept(HashMap<String, String> stringFloatHashMap) throws Exception {
-                        binding.tvMorningValue.setText(stringFloatHashMap.get(Constant.morn));
-                        binding.tvDayValue.setText(stringFloatHashMap.get(Constant.day));
-                        binding.tvEveValue.setText(stringFloatHashMap.get(Constant.eve));
-                        binding.tvNightValue .setText(stringFloatHashMap.get(Constant.night));
-                        System.out.println(stringFloatHashMap.get(Constant.dailyIcon));
+                .subscribe(hashMap -> {
+                    binding.tvMorningValue.setText(hashMap.get(Constant.morn));
+                        binding.tvDayValue.setText(hashMap.get(Constant.day));
+                        binding.tvEveValue.setText(hashMap.get(Constant.eve));
+                        binding.tvNightValue .setText(hashMap.get(Constant.night));
+                        System.out.println(hashMap.get(Constant.dailyIcon));
                         Glide.with(getActivity())
                                 .load(Constant.prefix_url_icon+
-                                        stringFloatHashMap.get(Constant.dailyIcon)+
+                                        hashMap.get(Constant.dailyIcon)+
                                         Constant.postfix_url_icon)
                         .into(binding.dailyIcon);
-                    }
                 });
+
 
         binding.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override

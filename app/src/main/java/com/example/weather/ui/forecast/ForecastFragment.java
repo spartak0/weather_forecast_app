@@ -31,10 +31,16 @@ import com.example.weather.ui.setLocationName.SetLocationNameFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
+
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
 public class ForecastFragment extends Fragment {
 
+    List<Observable<Float>> currentTemp;
     FragmentForecastBinding binding;
     private ForecastViewModel viewModel;
 
@@ -57,7 +63,7 @@ public class ForecastFragment extends Fragment {
     public void onStart() {
         super.onStart();
         viewModel = new ViewModelProvider(this).get(ForecastViewModel.class);
-
+        currentTemp = new ArrayList<>();
 
 
         binding.addBtn.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +73,7 @@ public class ForecastFragment extends Fragment {
             }
         });
 
-        ForecastItemAdapter adapter=new ForecastItemAdapter(new ArrayList<>(),viewModel);
+        ForecastItemAdapter adapter=new ForecastItemAdapter(new ArrayList<>(),currentTemp);
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(binding.recycler.getContext());
         binding.recycler.setLayoutManager(layoutManager);
         binding.recycler.setAdapter(adapter);
@@ -77,11 +83,20 @@ public class ForecastFragment extends Fragment {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChanged(List<WeatherData> weatherData) {
+                updateCurrentTemp(weatherData);
                 adapter.update(weatherData);
             }
         });
     }
 
+    @SuppressLint("CheckResult")
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    void updateCurrentTemp(List<WeatherData> weatherData){
+        for(int i=0;i<weatherData.size();i++){
+            WeatherData tmp = weatherData.get(i);
+            currentTemp.add(viewModel.getCurrentWeatherByCoord(tmp.getLan(), tmp.getLon()));
+        }
+    }
 
 
 
