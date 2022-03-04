@@ -1,25 +1,29 @@
 package com.example.weather.domain.model.Forecast;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-@Entity
 public class WeatherData {
-
-    @PrimaryKey(autoGenerate = true)
     private int id;
     private String name;
-    private double lan;
-    private double lon;
+    private float lan;
+    private float lon;
+    private float temperature;
 
-    public WeatherData(int id, String name, double lan, double lon) {
+    public WeatherData(int id, String name, float lan, float lon, float temperature) {
+        this.id = id;
+        this.name = name;
+        this.lan = lan;
+        this.lon = lon;
+        this.temperature = temperature;
+    }
+
+    public WeatherData(int id, String name, float lan, float lon) {
         this.id = id;
         this.name = name;
         this.lan = lan;
         this.lon = lon;
     }
-    public WeatherData(String name, double lan, double lon) {
-        this.id=0;
+
+    public WeatherData(String name, float lan, float lon) {
+        this.id = 0;
         this.name = name;
         this.lan = lan;
         this.lon = lon;
@@ -34,7 +38,7 @@ public class WeatherData {
         this.id = id;
     }
 
-    public double getLan() {
+    public float getLan() {
         return lan;
     }
 
@@ -42,7 +46,7 @@ public class WeatherData {
         this.lan = lan;
     }
 
-    public double getLon() {
+    public float getLon() {
         return lon;
     }
 
@@ -56,5 +60,13 @@ public class WeatherData {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public float getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(float temperature) {
+        this.temperature = temperature;
     }
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:title="Русский"
+        android:id="@+id/russian"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_flag_of_russia"/>
+    <item android:title="English"
+        android:id="@+id/english"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_flag_of_the_united_states"/>
+</menu>

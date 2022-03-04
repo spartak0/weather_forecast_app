@@ -11,10 +11,14 @@
         tools:layout="@layout/fragment_forecast" >
         <action
             android:id="@+id/action_forecastFragment_to_tempActivity"
-            app:destination="@id/tempActivity" />
+            app:destination="@id/tempActivity"
+            app:popUpTo="@id/forecastFragment"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_forecastFragment_to_setLocationNameFragment"
-            app:destination="@id/setLocationNameFragment" />
+            app:destination="@id/setLocationNameFragment"
+            app:popUpTo="@id/forecastFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/setLocationNameFragment"

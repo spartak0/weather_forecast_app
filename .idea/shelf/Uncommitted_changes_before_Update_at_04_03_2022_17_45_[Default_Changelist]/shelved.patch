@@ -1,0 +1,33 @@
+Index: app/src/main/java/com/example/weather/ui/forecast/ForecastItemAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.weather.ui.forecast;\r\n\r\nimport android.annotation.SuppressLint;\r\nimport android.os.Build;\r\nimport android.os.Bundle;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.RequiresApi;\r\nimport androidx.navigation.Navigation;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport com.example.weather.R;\r\nimport com.example.weather.databinding.ItemForecastBinding;\r\nimport com.example.weather.domain.model.Forecast.WeatherData;\r\n\r\nimport java.util.Collections;\r\nimport java.util.List;\r\n\r\nimport io.reactivex.Observable;\r\nimport io.reactivex.android.schedulers.AndroidSchedulers;\r\nimport io.reactivex.functions.Consumer;\r\nimport io.reactivex.schedulers.Schedulers;\r\n\r\npublic class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapter.MyViewHolder> {\r\n    private final List<WeatherData> forecasts;\r\n    private final List<Observable<Float>> currentTemp;\r\n\r\n    public ForecastItemAdapter(List<WeatherData> forecast, List<Observable<Float>> currentTemp) {\r\n        this.forecasts = forecast;\r\n        this.currentTemp = currentTemp;\r\n    }\r\n\r\n    @NonNull\r\n    @Override\r\n    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {\r\n        return new MyViewHolder(ItemForecastBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));\r\n    }\r\n\r\n    @Override\r\n    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {\r\n        holder.bind(forecasts.get(position),position);\r\n\r\n    }\r\n\r\n    @Override\r\n    public int getItemCount() {\r\n        return forecasts.size();\r\n    }\r\n\r\n    @SuppressLint(\"NotifyDataSetChanged\")\r\n    void update(List<WeatherData> list){\r\n        forecasts.clear();\r\n        forecasts.addAll(list);\r\n        notifyDataSetChanged();\r\n    }\r\n\r\n\r\n    class MyViewHolder extends RecyclerView.ViewHolder {\r\n        public ItemForecastBinding binding;\r\n\r\n        public MyViewHolder(ItemForecastBinding itemForecastBinding) {\r\n            super(itemForecastBinding.getRoot());\r\n            this.binding = itemForecastBinding;\r\n        }\r\n\r\n\r\n        @SuppressLint(\"CheckResult\")\r\n        @RequiresApi(api = Build.VERSION_CODES.N)\r\n        public void bind(WeatherData weatherData, int position) {\r\n            this.binding.tvIndex.setText((position+1)+\"\");\r\n            this.binding.tvCity.setText(weatherData.getName());\r\n            this.binding.layout.setOnClickListener(new onClickListener(weatherData.getId()));\r\n            currentTemp.get(position).subscribe(x -> {\r\n                binding.tvCurrentTemp.setText(\"\"+x);\r\n            });\r\n        }\r\n\r\n        public class onClickListener implements View.OnClickListener\r\n        {\r\n            int id;\r\n\r\n            public onClickListener(int id) {\r\n                this.id = id;\r\n            }\r\n\r\n            @Override\r\n            public void onClick(View view) {\r\n                Bundle bundle = new Bundle();\r\n                bundle.putInt(\"id\", id);\r\n                Navigation.findNavController(view).navigate(R.id.action_forecastFragment_to_tempActivity, bundle);\r\n            }\r\n        }\r\n\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/weather/ui/forecast/ForecastItemAdapter.java b/app/src/main/java/com/example/weather/ui/forecast/ForecastItemAdapter.java
+--- a/app/src/main/java/com/example/weather/ui/forecast/ForecastItemAdapter.java	
++++ b/app/src/main/java/com/example/weather/ui/forecast/ForecastItemAdapter.java	
+@@ -26,9 +26,9 @@
+ 
+ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapter.MyViewHolder> {
+     private final List<WeatherData> forecasts;
+-    private final List<Observable<Float>> currentTemp;
++    private final List<Float> currentTemp;
+ 
+-    public ForecastItemAdapter(List<WeatherData> forecast, List<Observable<Float>> currentTemp) {
++    public ForecastItemAdapter(List<WeatherData> forecast, List<Float> currentTemp) {
+         this.forecasts = forecast;
+         this.currentTemp = currentTemp;
+     }
+@@ -73,9 +73,7 @@
+             this.binding.tvIndex.setText((position+1)+"");
+             this.binding.tvCity.setText(weatherData.getName());
+             this.binding.layout.setOnClickListener(new onClickListener(weatherData.getId()));
+-            currentTemp.get(position).subscribe(x -> {
+-                binding.tvCurrentTemp.setText(""+x);
+-            });
++            this.binding.tvCurrentTemp.setText(""+currentTemp.get(position));
+         }
+ 
+         public class onClickListener implements View.OnClickListener

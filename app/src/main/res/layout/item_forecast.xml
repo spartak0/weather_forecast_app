@@ -44,4 +44,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.cardview.widget.CardView
+        app:cardCornerRadius="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="#DDDCD9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_current_temp"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="10"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
