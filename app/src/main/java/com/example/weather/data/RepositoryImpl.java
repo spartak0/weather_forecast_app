@@ -6,17 +6,14 @@ import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Transformations;
 
 import com.example.weather.data.db.database.WeatherDatabase;
 import com.example.weather.data.db.entity.WeatherEntity;
 import com.example.weather.data.network.api.ForecastApi;
+import com.example.weather.domain.Repository;
 import com.example.weather.domain.mapper.DailyMapper;
 import com.example.weather.domain.mapper.WeatherMapper;
 import com.example.weather.domain.model.Forecast.WeatherData;
-import com.example.weather.domain.Repository;
-import com.example.weather.utils.Constant;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,11 +36,14 @@ public class RepositoryImpl implements Repository {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public LiveData<List<WeatherData>> getAllWeather() {
-        return Transformations.map(WeatherDatabase.getInstance(context).weatherDao().getAllWeather(),
-                x -> {
-            return x.stream().map(weatherMapper::toDomain).collect(Collectors.toList());
-                });
+    public Observable<List<WeatherData>> getAllWeather() {
+        return WeatherDatabase.getInstance(context).weatherDao().getAllWeather()
+                .map((Function<List<WeatherEntity>, List<WeatherData>>) weatherEntities -> weatherEntities.stream().map(new java.util.function.Function<WeatherEntity, WeatherData>() {
+                    @Override
+                    public WeatherData apply(WeatherEntity weatherEntity) {
+                        return weatherMapper.toDomain(weatherEntity);
+                    }
+                }).collect(Collectors.toList()));
     }
 
     @Override

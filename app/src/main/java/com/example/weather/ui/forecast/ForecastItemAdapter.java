@@ -16,6 +16,7 @@ import com.example.weather.R;
 import com.example.weather.databinding.ItemForecastBinding;
 import com.example.weather.domain.model.Forecast.WeatherData;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,11 +27,9 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapter.MyViewHolder> {
     private final List<WeatherData> forecasts;
-    private final List<Observable<Float>> currentTemp;
 
-    public ForecastItemAdapter(List<WeatherData> forecast, List<Observable<Float>> currentTemp) {
-        this.forecasts = forecast;
-        this.currentTemp = currentTemp;
+    public ForecastItemAdapter() {
+        this.forecasts = new ArrayList<>();
     }
 
     @NonNull
@@ -39,10 +38,10 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
         return new MyViewHolder(ItemForecastBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.bind(forecasts.get(position),position);
-
     }
 
     @Override
@@ -67,15 +66,13 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
         }
 
 
-        @SuppressLint("CheckResult")
+        @SuppressLint({"CheckResult", "SetTextI18n"})
         @RequiresApi(api = Build.VERSION_CODES.N)
         public void bind(WeatherData weatherData, int position) {
             this.binding.tvIndex.setText((position+1)+"");
             this.binding.tvCity.setText(weatherData.getName());
             this.binding.layout.setOnClickListener(new onClickListener(weatherData.getId()));
-            currentTemp.get(position).subscribe(x -> {
-                binding.tvCurrentTemp.setText(""+x);
-            });
+            binding.tvCurrentTemp.setText(Float.toString(weatherData.getTemperature()));
         }
 
         public class onClickListener implements View.OnClickListener

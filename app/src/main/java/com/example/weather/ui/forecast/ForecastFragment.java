@@ -31,6 +31,7 @@ import com.example.weather.ui.setLocationName.SetLocationNameFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
@@ -47,14 +48,11 @@ public class ForecastFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentForecastBinding.inflate(inflater,container, false);
+        binding = FragmentForecastBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         getActivity().setTitle(R.string.location);
-
         return view;
     }
-
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -65,39 +63,25 @@ public class ForecastFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(ForecastViewModel.class);
         currentTemp = new ArrayList<>();
 
+        binding.addBtn.setOnClickListener(view -> Navigation.findNavController(view).navigate(R.id.action_forecastFragment_to_setLocationNameFragment));
 
-        binding.addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_forecastFragment_to_setLocationNameFragment);
-            }
-        });
-
-        ForecastItemAdapter adapter=new ForecastItemAdapter(new ArrayList<>(),currentTemp);
-        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(binding.recycler.getContext());
+        ForecastItemAdapter adapter = new ForecastItemAdapter();
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
         binding.recycler.setLayoutManager(layoutManager);
         binding.recycler.setAdapter(adapter);
-
-
-        viewModel.getLiveData().observe(this, new Observer<List<WeatherData>>() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onChanged(List<WeatherData> weatherData) {
-                updateCurrentTemp(weatherData);
-                adapter.update(weatherData);
-            }
+        viewModel.getLiveData().observe(this, (Observer<Map<Integer, WeatherData>>) weatherData -> {
+            //updateCurrentTemp(weatherData);
+            adapter.update(new ArrayList<>(weatherData.values()));
         });
+        viewModel.fetchAllSavedWeather();
     }
-
-    @SuppressLint("CheckResult")
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    void updateCurrentTemp(List<WeatherData> weatherData){
-        for(int i=0;i<weatherData.size();i++){
-            WeatherData tmp = weatherData.get(i);
-            currentTemp.add(viewModel.getCurrentWeatherByCoord(tmp.getLan(), tmp.getLon()));
-        }
-    }
-
-
-
+//
+//    @SuppressLint("CheckResult")
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    void updateCurrentTemp(List<WeatherData> weatherData) {
+//        for (int i = 0; i < weatherData.size(); i++) {
+//            WeatherData tmp = weatherData.get(i);
+//            currentTemp.add(viewModel.getCurrentWeatherByCoord(tmp.getLan(), tmp.getLon()));
+//        }
+//    }
 }

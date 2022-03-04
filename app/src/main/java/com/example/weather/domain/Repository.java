@@ -11,7 +11,7 @@ import io.reactivex.Observable;
 
 public interface Repository {
 
-    LiveData<List<WeatherData>> getAllWeather();
+    Observable<List<WeatherData>> getAllWeather();
 
     WeatherData getWeatherById(int id);
 

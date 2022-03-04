@@ -1,33 +1,15 @@
 package com.example.weather.ui.main;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
-
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.weather.R;
 import com.example.weather.databinding.ActivityMainBinding;
-import com.example.weather.databinding.ActivityMapsBinding;
-import com.example.weather.databinding.ItemForecastBinding;
-import com.example.weather.ui.setLocationName.SetLocationNameFragment;
 import com.example.weather.utils.SettingManager;
-
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 

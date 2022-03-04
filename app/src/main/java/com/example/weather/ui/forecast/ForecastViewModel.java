@@ -1,43 +1,59 @@
 package com.example.weather.ui.forecast;
 
-import android.annotation.SuppressLint;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.weather.data.RepositoryImpl;
 import com.example.weather.domain.model.Forecast.WeatherData;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.ArrayList;
+import java.util.Map;
 
-import io.reactivex.Completable;
-import io.reactivex.CompletableOnSubscribe;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ForecastViewModel extends ViewModel {
 
+    CompositeDisposable disposable = new CompositeDisposable();
+    MutableLiveData<Map<Integer, WeatherData>> liveData = new MutableLiveData(new ArrayList<WeatherData>());
 
-    LiveData<List<WeatherData>> liveData = fetchAllSavedWeather();
+    @Override
+    protected void onCleared() {
+        disposable.clear();
+        super.onCleared();
+    }
 
-    public LiveData<List<WeatherData>> getLiveData() {
+    public LiveData<Map<Integer, WeatherData>> getLiveData() {
         return liveData;
     }
 
-    public LiveData<List<WeatherData>> fetchAllSavedWeather(){
-        return RepositoryImpl.getInstance().getAllWeather();
+    public void fetchAllSavedWeather() {
+        disposable.add(RepositoryImpl.getInstance().getAllWeather()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(weatherData -> weatherData.forEach(weatherData1 -> fetchCurrentWeather(weatherData1)), throwable -> {
+                    // TODO handle errors
+                }));
     }
 
-    @SuppressLint("CheckResult")
-    public Observable<Float> getCurrentWeatherByCoord(double lat, double lon){
-       return RepositoryImpl.getInstance().getCurrentWeatherDataByCoord(""+lat,""+lon, "metric")
-               .subscribeOn(Schedulers.io())
-               .observeOn(AndroidSchedulers.mainThread());
+    private void fetchCurrentWeather(WeatherData weatherData) {
+        disposable.add(
+                RepositoryImpl.getInstance().getCurrentWeatherDataByCoord("" + weatherData.getLan(), "" + weatherData.getLon(), "metric")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(temp -> {
+                            Map<Integer, WeatherData> forecasts = liveData.getValue();
+                            if (forecasts != null) {
+                                weatherData.setTemperature(temp);
+                                forecasts.put(weatherData.getId(), weatherData);
+                            }
+                        })
+        );
     }
 }

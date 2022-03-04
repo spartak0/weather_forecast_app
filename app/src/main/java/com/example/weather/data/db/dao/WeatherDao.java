@@ -1,6 +1,5 @@
 package com.example.weather.data.db.dao;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -11,22 +10,25 @@ import com.example.weather.data.db.entity.WeatherEntity;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+
 @Dao
 public
 interface WeatherDao {
     @Query("SELECT * FROM WeatherEntity")
-    LiveData<List<WeatherEntity>> getAllWeather();
+    Observable<List<WeatherEntity>> getAllWeather();
 
     @Query("SELECT * FROM WeatherEntity WHERE id=:id")
-    WeatherEntity getWeatherById(int id);
+    Observable<WeatherEntity> getWeatherById(int id);
 
     @Insert
-    void addWeather(WeatherEntity weatherEntity);
+    Completable addWeather(WeatherEntity weatherEntity);
 
     @Delete
-    void deleteWeather(WeatherEntity weatherEntity);
+    Completable deleteWeather(WeatherEntity weatherEntity);
 
     @Update
-    void updateWeather(WeatherEntity weatherEntity);
+    Completable updateWeather(WeatherEntity weatherEntity);
 
 }
