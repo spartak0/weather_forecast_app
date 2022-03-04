@@ -20,7 +20,7 @@ interface WeatherDao {
     Observable<List<WeatherEntity>> getAllWeather();
 
     @Query("SELECT * FROM WeatherEntity WHERE id=:id")
-    Observable<WeatherEntity> getWeatherById(int id);
+    WeatherEntity getWeatherById(int id);
 
     @Insert
     Completable addWeather(WeatherEntity weatherEntity);

@@ -70,7 +70,9 @@ public class TempFragment extends Fragment {
         binding.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    viewModel.deleteWeather(tmp);
+                    viewModel.deleteWeather(tmp)
+                            .subscribeOn(Schedulers.io())
+                            .subscribe(()->{}, Throwable::printStackTrace);
                     Navigation.findNavController(view).navigateUp();
             }
         });

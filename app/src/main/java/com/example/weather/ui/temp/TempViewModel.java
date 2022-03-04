@@ -11,6 +11,7 @@ import com.example.weather.utils.Constant;
 
 import java.util.HashMap;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -29,7 +30,7 @@ public class TempViewModel extends ViewModel {
         return RepositoryImpl.getInstance().getWeatherById(id);
     }
 
-    public void deleteWeather(WeatherData weatherData) {
-        RepositoryImpl.getInstance().deleteWeather(weatherData);
+    public Completable deleteWeather(WeatherData weatherData) {
+        return RepositoryImpl.getInstance().deleteWeather(weatherData);
     }
 }

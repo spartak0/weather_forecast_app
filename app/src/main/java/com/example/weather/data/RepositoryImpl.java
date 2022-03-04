@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
 
@@ -54,19 +55,19 @@ public class RepositoryImpl implements Repository {
 
 
     @Override
-    public void addWeather(WeatherData weatherData) {
-        WeatherDatabase.getInstance(context).weatherDao().addWeather(weatherMapper.fromDomain(weatherData));
+    public Completable addWeather(WeatherData weatherData) {
+        return WeatherDatabase.getInstance(context).weatherDao().addWeather(weatherMapper.fromDomain(weatherData));
     }
 
 
     @Override
-    public void deleteWeather(WeatherData weatherData) {
-        WeatherDatabase.getInstance(context).weatherDao().deleteWeather(weatherMapper.fromDomain(weatherData));
+    public Completable deleteWeather(WeatherData weatherData) {
+        return WeatherDatabase.getInstance(context).weatherDao().deleteWeather(weatherMapper.fromDomain(weatherData));
     }
 
     @Override
-    public void updateWeather(WeatherData weatherData) {
-        WeatherDatabase.getInstance(context).weatherDao().updateWeather(weatherMapper.fromDomain(weatherData));
+    public Completable updateWeather(WeatherData weatherData) {
+        return WeatherDatabase.getInstance(context).weatherDao().updateWeather(weatherMapper.fromDomain(weatherData));
     }
 
     @Override

@@ -30,6 +30,7 @@ import com.example.weather.ui.main.MainActivity;
 import com.example.weather.ui.setLocationName.SetLocationNameFragment;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -41,9 +42,8 @@ import io.reactivex.functions.Consumer;
 
 public class ForecastFragment extends Fragment {
 
-    List<Observable<Float>> currentTemp;
     FragmentForecastBinding binding;
-    private ForecastViewModel viewModel;
+    ForecastViewModel viewModel;
 
     @Nullable
     @Override
@@ -61,7 +61,6 @@ public class ForecastFragment extends Fragment {
     public void onStart() {
         super.onStart();
         viewModel = new ViewModelProvider(this).get(ForecastViewModel.class);
-        currentTemp = new ArrayList<>();
 
         binding.addBtn.setOnClickListener(view -> Navigation.findNavController(view).navigate(R.id.action_forecastFragment_to_setLocationNameFragment));
 
@@ -69,19 +68,13 @@ public class ForecastFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
         binding.recycler.setLayoutManager(layoutManager);
         binding.recycler.setAdapter(adapter);
-        viewModel.getLiveData().observe(this, (Observer<Map<Integer, WeatherData>>) weatherData -> {
-            //updateCurrentTemp(weatherData);
-            adapter.update(new ArrayList<>(weatherData.values()));
-        });
+        viewModel.getLiveData().observe(this, new Observer<Map<Integer, WeatherData>>() {
+                    @Override
+                    public void onChanged(Map<Integer, WeatherData> integerWeatherDataMap) {
+                        List<WeatherData> list = new ArrayList(integerWeatherDataMap.values());
+                        adapter.update(list);
+                    }
+                });
         viewModel.fetchAllSavedWeather();
     }
-//
-//    @SuppressLint("CheckResult")
-//    @RequiresApi(api = Build.VERSION_CODES.N)
-//    void updateCurrentTemp(List<WeatherData> weatherData) {
-//        for (int i = 0; i < weatherData.size(); i++) {
-//            WeatherData tmp = weatherData.get(i);
-//            currentTemp.add(viewModel.getCurrentWeatherByCoord(tmp.getLan(), tmp.getLon()));
-//        }
-//    }
 }

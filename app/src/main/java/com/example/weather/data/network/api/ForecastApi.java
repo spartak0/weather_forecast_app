@@ -8,11 +8,13 @@ import com.example.weather.utils.Constant;
 import java.io.IOException;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -23,6 +25,12 @@ public interface ForecastApi {
 
     @GET("data/2.5/onecall")
     Observable<WeatherEntity> getWeatherDataByCoord(@Query("lat") String lat, @Query("lon") String lon, @Query("units")String units);
+
+    @GET("data/2.5/onecall")
+    Single<WeatherEntity> getWeatherDataByCoordF(@Query("lat") String lat, @Query("lon") String lon, @Query("units")String units);
+
+    @GET("data/2.5/onecall")
+    Call<WeatherEntity> getWeatherDataByCoordC(@Query("lat") String lat, @Query("lon") String lon, @Query("units")String units);
 
     class Instance{
         private static Retrofit getRetrofit(){
