@@ -10,11 +10,11 @@ public class WeatherMapper implements Mapper<WeatherData, WeatherEntity> {
     @Override
     public WeatherData toDomain(WeatherEntity weatherEntity) {
         return new WeatherData(weatherEntity.getId(),weatherEntity.getName(),
-                weatherEntity.getLat(), weatherEntity.getLon());
+                weatherEntity.getLat(), weatherEntity.getLon(), weatherEntity.isFavorite());
     }
 
     @Override
     public WeatherEntity fromDomain(WeatherData weatherData) {
-        return new WeatherEntity(weatherData.getId(), weatherData.getLan(), weatherData.getLon(),weatherData.getName(), new Current(), new Daily[]{});
+        return new WeatherEntity(weatherData.getId(), weatherData.getLan(), weatherData.getLon(),weatherData.getName(), weatherData.isFavorite(),new Current(), new Daily[]{});
     }
 }

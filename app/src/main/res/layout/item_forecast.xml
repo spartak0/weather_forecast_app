@@ -6,7 +6,7 @@
     android:layout_height="80dp"
     android:id="@+id/layout"
     android:clickable="true"
-    tools:context=".ui.forecast.ForecastFragment"
+    tools:context=".ui.main.MainActivity"
     android:focusable="true">
 
     <TextView
@@ -17,9 +17,10 @@
         android:textColor="@color/black"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/myToggleButton"
+        app:layout_constraintStart_toEndOf="@+id/cardView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.35" />
 
     <View
         android:id="@+id/view"
@@ -30,39 +31,63 @@
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"/>
 
-    <TextView
-        android:id="@+id/tv_index"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="30dp"
-        android:background="@drawable/circle"
-        android:gravity="center"
-        android:text="1"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.cardview.widget.CardView
-        app:cardCornerRadius="15dp"
+        android:id="@+id/cardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="30dp"
-        android:backgroundTint="#DDDCD9"
+        android:layout_marginStart="30dp"
+        app:cardCornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_current_temp"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:text="10"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/style_cardview_index">
+
+            <TextView
+                android:id="@+id/tv_current_temp"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="10"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
+
+    <ToggleButton
+        android:id="@+id/myToggleButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/ic_baseline_favorite_border_24"
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clickable"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/myToggleButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

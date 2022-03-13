@@ -3,7 +3,6 @@ package com.example.weather.ui.maps;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -12,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.weather.R;
 import com.example.weather.data.RepositoryImpl;
-import com.example.weather.data.network.api.ForecastApi;
 import com.example.weather.databinding.ActivityMapsBinding;
 import com.example.weather.domain.model.Forecast.WeatherData;
 import com.example.weather.ui.main.MainActivity;
@@ -24,14 +22,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
-    private ForecastApi forecastApi= ForecastApi.Instance.getForecastApi();
     private MapsViewModel viewModel;
 
     @Override
@@ -55,8 +51,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @SuppressLint("CheckResult")
             @Override
             public void onClick(View view) {
-                String locationName= getIntent().getStringExtra(Constant.locationName);
-                WeatherData weatherData= new WeatherData(locationName, viewModel.getMarkerLat(),viewModel.getMarkerLon());
+                String locationName= getIntent().getStringExtra(Constant.LOCATION_NAME);
+                Boolean isChecked = getIntent().getBooleanExtra(Constant.IS_CHECKED,false);
+                WeatherData weatherData= new WeatherData(locationName, viewModel.getMarkerLat(),viewModel.getMarkerLon(), isChecked);
                 RepositoryImpl.getInstance().addWeather(weatherData)
                         .subscribeOn(Schedulers.io())
                         .subscribe(()->{},Throwable::printStackTrace);
@@ -80,14 +77,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addMarker(new MarkerOptions().position(latLng));
                 viewModel.setMarker(latLng);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                Log.d("A", "onMapClick:"+latLng.latitude+"\t"+latLng.longitude);
             }
         });
     }
 
     private void setDefaultMarker() {
         mMap.clear();
-        LatLng latLng=new LatLng(Constant.moscowLan, Constant.moscowLon);
+        LatLng latLng=new LatLng(Constant.MOSCOW_LAN, Constant.MOSCOW_LON);
         mMap.addMarker(new MarkerOptions().position(latLng));
         viewModel.setMarker(latLng);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));

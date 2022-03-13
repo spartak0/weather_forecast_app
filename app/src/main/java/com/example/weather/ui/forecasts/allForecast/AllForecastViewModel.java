@@ -1,5 +1,6 @@
-package com.example.weather.ui.forecast;
+package com.example.weather.ui.forecasts.allForecast;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -10,20 +11,21 @@ import androidx.lifecycle.ViewModel;
 import com.example.weather.data.RepositoryImpl;
 import com.example.weather.domain.model.Forecast.WeatherData;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ForecastViewModel extends ViewModel {
+public class AllForecastViewModel extends ViewModel {
 
     CompositeDisposable disposable = new CompositeDisposable();
     MutableLiveData<Map<Integer, WeatherData>> liveData = new MutableLiveData(new HashMap<Integer, WeatherData>());
+
 
     @Override
     protected void onCleared() {
@@ -40,9 +42,7 @@ public class ForecastViewModel extends ViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(weatherData -> {
-                    weatherData.forEach(weatherData1 -> {
-                        fetchCurrentWeather(weatherData1);
-                    });
+                    weatherData.forEach(this::fetchCurrentWeather);
                     Map<Integer, WeatherData> map = new HashMap<>();
                     for (WeatherData weatherData1: weatherData){
                         map.put(weatherData1.getId(), weatherData1);
@@ -63,7 +63,23 @@ public class ForecastViewModel extends ViewModel {
                                 forecasts.put(weatherData.getId(), weatherData);
                             }
                             liveData.setValue(forecasts);
-                        })
+                        },Throwable::printStackTrace)
         );
+    }
+
+    @SuppressLint("CheckResult")
+    public void updateWeatherData(List<WeatherData> list){
+        list.forEach(weatherData->{
+            RepositoryImpl.getInstance().updateWeather(weatherData)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> {
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Exception {
+                            System.out.println("Ошибка");
+                        }
+                    });
+        });
     }
 }

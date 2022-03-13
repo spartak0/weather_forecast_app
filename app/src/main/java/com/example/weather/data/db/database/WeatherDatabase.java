@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase;
 import com.example.weather.data.db.dao.WeatherDao;
 import com.example.weather.data.db.entity.WeatherEntity;
 
-@Database(entities = WeatherEntity.class, version = 5)
+@Database(entities = WeatherEntity.class, version = 9)
 public abstract class WeatherDatabase extends RoomDatabase {
     static WeatherDatabase instance;
 
@@ -20,7 +20,7 @@ public abstract class WeatherDatabase extends RoomDatabase {
         if (instance == null) {
             // TODO remove allowMainThreadQueries()
             instance = Room.databaseBuilder(context, WeatherDatabase.class, "database").fallbackToDestructiveMigration()
-                    .allowMainThreadQueries().build();
+                    .build();
         }
         return instance;
     }

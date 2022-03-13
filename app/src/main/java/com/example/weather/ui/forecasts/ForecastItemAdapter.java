@@ -1,4 +1,4 @@
-package com.example.weather.ui.forecast;
+package com.example.weather.ui.forecasts;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,19 +18,25 @@ import com.example.weather.databinding.ItemForecastBinding;
 import com.example.weather.domain.model.Forecast.WeatherData;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+import java.util.Map;
 
 public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapter.MyViewHolder> {
     private final List<WeatherData> forecasts;
+    private final Map<Integer, WeatherData> updateMap;
 
     public ForecastItemAdapter() {
         this.forecasts = new ArrayList<>();
+        this.updateMap= new HashMap<>();
+    }
+
+    public Map<Integer, WeatherData> getUpdateMap() {
+        return updateMap;
+    }
+
+    public void clearUpdateList(){
+        updateMap.clear();
     }
 
     @NonNull
@@ -50,7 +57,7 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    void update(List<WeatherData> list){
+    public void update(List<WeatherData> list){
         forecasts.clear();
         forecasts.addAll(list);
         notifyDataSetChanged();
@@ -69,11 +76,45 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
         @SuppressLint({"CheckResult", "SetTextI18n"})
         @RequiresApi(api = Build.VERSION_CODES.N)
         public void bind(WeatherData weatherData, int position) {
-            this.binding.tvIndex.setText((position+1)+"");
-            this.binding.tvCity.setText(weatherData.getName());
-            this.binding.layout.setOnClickListener(new onClickListener(weatherData.getId()));
+            binding.tvCity.setText(weatherData.getName());
+            binding.clickable.setOnClickListener(new onClickListener(weatherData.getId()));
             binding.tvCurrentTemp.setText(Float.toString(weatherData.getTemperature()));
+            setCurrentCheck(weatherData);
+            binding.myToggleButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    weatherData.setFavorite(!weatherData.isFavorite());
+                    setCurrentCheck(weatherData);
+                    updateMap.put(weatherData.getId(),weatherData);
+                }
+            });
+//            binding.myToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
+//                    if(isCheck) {
+//                        weatherData.setFavorite(true);
+//                    }
+//                    else{
+//                        weatherData.setFavorite(false);
+//                    }
+//                    setCurrentCheck(weatherData);
+//                    updateMap.put(weatherData.getId(),weatherData);
+//
+//                }
+//            });
+
+
         }
+
+        void setCurrentCheck(WeatherData weatherData){
+            binding.myToggleButton.setChecked(weatherData.isFavorite());
+            if (binding.myToggleButton.isChecked())
+                binding.myToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(binding.getRoot().getContext().getApplicationContext(), R.drawable.ic_baseline_favorite_24));
+            else
+                binding.myToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(binding.getRoot().getContext().getApplicationContext(),R.drawable.ic_baseline_favorite_border_24));
+        }
+
+
 
         public class onClickListener implements View.OnClickListener
         {
@@ -87,9 +128,10 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putInt("id", id);
-                Navigation.findNavController(view).navigate(R.id.action_forecastFragment_to_tempActivity, bundle);
+                Navigation.findNavController(view).navigate(R.id.action_to_tempActivity, bundle);
             }
         }
+
 
     }
 

@@ -1,49 +1,35 @@
-package com.example.weather.ui.forecast;
+package com.example.weather.ui.forecasts.allForecast;
+
+import android.annotation.SuppressLint;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.ActionOnlyNavDirections;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.weather.R;
 import com.example.weather.databinding.FragmentForecastBinding;
 import com.example.weather.domain.model.Forecast.WeatherData;
-import com.example.weather.ui.main.MainActivity;
-import com.example.weather.ui.setLocationName.SetLocationNameFragment;
+import com.example.weather.ui.forecasts.ForecastItemAdapter;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.function.ToDoubleFunction;
-import java.util.stream.Collectors;
 
-import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
-
-public class ForecastFragment extends Fragment {
+public class AllForecastFragment extends Fragment {
 
     FragmentForecastBinding binding;
-    ForecastViewModel viewModel;
+    AllForecastViewModel viewModel;
+    private ForecastItemAdapter adapter;
 
     @Nullable
     @Override
@@ -60,21 +46,30 @@ public class ForecastFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        viewModel = new ViewModelProvider(this).get(ForecastViewModel.class);
+        viewModel = new ViewModelProvider(this).get(AllForecastViewModel.class);
 
-        binding.addBtn.setOnClickListener(view -> Navigation.findNavController(view).navigate(R.id.action_forecastFragment_to_setLocationNameFragment));
-
-        ForecastItemAdapter adapter = new ForecastItemAdapter();
+        adapter = new ForecastItemAdapter();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
         binding.recycler.setLayoutManager(layoutManager);
         binding.recycler.setAdapter(adapter);
         viewModel.getLiveData().observe(this, new Observer<Map<Integer, WeatherData>>() {
                     @Override
                     public void onChanged(Map<Integer, WeatherData> integerWeatherDataMap) {
-                        List<WeatherData> list = new ArrayList(integerWeatherDataMap.values());
+                        List<WeatherData> list = new ArrayList<>(integerWeatherDataMap.values());
                         adapter.update(list);
                     }
                 });
         viewModel.fetchAllSavedWeather();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onPause() {
+        super.onPause();
+        List<WeatherData>  list= new ArrayList<>(adapter.getUpdateMap().values());
+        if (!list.isEmpty()) {
+            viewModel.updateWeatherData(list);
+            adapter.clearUpdateList();
+        }
     }
 }

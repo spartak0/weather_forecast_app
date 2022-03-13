@@ -3,26 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/forecastFragment">
-    <fragment
-        android:id="@+id/forecastFragment"
-        android:name="com.example.weather.ui.forecast.ForecastFragment"
-        android:label="fragment_forecast"
-        tools:layout="@layout/fragment_forecast" >
-        <action
-            android:id="@+id/action_forecastFragment_to_tempActivity"
-            app:destination="@id/tempActivity"
-            app:popUpTo="@id/forecastFragment"
-            app:popUpToInclusive="false" />
-        <action
-            android:id="@+id/action_forecastFragment_to_setLocationNameFragment"
-            app:destination="@id/setLocationNameFragment"
-            app:popUpTo="@id/forecastFragment"
-            app:popUpToInclusive="false" />
-    </fragment>
+    app:startDestination="@id/forecastSlideFragment">
     <fragment
         android:id="@+id/setLocationNameFragment"
-        android:name="com.example.weather.ui.setLocationName.SetLocationNameFragment"
+        android:name="com.example.weather.ui.setConfiguration.SetConfigurationFragment"
         android:label="fragment_set_location_name"
         tools:layout="@layout/fragment_set_location_name" />
     <fragment
@@ -30,4 +14,16 @@
         android:name="com.example.weather.ui.temp.TempFragment"
         android:label="fragment_temp"
         tools:layout="@layout/fragment_temp" />
+    <fragment
+        android:id="@+id/forecastSlideFragment"
+        android:name="com.example.weather.ui.forecasts.screenSlideForecast.ForecastSlideFragment"
+        android:label="fragment_forecast_slide"
+        tools:layout="@layout/fragment_forecast_slide" >
+        <action
+            android:id="@+id/action_to_tempActivity"
+            app:destination="@id/tempActivity" />
+        <action
+            android:id="@+id/action_to_setLocationNameFragment"
+            app:destination="@id/setLocationNameFragment" />
+    </fragment>
 </navigation>

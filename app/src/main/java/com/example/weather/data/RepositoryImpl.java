@@ -21,7 +21,9 @@ import java.util.stream.Collectors;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 public class RepositoryImpl implements Repository {
     final WeatherMapper weatherMapper= new WeatherMapper();
@@ -47,10 +49,21 @@ public class RepositoryImpl implements Repository {
                 }).collect(Collectors.toList()));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public WeatherData getWeatherById(int id) {
-        WeatherEntity tmp = WeatherDatabase.getInstance(context).weatherDao().getWeatherById(id);
-        return weatherMapper.toDomain( tmp);
+    public Observable<List<WeatherData>> getFavoriteWeather() {
+        return WeatherDatabase.getInstance(context).weatherDao().getFavoriteWeather()
+                .map((Function<List<WeatherEntity>, List<WeatherData>>) weatherEntities -> weatherEntities.stream().map(new java.util.function.Function<WeatherEntity, WeatherData>() {
+                    @Override
+                    public WeatherData apply(WeatherEntity weatherEntity) {
+                        return weatherMapper.toDomain(weatherEntity);
+                    }
+                }).collect(Collectors.toList()));
+    }
+
+    @Override
+    public Observable<WeatherData> getWeatherById(int id) {
+        return WeatherDatabase.getInstance(context).weatherDao().getWeatherById(id).map(weatherMapper::toDomain);
     }
 
 

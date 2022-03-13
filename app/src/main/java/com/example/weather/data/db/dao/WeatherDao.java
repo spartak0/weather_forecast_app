@@ -12,6 +12,7 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 @Dao
 public
@@ -20,7 +21,10 @@ interface WeatherDao {
     Observable<List<WeatherEntity>> getAllWeather();
 
     @Query("SELECT * FROM WeatherEntity WHERE id=:id")
-    WeatherEntity getWeatherById(int id);
+    Observable<WeatherEntity> getWeatherById(int id);
+
+    @Query("SELECT * FROM WeatherEntity WHERE isFavorite=1")
+    Observable<List<WeatherEntity>> getFavoriteWeather();
 
     @Insert
     Completable addWeather(WeatherEntity weatherEntity);

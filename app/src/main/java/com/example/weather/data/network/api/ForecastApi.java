@@ -44,7 +44,7 @@ public interface ForecastApi {
                         public Response intercept(@NonNull Chain chain) throws IOException {
                             Request.Builder request = chain.request().newBuilder();
                             HttpUrl originalHttpUrl = chain.request().url();
-                            HttpUrl newUrl = originalHttpUrl.newBuilder().addQueryParameter("appid", Constant.apiKey)
+                            HttpUrl newUrl = originalHttpUrl.newBuilder().addQueryParameter("appid", Constant.API_KEY)
                                     .addQueryParameter("exclude", "minutely,hourly,alerts").build();
                             request.url(newUrl);
                             Response response = chain.proceed(request.build());
