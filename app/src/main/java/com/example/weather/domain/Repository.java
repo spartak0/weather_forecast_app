@@ -1,13 +1,12 @@
 package com.example.weather.domain;
 
-import com.example.weather.domain.model.Forecast.WeatherData;
+import com.example.weather.domain.model.forecast.WeatherData;
 
 import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.Single;
 
 public interface Repository {
 

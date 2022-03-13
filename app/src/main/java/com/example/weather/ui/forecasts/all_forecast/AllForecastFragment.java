@@ -1,4 +1,4 @@
-package com.example.weather.ui.forecasts.allForecast;
+package com.example.weather.ui.forecasts.all_forecast;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.weather.R;
 import com.example.weather.databinding.FragmentForecastBinding;
-import com.example.weather.domain.model.Forecast.WeatherData;
+import com.example.weather.domain.model.forecast.WeatherData;
 import com.example.weather.ui.forecasts.ForecastItemAdapter;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class AllForecastFragment extends Fragment {
         super.onStart();
         viewModel = new ViewModelProvider(this).get(AllForecastViewModel.class);
 
-        adapter = new ForecastItemAdapter();
+        adapter = new ForecastItemAdapter(listener, favoriteClickListener);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
         binding.recycler.setLayoutManager(layoutManager);
         binding.recycler.setAdapter(adapter);

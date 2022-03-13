@@ -1,4 +1,4 @@
-package com.example.weather.data.db.entity.ForecastDetail;
+package com.example.weather.data.db.entity.forecast_detail;
 
 public class Daily {
     Temp temp;

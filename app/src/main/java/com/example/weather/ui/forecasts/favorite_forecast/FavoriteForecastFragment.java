@@ -1,4 +1,4 @@
-package com.example.weather.ui.forecasts.favoriteForecast;
+package com.example.weather.ui.forecasts.favorite_forecast;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -14,14 +14,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.weather.R;
 import com.example.weather.databinding.FragmentFavoriteForecastBinding;
-import com.example.weather.domain.model.Forecast.WeatherData;
+import com.example.weather.domain.model.forecast.WeatherData;
+import com.example.weather.ui.forecasts.FavoriteClickListener;
 import com.example.weather.ui.forecasts.ForecastItemAdapter;
+import com.example.weather.ui.forecasts.WeatherItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 
 public class FavoriteForecastFragment extends Fragment {
 
@@ -41,9 +43,20 @@ public class FavoriteForecastFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        System.out.println("ON START");
         viewModel = new ViewModelProvider(this).get(FavoriteForecastViewModel.class);
-        adapter = new ForecastItemAdapter();
+        adapter = new ForecastItemAdapter(new WeatherItemClickListener() {
+            @Override
+            public void onClick(int id) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", id);
+                Navigation.findNavController(view).navigate(R.id.action_to_tempActivity, bundle);
+            }
+        }, new FavoriteClickListener() {
+            @Override
+            public void onClick(WeatherData weatherData) {
+                viewModel.updateData(weatherData);
+            }
+        });
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
         binding.recycler.setLayoutManager(layoutManager);
         binding.recycler.setAdapter(adapter);
@@ -57,10 +70,6 @@ public class FavoriteForecastFragment extends Fragment {
         });
         viewModel.fetchFavoriteSavedWeather();
     }
-
-
-
-
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override

@@ -4,8 +4,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.example.weather.data.db.entity.ForecastDetail.Current;
-import com.example.weather.data.db.entity.ForecastDetail.Daily;
+import com.example.weather.data.db.entity.forecast_detail.Current;
+import com.example.weather.data.db.entity.forecast_detail.Daily;
 
 @Entity()
 public class WeatherEntity {

@@ -9,20 +9,19 @@ import androidx.lifecycle.ViewModel;
 
 import com.bumptech.glide.Glide;
 import com.example.weather.data.RepositoryImpl;
-import com.example.weather.domain.model.Forecast.WeatherData;
-import com.example.weather.utils.Constant;
+import com.example.weather.domain.model.forecast.WeatherData;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class TempViewModel extends ViewModel {
 
+    MutableLiveData<HashMap<String, String>> forecast = new MutableLiveData(new HashMap<>());
 
     @SuppressLint("CheckResult")
     public Observable<HashMap<String, String>> getDailyWeatherByCoord(double lat, double lon){
@@ -37,7 +36,7 @@ public class TempViewModel extends ViewModel {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Completable deleteWeather(WeatherData weatherData) {
+    private Completable deleteWeather(WeatherData weatherData) {
         return RepositoryImpl.getInstance().deleteWeather(weatherData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -46,6 +45,7 @@ public class TempViewModel extends ViewModel {
     @SuppressLint("CheckResult")
     public void deleteWeatherById(int id) throws InterruptedException {
         getWeatherById(id).subscribe(weatherData -> {
+
              deleteWeather(weatherData)
                         .subscribe(() -> {
                         }, Throwable::printStackTrace);
@@ -58,15 +58,7 @@ public class TempViewModel extends ViewModel {
         getWeatherById(id).subscribe(weatherData -> {
             getDailyWeatherByCoord(weatherData.getLan(), weatherData.getLon())
                     .subscribe(hashMap -> {
-                        tvMorningValue.setText(hashMap.get(Constant.MORN));
-                        tvDayValue.setText(hashMap.get(Constant.DAY));
-                        tvEveValue.setText(hashMap.get(Constant.EVE));
-                        tvNightValue .setText(hashMap.get(Constant.NIGHT));
-                        Glide.with(context)
-                                .load(Constant.PREFIX_URL_ICON +
-                                        hashMap.get(Constant.DAILY_ICON)+
-                                        Constant.POSTFIX_URL_ICON)
-                                .into(dailyIcon);
+                        forecast.postValue(hashMap);
                     }, Throwable::printStackTrace);
         });
 

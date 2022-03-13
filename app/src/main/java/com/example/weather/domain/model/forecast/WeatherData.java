@@ -1,6 +1,4 @@
-package com.example.weather.domain.model.Forecast;
-
-import android.text.BoringLayout;
+package com.example.weather.domain.model.forecast;
 
 public class WeatherData {
     private int id;

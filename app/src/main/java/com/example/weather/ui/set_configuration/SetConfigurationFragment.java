@@ -1,4 +1,4 @@
-package com.example.weather.ui.setConfiguration;
+package com.example.weather.ui.set_configuration;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

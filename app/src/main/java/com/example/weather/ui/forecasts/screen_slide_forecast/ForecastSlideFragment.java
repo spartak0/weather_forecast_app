@@ -1,4 +1,4 @@
-package com.example.weather.ui.forecasts.screenSlideForecast;
+package com.example.weather.ui.forecasts.screen_slide_forecast;
 
 import android.os.Bundle;
 

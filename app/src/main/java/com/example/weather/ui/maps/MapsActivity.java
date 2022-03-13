@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.weather.R;
 import com.example.weather.data.RepositoryImpl;
 import com.example.weather.databinding.ActivityMapsBinding;
-import com.example.weather.domain.model.Forecast.WeatherData;
+import com.example.weather.domain.model.forecast.WeatherData;
 import com.example.weather.ui.main.MainActivity;
 import com.example.weather.utils.Constant;
 import com.google.android.gms.maps.CameraUpdateFactory;

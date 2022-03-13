@@ -1,4 +1,4 @@
-package com.example.weather.ui.forecasts.screenSlideForecast;
+package com.example.weather.ui.forecasts.screen_slide_forecast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -8,8 +8,8 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 
-import com.example.weather.ui.forecasts.favoriteForecast.FavoriteForecastFragment;
-import com.example.weather.ui.forecasts.allForecast.AllForecastFragment;
+import com.example.weather.ui.forecasts.favorite_forecast.FavoriteForecastFragment;
+import com.example.weather.ui.forecasts.all_forecast.AllForecastFragment;
 
 
 public class SwitchFragmentForecastAdapter extends FragmentStateAdapter {

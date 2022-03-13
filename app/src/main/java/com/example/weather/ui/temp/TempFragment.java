@@ -14,12 +14,12 @@ import androidx.navigation.Navigation;
 
 import com.example.weather.R;
 import com.example.weather.databinding.FragmentTempBinding;
+import com.example.weather.utils.Constant;
 
 public class TempFragment extends Fragment {
 
     private FragmentTempBinding binding;
     private TempViewModel viewModel;
-
 
     @Nullable
     @Override
@@ -31,14 +31,23 @@ public class TempFragment extends Fragment {
         return view;
     }
 
-
     @SuppressLint("CheckResult")
     @Override
     public void onStart() {
         super.onStart();
         int id= getArguments().getInt("id",0);
         viewModel.bindDailyWeather(getActivity(), id, binding.dailyIcon, binding.tvMorningValue, binding.tvDayValue,  binding.tvEveValue, binding.tvNightValue);
-
+        viewModel.forecast.observe(forecast -> {
+            binding.tvMorningValue.setText(forecast.get(Constant.MORN));
+            binding.tvDayValue.setText(forecast.get(Constant.DAY));
+            binding.tvEveValue.setText(forecast.get(Constant.EVE));
+            binding.tvNightValue .setText(forecast.get(Constant.NIGHT));
+            Glide.with(context)
+                    .load(Constant.PREFIX_URL_ICON +
+                            forecast.get(Constant.DAILY_ICON)+
+                            Constant.POSTFIX_URL_ICON)
+                    .into(binding.dailyIcon);
+        });
 
         binding.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +60,5 @@ public class TempFragment extends Fragment {
                 Navigation.findNavController(view).navigateUp();
             }
         });
-
     }
 }

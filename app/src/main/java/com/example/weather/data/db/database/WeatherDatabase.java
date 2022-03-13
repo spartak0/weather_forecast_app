@@ -18,8 +18,8 @@ public abstract class WeatherDatabase extends RoomDatabase {
 
     public static WeatherDatabase getInstance(Context context) {
         if (instance == null) {
-            // TODO remove allowMainThreadQueries()
-            instance = Room.databaseBuilder(context, WeatherDatabase.class, "database").fallbackToDestructiveMigration()
+            instance = Room.databaseBuilder(context, WeatherDatabase.class, "database")
+                    .fallbackToDestructiveMigration()
                     .build();
         }
         return instance;

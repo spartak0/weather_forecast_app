@@ -32,6 +32,9 @@ interface WeatherDao {
     @Delete
     Completable deleteWeather(WeatherEntity weatherEntity);
 
+    @Query("DELETE FROM WeatherEntity WHERE id=:id")
+    Completable deleteWeatherById(int id);
+
     @Update
     Completable updateWeather(WeatherEntity weatherEntity);
 

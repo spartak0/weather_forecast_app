@@ -1,4 +1,4 @@
-package com.example.weather.ui.forecasts.favoriteForecast;
+package com.example.weather.ui.forecasts.favorite_forecast;
 
 import android.os.Build;
 
@@ -8,12 +8,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.weather.data.RepositoryImpl;
-import com.example.weather.domain.model.Forecast.WeatherData;
+import com.example.weather.domain.model.forecast.WeatherData;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -43,7 +42,6 @@ public class FavoriteForecastViewModel extends ViewModel {
                     Map<Integer, WeatherData> map = new HashMap<>();
                     weatherData.forEach(weatherData1 -> {
                         map.put(weatherData1.getId(), weatherData1);
-                        System.out.println("fetchFavoriteSavedWeather\t"+ weatherData1.getName());
                     });
                     liveData.setValue(map);
                 }, Throwable::printStackTrace));
@@ -73,5 +71,9 @@ public class FavoriteForecastViewModel extends ViewModel {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe();
         });
+    }
+
+    public void updateData(WeatherData weatherData) {
+        // TODO implement me
     }
 }

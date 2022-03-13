@@ -13,7 +13,7 @@ import com.example.weather.data.network.api.ForecastApi;
 import com.example.weather.domain.Repository;
 import com.example.weather.domain.mapper.DailyMapper;
 import com.example.weather.domain.mapper.WeatherMapper;
-import com.example.weather.domain.model.Forecast.WeatherData;
+import com.example.weather.domain.model.forecast.WeatherData;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,9 +21,7 @@ import java.util.stream.Collectors;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 public class RepositoryImpl implements Repository {
     final WeatherMapper weatherMapper= new WeatherMapper();
@@ -53,12 +51,7 @@ public class RepositoryImpl implements Repository {
     @Override
     public Observable<List<WeatherData>> getFavoriteWeather() {
         return WeatherDatabase.getInstance(context).weatherDao().getFavoriteWeather()
-                .map((Function<List<WeatherEntity>, List<WeatherData>>) weatherEntities -> weatherEntities.stream().map(new java.util.function.Function<WeatherEntity, WeatherData>() {
-                    @Override
-                    public WeatherData apply(WeatherEntity weatherEntity) {
-                        return weatherMapper.toDomain(weatherEntity);
-                    }
-                }).collect(Collectors.toList()));
+                .map(weatherEntities -> weatherEntities.stream().map(weatherMapper::toDomain).collect(Collectors.toList()));
     }
 
     @Override

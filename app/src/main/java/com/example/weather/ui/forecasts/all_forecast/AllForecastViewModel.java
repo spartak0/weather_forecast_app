@@ -1,4 +1,4 @@
-package com.example.weather.ui.forecasts.allForecast;
+package com.example.weather.ui.forecasts.all_forecast;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.weather.data.RepositoryImpl;
-import com.example.weather.domain.model.Forecast.WeatherData;
+import com.example.weather.domain.model.forecast.WeatherData;
 
 import java.util.HashMap;
 import java.util.List;
