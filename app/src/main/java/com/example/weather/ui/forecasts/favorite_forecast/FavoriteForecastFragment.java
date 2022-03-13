@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,9 +18,7 @@ import android.view.ViewGroup;
 import com.example.weather.R;
 import com.example.weather.databinding.FragmentFavoriteForecastBinding;
 import com.example.weather.domain.model.forecast.WeatherData;
-import com.example.weather.ui.forecasts.FavoriteClickListener;
 import com.example.weather.ui.forecasts.ForecastItemAdapter;
-import com.example.weather.ui.forecasts.WeatherItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,19 +43,7 @@ public class FavoriteForecastFragment extends Fragment {
     public void onStart() {
         super.onStart();
         viewModel = new ViewModelProvider(this).get(FavoriteForecastViewModel.class);
-        adapter = new ForecastItemAdapter(new WeatherItemClickListener() {
-            @Override
-            public void onClick(int id) {
-                Bundle bundle = new Bundle();
-                bundle.putInt("id", id);
-                Navigation.findNavController(view).navigate(R.id.action_to_tempActivity, bundle);
-            }
-        }, new FavoriteClickListener() {
-            @Override
-            public void onClick(WeatherData weatherData) {
-                viewModel.updateData(weatherData);
-            }
-        });
+        adapter = new ForecastItemAdapter();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
         binding.recycler.setLayoutManager(layoutManager);
         binding.recycler.setAdapter(adapter);

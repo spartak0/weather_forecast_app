@@ -1,18 +1,16 @@
 package com.example.weather.ui.temp;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.widget.ImageView;
-import android.widget.TextView;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.bumptech.glide.Glide;
 import com.example.weather.data.RepositoryImpl;
 import com.example.weather.domain.model.forecast.WeatherData;
 
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -21,7 +19,12 @@ import io.reactivex.schedulers.Schedulers;
 
 public class TempViewModel extends ViewModel {
 
-    MutableLiveData<HashMap<String, String>> forecast = new MutableLiveData(new HashMap<>());
+    MutableLiveData<Map<String, String>> liveData = new MutableLiveData<>(new HashMap<String, String>());
+
+    public LiveData<Map<String, String>> getLiveData(){
+        return liveData;
+    }
+
 
     @SuppressLint("CheckResult")
     public Observable<HashMap<String, String>> getDailyWeatherByCoord(double lat, double lon){
@@ -43,22 +46,18 @@ public class TempViewModel extends ViewModel {
     }
 
     @SuppressLint("CheckResult")
-    public void deleteWeatherById(int id) throws InterruptedException {
-        getWeatherById(id).subscribe(weatherData -> {
-
-             deleteWeather(weatherData)
-                        .subscribe(() -> {
-                        }, Throwable::printStackTrace);
-            });
-        TimeUnit.MILLISECONDS.sleep(1);
+    public Completable deleteWeatherById(int id){
+        return RepositoryImpl.getInstance().deleteWeatherById(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @SuppressLint("CheckResult")
-    public void bindDailyWeather(Context context, int id, ImageView dailyIcon, TextView tvMorningValue, TextView tvDayValue, TextView tvEveValue, TextView tvNightValue) {
+    public void fetchDailyWeather(int id) {
         getWeatherById(id).subscribe(weatherData -> {
             getDailyWeatherByCoord(weatherData.getLan(), weatherData.getLon())
                     .subscribe(hashMap -> {
-                        forecast.postValue(hashMap);
+                        liveData.postValue(hashMap);
                     }, Throwable::printStackTrace);
         });
 

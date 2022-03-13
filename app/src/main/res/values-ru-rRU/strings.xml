@@ -13,7 +13,7 @@
     <string name="weather_forecast">Прогноз погоды</string>
     <string name="hint_index">индекс</string>
     <string name="hint_city">город</string>
-    <string name="hint_current_temp">текущая</string>
+    <string name="hint_current_temp">текущая(℃)</string>
     <string name="delete">Удалить</string>
     <string name="all">Весь шлак</string>
     <string name="favorite">Лучший шлак</string>

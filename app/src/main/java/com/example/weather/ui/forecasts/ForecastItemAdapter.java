@@ -24,12 +24,8 @@ import java.util.Map;
 public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapter.MyViewHolder> {
     private final List<WeatherData> forecasts;
     private final Map<Integer, WeatherData> updateMap;
-    private final WeatherItemClickListener itemClickListener;
-    private final FavoriteClickListener favoriteClickListener;
 
-    public ForecastItemAdapter(WeatherItemClickListener itemClickListener, FavoriteClickListener favoriteClickListener) {
-        this.itemClickListener = itemClickListener;
-        this.favoriteClickListener = favoriteClickListener;
+    public ForecastItemAdapter() {
         this.forecasts = new ArrayList<>();
         this.updateMap= new HashMap<>();
     }
@@ -80,8 +76,8 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
         @RequiresApi(api = Build.VERSION_CODES.N)
         public void bind(WeatherData weatherData, int position) {
             binding.tvCity.setText(weatherData.getName());
-            binding.clickable.setOnClickListener(itemClickListener);
-            binding.tvCurrentTemp.setText(Float.toString(weatherData.getTemperature()));
+            binding.clickable.setOnClickListener(new WeatherItemClickListener(weatherData.getId()));
+            binding.tvCurrentTemp.setText(Integer.toString(Math.round(weatherData.getTemperature())));
             setCurrentCheck(weatherData);
             binding.myToggleButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -89,7 +85,6 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
                     weatherData.setFavorite(!weatherData.isFavorite());
                     setCurrentCheck(weatherData);
                     updateMap.put(weatherData.getId(),weatherData);
-                    favoriteClickListener.onClick(weatherData);
                 }
             });
 //            binding.myToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -106,8 +101,6 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
 //
 //                }
 //            });
-
-
         }
 
         void setCurrentCheck(WeatherData weatherData){
@@ -117,8 +110,6 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
             else
                 binding.myToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(binding.getRoot().getContext().getApplicationContext(),R.drawable.ic_baseline_favorite_border_24));
         }
-
-
 
 //        public class onClickListener implements View.OnClickListener
 //        {
@@ -135,8 +126,6 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
 //                Navigation.findNavController(view).navigate(R.id.action_to_tempActivity, bundle);
 //            }
 //        }
-
-
     }
 
 

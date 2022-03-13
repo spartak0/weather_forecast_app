@@ -12,7 +12,7 @@
     <string name="weather_forecast">Weather forecast</string>
     <string name="hint_index">index</string>
     <string name="hint_city">City</string>
-    <string name="hint_current_temp">Current</string>
+    <string name="hint_current_temp">Current(℃)</string>
     <string name="delete">Delete</string>
     <string name="all">All</string>
     <string name="favorite">Favorite</string>

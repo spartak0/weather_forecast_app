@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
 import com.example.weather.R;
 import com.example.weather.databinding.FragmentTempBinding;
 import com.example.weather.utils.Constant;
@@ -36,13 +37,13 @@ public class TempFragment extends Fragment {
     public void onStart() {
         super.onStart();
         int id= getArguments().getInt("id",0);
-        viewModel.bindDailyWeather(getActivity(), id, binding.dailyIcon, binding.tvMorningValue, binding.tvDayValue,  binding.tvEveValue, binding.tvNightValue);
-        viewModel.forecast.observe(forecast -> {
+        viewModel.fetchDailyWeather(id);
+        viewModel.getLiveData().observe(this,forecast -> {
             binding.tvMorningValue.setText(forecast.get(Constant.MORN));
             binding.tvDayValue.setText(forecast.get(Constant.DAY));
             binding.tvEveValue.setText(forecast.get(Constant.EVE));
             binding.tvNightValue .setText(forecast.get(Constant.NIGHT));
-            Glide.with(context)
+            Glide.with(getContext())
                     .load(Constant.PREFIX_URL_ICON +
                             forecast.get(Constant.DAILY_ICON)+
                             Constant.POSTFIX_URL_ICON)
@@ -52,11 +53,7 @@ public class TempFragment extends Fragment {
         binding.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    viewModel.deleteWeatherById(id);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                viewModel.deleteWeatherById(id).subscribe(()->{}, Throwable::printStackTrace);
                 Navigation.findNavController(view).navigateUp();
             }
         });

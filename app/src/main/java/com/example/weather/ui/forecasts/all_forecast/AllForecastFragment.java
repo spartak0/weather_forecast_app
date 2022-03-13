@@ -48,7 +48,7 @@ public class AllForecastFragment extends Fragment {
         super.onStart();
         viewModel = new ViewModelProvider(this).get(AllForecastViewModel.class);
 
-        adapter = new ForecastItemAdapter(listener, favoriteClickListener);
+        adapter = new ForecastItemAdapter();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
         binding.recycler.setLayoutManager(layoutManager);
         binding.recycler.setAdapter(adapter);

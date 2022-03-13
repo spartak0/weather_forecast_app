@@ -72,6 +72,11 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
+    public Completable deleteWeatherById(int id) {
+        return WeatherDatabase.getInstance(context).weatherDao().deleteWeatherById(id);
+    }
+
+    @Override
     public Completable updateWeather(WeatherData weatherData) {
         return WeatherDatabase.getInstance(context).weatherDao().updateWeather(weatherMapper.fromDomain(weatherData));
     }

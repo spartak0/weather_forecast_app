@@ -20,6 +20,8 @@ public interface Repository {
 
     Completable deleteWeather(WeatherData weatherData);
 
+    Completable deleteWeatherById(int id);
+
     Completable updateWeather(WeatherData weatherData);
 
     Observable<Float> getCurrentWeatherDataByCoord(String lat, String lon, String units);
