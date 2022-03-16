@@ -1,35 +1,27 @@
-package com.example.weather.ui.setLocationName;
+package com.example.weather.ui.set_configuration;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.Navigation;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.weather.R;
 import com.example.weather.databinding.FragmentSetLocationNameBinding;
-import com.example.weather.ui.main.MainActivity;
 import com.example.weather.ui.maps.MapsActivity;
 import com.example.weather.utils.Constant;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
 
-public class SetLocationNameFragment extends Fragment {
+public class SetConfigurationFragment extends Fragment {
 
     private FragmentSetLocationNameBinding binding;
 
@@ -55,7 +47,8 @@ public class SetLocationNameFragment extends Fragment {
                         switch (validTest(tvText)){
                             case 0:
                                 Intent intent = new Intent(binding.getRoot().getContext().getApplicationContext(), MapsActivity.class);
-                                intent.putExtra(Constant.locationName, tvText);
+                                intent.putExtra(Constant.LOCATION_NAME, tvText);
+                                intent.putExtra(Constant.IS_CHECKED, binding.checkBoxIsFavorite.isChecked());
                                 startActivity(intent);
                                 break;
                             case 1:

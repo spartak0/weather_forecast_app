@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
         settingManager= new SettingManager(getBaseContext());
         settingsToolbar();
         settingManager.loadLocale();

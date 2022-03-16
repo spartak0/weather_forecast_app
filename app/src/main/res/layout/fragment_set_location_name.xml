@@ -4,19 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.setLocationName.SetLocationNameFragment">
+    tools:context=".ui.set_configuration.SetConfigurationFragment">
 
     <EditText
         android:id="@+id/et_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
+        android:layout_marginTop="150dp"
         android:layout_marginEnd="101dp"
-        android:layout_marginBottom="200dp"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="@string/hint_location_name"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,7 +28,7 @@
         android:text="@string/ok"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_name" />
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxIsFavorite" />
 
     <TextView
         android:id="@+id/tv_error"
@@ -37,8 +36,19 @@
         android:layout_height="wrap_content"
         android:text=""
         android:textColor="@color/red"
-        app:layout_constraintBottom_toTopOf="@+id/btn_ok"
+        app:layout_constraintBottom_toTopOf="@+id/checkBoxIsFavorite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_name" />
+
+    <CheckBox
+        android:id="@+id/checkBoxIsFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="@string/add_to_favourites"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_name" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

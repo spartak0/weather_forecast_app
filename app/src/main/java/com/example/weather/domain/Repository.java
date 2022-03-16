@@ -1,6 +1,6 @@
 package com.example.weather.domain;
 
-import com.example.weather.domain.model.Forecast.WeatherData;
+import com.example.weather.domain.model.forecast.WeatherData;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,11 +12,15 @@ public interface Repository {
 
     Observable<List<WeatherData>> getAllWeather();
 
-    WeatherData getWeatherById(int id);
+    Observable<List<WeatherData>> getFavoriteWeather();
+
+    Observable<WeatherData> getWeatherById(int id);
 
     Completable addWeather(WeatherData weatherData);
 
     Completable deleteWeather(WeatherData weatherData);
+
+    Completable deleteWeatherById(int id);
 
     Completable updateWeather(WeatherData weatherData);
 

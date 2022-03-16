@@ -13,7 +13,7 @@ import com.example.weather.data.network.api.ForecastApi;
 import com.example.weather.domain.Repository;
 import com.example.weather.domain.mapper.DailyMapper;
 import com.example.weather.domain.mapper.WeatherMapper;
-import com.example.weather.domain.model.Forecast.WeatherData;
+import com.example.weather.domain.model.forecast.WeatherData;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,10 +47,16 @@ public class RepositoryImpl implements Repository {
                 }).collect(Collectors.toList()));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public WeatherData getWeatherById(int id) {
-        WeatherEntity tmp = WeatherDatabase.getInstance(context).weatherDao().getWeatherById(id);
-        return weatherMapper.toDomain( tmp);
+    public Observable<List<WeatherData>> getFavoriteWeather() {
+        return WeatherDatabase.getInstance(context).weatherDao().getFavoriteWeather()
+                .map(weatherEntities -> weatherEntities.stream().map(weatherMapper::toDomain).collect(Collectors.toList()));
+    }
+
+    @Override
+    public Observable<WeatherData> getWeatherById(int id) {
+        return WeatherDatabase.getInstance(context).weatherDao().getWeatherById(id).map(weatherMapper::toDomain);
     }
 
 
@@ -63,6 +69,11 @@ public class RepositoryImpl implements Repository {
     @Override
     public Completable deleteWeather(WeatherData weatherData) {
         return WeatherDatabase.getInstance(context).weatherDao().deleteWeather(weatherMapper.fromDomain(weatherData));
+    }
+
+    @Override
+    public Completable deleteWeatherById(int id) {
+        return WeatherDatabase.getInstance(context).weatherDao().deleteWeatherById(id);
     }
 
     @Override

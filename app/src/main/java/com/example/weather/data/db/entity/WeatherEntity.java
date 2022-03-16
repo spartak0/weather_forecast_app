@@ -1,14 +1,13 @@
 package com.example.weather.data.db.entity;
 
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.example.weather.data.db.entity.ForecastDetail.Current;
-import com.example.weather.data.db.entity.ForecastDetail.Daily;
+import com.example.weather.data.db.entity.forecast_detail.Current;
+import com.example.weather.data.db.entity.forecast_detail.Daily;
 
-@Entity
+@Entity()
 public class WeatherEntity {
 
     @PrimaryKey(autoGenerate = true)
@@ -17,6 +16,7 @@ public class WeatherEntity {
     private float lat;
     private float lon;
     private String name;
+    private boolean isFavorite;
 
     @Ignore
     private Current current;
@@ -24,7 +24,13 @@ public class WeatherEntity {
     @Ignore
     private Daily[] daily;
 
+    public boolean isFavorite() {
+        return isFavorite;
+    }
 
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
 
     public Daily[] getDaily() {
         return daily;
@@ -74,11 +80,12 @@ public class WeatherEntity {
         this.name = name;
     }
 
-    public WeatherEntity(int id, float lat, float lon, String name, Current current, Daily[] daily) {
+    public WeatherEntity(int id, float lat, float lon, String name, boolean isFavorite, Current current, Daily[] daily) {
         this.id = id;
         this.lat = lat;
         this.lon = lon;
         this.name = name;
+        this.isFavorite = isFavorite;
         this.current = current;
         this.daily = daily;
     }

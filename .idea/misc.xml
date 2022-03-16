@@ -5,12 +5,23 @@
       <map>
         <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.26615384615384613" />
         <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/drawable/circle.xml" value="0.26615384615384613" />
+        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.2546875" />
+        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/drawable/ic_baseline_add_circle_24.xml" value="0.2546875" />
+        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.2546875" />
+        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.2546875" />
         <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/drawable/ic_flag_of_russia.xml" value="0.26615384615384613" />
         <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/drawable/ic_flag_of_the_united_states.xml" value="0.26615384615384613" />
         <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/drawable/ic_launcher_background.xml" value="0.26615384615384613" />
         <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/drawable/ic_launcher_cloud_v1_background.xml" value="0.2546875" />
+        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/drawable/style_cardview_index.xml" value="0.2703125" />
+        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/activity_main.xml" value="0.24010416666666667" />
         <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/activity_maps.xml" value="0.2351851851851852" />
+        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/fragment_favorite_forecast.xml" value="0.25416666666666665" />
+        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/fragment_forecast.xml" value="0.24010416666666667" />
+        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/fragment_forecast_slide.xml" value="0.25416666666666665" />
         <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/fragment_set_location_name.xml" value="0.2351851851851852" />
+        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/fragment_temp.xml" value="0.19635416666666666" />
+        <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/layout/item_forecast.xml" value="0.23854166666666668" />
         <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.26615384615384613" />
         <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/mipmap-anydpi-v26/ic_launcher_cloud_v1.xml" value="0.2546875" />
         <entry key="..\:/.Programming/AndroidProject/weather/app/src/main/res/mipmap-anydpi-v26/ic_launcher_cloud_v1_round.xml" value="0.2546875" />

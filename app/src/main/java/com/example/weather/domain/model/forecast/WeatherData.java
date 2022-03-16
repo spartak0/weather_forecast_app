@@ -1,4 +1,4 @@
-package com.example.weather.domain.model.Forecast;
+package com.example.weather.domain.model.forecast;
 
 public class WeatherData {
     private int id;
@@ -6,27 +6,32 @@ public class WeatherData {
     private float lan;
     private float lon;
     private float temperature;
+    private  boolean isFavorite;
 
-    public WeatherData(int id, String name, float lan, float lon, float temperature) {
+    public WeatherData(int id, String name, float lan, float lon, float temperature, boolean isFavorite) {
         this.id = id;
         this.name = name;
         this.lan = lan;
         this.lon = lon;
         this.temperature = temperature;
+        this.isFavorite = isFavorite;
     }
 
-    public WeatherData(int id, String name, float lan, float lon) {
+    public WeatherData(int id, String name, float lan, float lon, boolean isFavorite) {
         this.id = id;
         this.name = name;
         this.lan = lan;
         this.lon = lon;
+        this.isFavorite= isFavorite;
     }
 
-    public WeatherData(String name, float lan, float lon) {
+    public WeatherData(String name, float lan, float lon,Boolean isFavorite) {
         this.id = 0;
         this.name = name;
         this.lan = lan;
         this.lon = lon;
+        this.isFavorite= isFavorite;
+
     }
 
 
@@ -68,5 +73,13 @@ public class WeatherData {
 
     public void setTemperature(float temperature) {
         this.temperature = temperature;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 }
