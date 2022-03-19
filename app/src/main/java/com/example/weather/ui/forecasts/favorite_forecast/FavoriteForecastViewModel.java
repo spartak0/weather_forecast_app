@@ -60,7 +60,7 @@ public class FavoriteForecastViewModel extends ViewModel {
                                 forecasts.put(weatherData.getId(), weatherData);
                             }
                             liveData.setValue(forecasts);
-                        })
+                        },Throwable::printStackTrace)
         );
     }
 

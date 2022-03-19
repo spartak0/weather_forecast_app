@@ -19,7 +19,6 @@ public class WeatherMapper implements Mapper<WeatherData, WeatherEntity> {
 
     @Override
     public WeatherEntity fromDomain(WeatherData weatherData) {
-        Log.d("TAG", "fromDomain: "+weatherData.isSecondDayForecast());
         return new WeatherEntity(weatherData.getId(), weatherData.getLan(), weatherData.getLon(),weatherData.getName(),
                 weatherData.isFavorite(), weatherData.isSecondDayForecast() ,new Current(), new Daily[]{});
     }

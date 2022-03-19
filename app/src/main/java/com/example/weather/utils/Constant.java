@@ -4,8 +4,8 @@ public class Constant {
     //url1 c65ce28e9fc79dd54b402ab233988349
     //url2 6d0dbf434f8a30b4004d1a5cdf685d57
     //url3 2daf4dbcff25e062c9f8802b2a925dbe
-    public static final String BASE_URL= "http://api.openweathermap.org/";
-    public static final String API_KEY = "6d0dbf434f8a30b4004d1a5cdf685d57";
+    public static final String BASE_URL= "https://api.openweathermap.org/";
+    public static final String API_KEY = "c65ce28e9fc79dd54b402ab233988349";
     public static final String LOCATION_NAME = "locationName";
     public static final String IS_FAVORITE = "isFavorite";
     public static final Double MOSCOW_LAN = 55.751244;
