@@ -26,6 +26,6 @@ public interface Repository {
 
     Observable<Float> getCurrentWeatherDataByCoord(String lat, String lon, String units);
 
-    Observable<HashMap<String,String>> getDailyWeatherDataByCoord(String lat, String lon, String units);
+    Observable<HashMap<String,String>> getDailyWeatherDataByCoord(String lat, String lon,int day , String units);
 
 }

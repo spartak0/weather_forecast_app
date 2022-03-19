@@ -95,12 +95,12 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public Observable<HashMap<String, String>> getDailyWeatherDataByCoord(String lat, String lon, String units) {
+    public Observable<HashMap<String, String>> getDailyWeatherDataByCoord(String lat, String lon,int day, String units) {
         Observable<HashMap<String, String>> floatObservable= ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat, lon, units).map(
                 new Function<WeatherEntity, HashMap<String, String>>() {
                     @Override
                     public HashMap<String, String> apply(@NonNull WeatherEntity weatherEntity) throws Exception {
-                        return dailyMapper.toDomain(weatherEntity);
+                        return dailyMapper.toDomain(weatherEntity, day);
                     }
                 });
         return floatObservable;

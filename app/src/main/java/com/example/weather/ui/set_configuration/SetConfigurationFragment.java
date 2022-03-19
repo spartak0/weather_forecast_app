@@ -48,7 +48,8 @@ public class SetConfigurationFragment extends Fragment {
                             case 0:
                                 Intent intent = new Intent(binding.getRoot().getContext().getApplicationContext(), MapsActivity.class);
                                 intent.putExtra(Constant.LOCATION_NAME, tvText);
-                                intent.putExtra(Constant.IS_CHECKED, binding.checkBoxIsFavorite.isChecked());
+                                intent.putExtra(Constant.IS_FAVORITE, binding.checkBoxIsFavorite.isChecked());
+                                intent.putExtra(Constant.SECOND_DAY_FORECAST, binding.checkBoxSecondForecast.isChecked());
                                 startActivity(intent);
                                 break;
                             case 1:

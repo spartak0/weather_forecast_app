@@ -1,5 +1,6 @@
 package com.example.weather.ui.forecasts.favorite_forecast;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -63,17 +64,11 @@ public class FavoriteForecastViewModel extends ViewModel {
         );
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void updateWeatherData(List<WeatherData> list){
-        list.forEach(weatherData->{
-            RepositoryImpl.getInstance().updateWeather(weatherData)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe();
-        });
-    }
-
-    public void updateData(WeatherData weatherData) {
-        // TODO implement me
+    @SuppressLint("CheckResult")
+    public void update(WeatherData weatherData){
+        RepositoryImpl.getInstance().updateWeather(weatherData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(()->{},Throwable::printStackTrace);
     }
 }

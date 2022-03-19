@@ -68,18 +68,10 @@ public class AllForecastViewModel extends ViewModel {
     }
 
     @SuppressLint("CheckResult")
-    public void updateWeatherData(List<WeatherData> list){
-        list.forEach(weatherData->{
-            RepositoryImpl.getInstance().updateWeather(weatherData)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> {
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
-                            System.out.println("Ошибка");
-                        }
-                    });
-        });
+    public void update(WeatherData weatherData){
+        RepositoryImpl.getInstance().updateWeather(weatherData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(()->{},Throwable::printStackTrace);
     }
 }

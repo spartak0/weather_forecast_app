@@ -20,6 +20,7 @@ import com.example.weather.R;
 import com.example.weather.databinding.FragmentForecastBinding;
 import com.example.weather.domain.model.forecast.WeatherData;
 import com.example.weather.ui.forecasts.ForecastItemAdapter;
+import com.example.weather.ui.forecasts.IsFavoriteClick;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,10 +49,16 @@ public class AllForecastFragment extends Fragment {
         super.onStart();
         viewModel = new ViewModelProvider(this).get(AllForecastViewModel.class);
 
-        adapter = new ForecastItemAdapter();
+        adapter = new ForecastItemAdapter(new IsFavoriteClick() {
+            @Override
+            public void OnClick(WeatherData weatherData) {
+                viewModel.update(weatherData);
+            }
+        });
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
         binding.recycler.setLayoutManager(layoutManager);
         binding.recycler.setAdapter(adapter);
+        viewModel.fetchAllSavedWeather();
         viewModel.getLiveData().observe(this, new Observer<Map<Integer, WeatherData>>() {
                     @Override
                     public void onChanged(Map<Integer, WeatherData> integerWeatherDataMap) {
@@ -59,17 +66,6 @@ public class AllForecastFragment extends Fragment {
                         adapter.update(list);
                     }
                 });
-        viewModel.fetchAllSavedWeather();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onPause() {
-        super.onPause();
-        List<WeatherData>  list= new ArrayList<>(adapter.getUpdateMap().values());
-        if (!list.isEmpty()) {
-            viewModel.updateWeatherData(list);
-            adapter.clearUpdateList();
-        }
-    }
 }

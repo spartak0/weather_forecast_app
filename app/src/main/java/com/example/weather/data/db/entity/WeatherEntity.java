@@ -17,6 +17,7 @@ public class WeatherEntity {
     private float lon;
     private String name;
     private boolean isFavorite;
+    private boolean secondDayForecast;
 
     @Ignore
     private Current current;
@@ -80,12 +81,21 @@ public class WeatherEntity {
         this.name = name;
     }
 
-    public WeatherEntity(int id, float lat, float lon, String name, boolean isFavorite, Current current, Daily[] daily) {
+    public boolean isSecondDayForecast() {
+        return secondDayForecast;
+    }
+
+    public void setSecondDayForecast(boolean secondDayForecast) {
+        this.secondDayForecast = secondDayForecast;
+    }
+
+    public WeatherEntity(int id, float lat, float lon, String name, boolean isFavorite, boolean secondDayForecast, Current current, Daily[] daily) {
         this.id = id;
         this.lat = lat;
         this.lon = lon;
         this.name = name;
         this.isFavorite = isFavorite;
+        this.secondDayForecast = secondDayForecast;
         this.current = current;
         this.daily = daily;
     }
