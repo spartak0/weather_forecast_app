@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey;
 
 import com.example.weather.data.db.entity.forecast_detail.Current;
 import com.example.weather.data.db.entity.forecast_detail.Daily;
+import com.example.weather.data.db.entity.forecast_detail.Hourly;
 
 @Entity()
 public class WeatherEntity {
@@ -24,6 +25,9 @@ public class WeatherEntity {
 
     @Ignore
     private Daily[] daily;
+
+    @Ignore
+    private Hourly[] hourly;
 
     public boolean isFavorite() {
         return isFavorite;
@@ -89,7 +93,15 @@ public class WeatherEntity {
         this.secondDayForecast = secondDayForecast;
     }
 
-    public WeatherEntity(int id, float lat, float lon, String name, boolean isFavorite, boolean secondDayForecast, Current current, Daily[] daily) {
+    public Hourly[] getHourly() {
+        return hourly;
+    }
+
+    public void setHourly(Hourly[] hourly) {
+        this.hourly = hourly;
+    }
+
+    public WeatherEntity(int id, float lat, float lon, String name, boolean isFavorite, boolean secondDayForecast, Current current, Daily[] daily, Hourly[] hourly) {
         this.id = id;
         this.lat = lat;
         this.lon = lon;
@@ -98,6 +110,7 @@ public class WeatherEntity {
         this.secondDayForecast = secondDayForecast;
         this.current = current;
         this.daily = daily;
+        this.hourly=hourly;
     }
 
     public WeatherEntity() {

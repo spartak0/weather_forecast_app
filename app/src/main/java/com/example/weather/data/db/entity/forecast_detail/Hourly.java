@@ -1,8 +1,17 @@
 package com.example.weather.data.db.entity.forecast_detail;
 
-public class Current {
+public class Hourly {
     float temp;
+    long dt;
     Weather[] weather;
+
+    public float getTemp() {
+        return temp;
+    }
+
+    public void setTemp(float temp) {
+        this.temp = temp;
+    }
 
     public Weather[] getWeather() {
         return weather;
@@ -12,11 +21,11 @@ public class Current {
         this.weather = weather;
     }
 
-    public float getTemp() {
-        return temp;
+    public long getDt() {
+        return dt;
     }
 
-    public void setTemp(float temp) {
-        this.temp = temp;
+    public void setDt(long dt) {
+        this.dt = dt;
     }
 }

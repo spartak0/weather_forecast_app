@@ -53,10 +53,10 @@ public class FavoriteForecastViewModel extends ViewModel {
                 RepositoryImpl.getInstance().getCurrentWeatherDataByCoord("" + weatherData.getLan(), "" + weatherData.getLon(), "metric")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(temp -> {
+                        .subscribe(Pair -> {
                             Map<Integer, WeatherData> forecasts = liveData.getValue();
                             if (forecasts != null) {
-                                weatherData.setTemperature(temp);
+                                weatherData.setTemperature(Pair.getFirst());
                                 forecasts.put(weatherData.getId(), weatherData);
                             }
                             liveData.setValue(forecasts);

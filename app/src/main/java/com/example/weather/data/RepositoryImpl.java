@@ -12,9 +12,11 @@ import com.example.weather.data.db.entity.WeatherEntity;
 import com.example.weather.data.network.api.ForecastApi;
 import com.example.weather.domain.Repository;
 import com.example.weather.domain.mapper.DailyMapper;
+import com.example.weather.domain.mapper.HourlyMapper;
 import com.example.weather.domain.mapper.WeatherMapper;
 import com.example.weather.domain.model.forecast.WeatherData;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,10 +24,13 @@ import java.util.stream.Collectors;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
+import kotlin.Pair;
+import kotlin.Triple;
 
 public class RepositoryImpl implements Repository {
     final WeatherMapper weatherMapper= new WeatherMapper();
     final DailyMapper dailyMapper= new DailyMapper();
+    final HourlyMapper hourlyMapper= new HourlyMapper();
     Context context;
     @SuppressLint("StaticFieldLeak")
     static RepositoryImpl instance;
@@ -82,28 +87,25 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public Observable<Float> getCurrentWeatherDataByCoord(String lat, String lon, String units) {
-        Observable<Float> floatObservable= ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat, lon, units).map(
-                new Function<WeatherEntity, Float>() {
-                    @Override
-                    public Float apply(@NonNull WeatherEntity weatherEntity) throws Exception {
-                        return weatherEntity.getCurrent().getTemp();
-                    }
-                }
+    public Observable<Pair<Float,String>> getCurrentWeatherDataByCoord(String lat, String lon, String units) {
+        Observable<Pair<Float,String>> tmp= ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat, lon, units).map(
+                weatherEntity -> new Pair<Float,String>(weatherEntity.getCurrent().getTemp(),weatherEntity.getCurrent().getWeather()[0].getIcon())
         );
-        return floatObservable;
+        return tmp;
     }
 
     @Override
     public Observable<HashMap<String, String>> getDailyWeatherDataByCoord(String lat, String lon,int day, String units) {
         Observable<HashMap<String, String>> floatObservable= ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat, lon, units).map(
-                new Function<WeatherEntity, HashMap<String, String>>() {
-                    @Override
-                    public HashMap<String, String> apply(@NonNull WeatherEntity weatherEntity) throws Exception {
-                        return dailyMapper.toDomain(weatherEntity, day);
-                    }
-                });
+                weatherEntity -> dailyMapper.toDomain(weatherEntity, day));
         return floatObservable;
+    }
+
+    @Override
+    public Observable<ArrayList<Triple<String, String, String>>> getHourlyWeatherByCoord(String lat, String lon, String units) {
+        Observable<ArrayList<Triple<String, String, String>>> tmp = ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat,lon,units).map(
+                hourlyMapper::toDomain);
+        return tmp;
     }
 
 

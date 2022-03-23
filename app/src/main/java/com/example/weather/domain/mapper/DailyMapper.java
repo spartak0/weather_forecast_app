@@ -29,6 +29,6 @@ public class DailyMapper implements com.example.weather.utils.DailyMapper<HashMa
                 Float.parseFloat(stringFloatHashMap.get(Constant.NIGHT)));
         Daily[] daily = new Daily[]{};
         daily[0].setTemp(temp);
-        return new WeatherEntity(0,0,0,null,false, false,null,daily);
+        return new WeatherEntity(0,0,0,null,false, false,null,daily,null);
     }
 }
