@@ -11,16 +11,24 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.weather.R;
 import com.example.weather.databinding.FragmentTempBinding;
 import com.example.weather.utils.Constant;
 
+import java.util.ArrayList;
+
+import kotlin.Triple;
+
 public class TempFragment extends Fragment {
 
     private FragmentTempBinding binding;
     private TempViewModel viewModel;
+    private int id;
+    TempItemAdapter adapter;
 
     @Nullable
     @Override
@@ -36,26 +44,52 @@ public class TempFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        int id= getArguments().getInt("id",0);
-        viewModel.fetchDailyWeather(id);
-        viewModel.getLiveData().observe(this,forecast -> {
-            binding.tvMorningValue.setText(forecast.get(Constant.MORN));
-            binding.tvDayValue.setText(forecast.get(Constant.DAY));
-            binding.tvEveValue.setText(forecast.get(Constant.EVE));
-            binding.tvNightValue .setText(forecast.get(Constant.NIGHT));
+        id = getArguments().getInt("id",0);
+        viewModel.fetchHourlyWeather(id);
+        viewModel.fetchCurrentWeather(id);
+
+        viewModel.getHourlyLiveData().observe(this, list->{
+            setAdapter(list);
+        });
+
+        viewModel.getCurrentWeather().observe(this, pair -> {
+            binding.tvCurrentTemp.setText(pair.getFirst()+"°");
             Glide.with(getContext())
                     .load(Constant.PREFIX_URL_ICON +
-                            forecast.get(Constant.DAILY_ICON)+
+                            pair.getSecond() +
                             Constant.POSTFIX_URL_ICON)
-                    .into(binding.dailyIcon);
+                    .into(binding.ivCurrentTemp);
         });
+
+//        binding.cbSecondDayForecast.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                viewModel.revertIsSecondDailyForecast();
+//            }
+//        });
 
         binding.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewModel.deleteWeatherById(id).subscribe(()->{}, Throwable::printStackTrace);
+                viewModel.deleteWeatherById(id);
                 Navigation.findNavController(view).navigateUp();
             }
         });
     }
+
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        viewModel.update();
+//    }
+
+    void setAdapter(ArrayList<Triple<String,String,String>> list){
+        TempItemAdapter adapter = new TempItemAdapter(getContext(), list);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false);
+        binding.recyclerView.setLayoutManager(layoutManager);
+        binding.recyclerView.setAdapter(adapter);
+    }
+
 }
+
+

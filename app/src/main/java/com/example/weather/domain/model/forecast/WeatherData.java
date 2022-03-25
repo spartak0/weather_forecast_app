@@ -6,7 +6,8 @@ public class WeatherData {
     private float lan;
     private float lon;
     private float temperature;
-    private  boolean isFavorite;
+    private boolean isFavorite;
+    private boolean secondDayForecast;
 
     public WeatherData(int id, String name, float lan, float lon, float temperature, boolean isFavorite) {
         this.id = id;
@@ -17,20 +18,22 @@ public class WeatherData {
         this.isFavorite = isFavorite;
     }
 
-    public WeatherData(int id, String name, float lan, float lon, boolean isFavorite) {
+    public WeatherData(int id, String name, float lan, float lon, boolean isFavorite, boolean secondDayForecast) {
         this.id = id;
         this.name = name;
         this.lan = lan;
         this.lon = lon;
         this.isFavorite= isFavorite;
+        this.secondDayForecast = secondDayForecast;
     }
 
-    public WeatherData(String name, float lan, float lon,Boolean isFavorite) {
+    public WeatherData(String name, float lan, float lon,Boolean isFavorite, boolean secondDayForecast) {
         this.id = 0;
         this.name = name;
         this.lan = lan;
         this.lon = lon;
         this.isFavorite= isFavorite;
+        this.secondDayForecast= secondDayForecast;
 
     }
 
@@ -81,5 +84,13 @@ public class WeatherData {
 
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
+    }
+
+    public boolean isSecondDayForecast() {
+        return secondDayForecast;
+    }
+
+    public void setSecondDayForecast(boolean secondDayForecast) {
+        this.secondDayForecast = secondDayForecast;
     }
 }

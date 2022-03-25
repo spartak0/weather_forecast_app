@@ -52,8 +52,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 String locationName= getIntent().getStringExtra(Constant.LOCATION_NAME);
-                Boolean isChecked = getIntent().getBooleanExtra(Constant.IS_CHECKED,false);
-                WeatherData weatherData= new WeatherData(locationName, viewModel.getMarkerLat(),viewModel.getMarkerLon(), isChecked);
+                Boolean isFavorite = getIntent().getBooleanExtra(Constant.IS_FAVORITE,false);
+                Boolean secondDayForecast = getIntent().getBooleanExtra(Constant.SECOND_DAY_FORECAST, false);
+                WeatherData weatherData= new WeatherData(locationName, viewModel.getMarkerLat(),viewModel.getMarkerLon(), isFavorite, secondDayForecast);
                 RepositoryImpl.getInstance().addWeather(weatherData)
                         .subscribeOn(Schedulers.io())
                         .subscribe(()->{},Throwable::printStackTrace);

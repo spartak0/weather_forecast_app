@@ -24,10 +24,12 @@ import java.util.Map;
 public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapter.MyViewHolder> {
     private final List<WeatherData> forecasts;
     private final Map<Integer, WeatherData> updateMap;
+    IsFavoriteClick isFavoriteClick;
 
-    public ForecastItemAdapter() {
+    public ForecastItemAdapter(IsFavoriteClick isFavoriteClick) {
         this.forecasts = new ArrayList<>();
         this.updateMap= new HashMap<>();
+        this.isFavoriteClick=isFavoriteClick;
     }
 
     public Map<Integer, WeatherData> getUpdateMap() {
@@ -84,23 +86,10 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
                 public void onClick(View view) {
                     weatherData.setFavorite(!weatherData.isFavorite());
                     setCurrentCheck(weatherData);
-                    updateMap.put(weatherData.getId(),weatherData);
+                    isFavoriteClick.OnClick(weatherData);
                 }
             });
-//            binding.myToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                @Override
-//                public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
-//                    if(isCheck) {
-//                        weatherData.setFavorite(true);
-//                    }
-//                    else{
-//                        weatherData.setFavorite(false);
-//                    }
-//                    setCurrentCheck(weatherData);
-//                    updateMap.put(weatherData.getId(),weatherData);
-//
-//                }
-//            });
+
         }
 
         void setCurrentCheck(WeatherData weatherData){
@@ -111,21 +100,6 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
                 binding.myToggleButton.setBackgroundDrawable(ContextCompat.getDrawable(binding.getRoot().getContext().getApplicationContext(),R.drawable.ic_baseline_favorite_border_24));
         }
 
-//        public class onClickListener implements View.OnClickListener
-//        {
-//            int id;
-//
-//            public onClickListener(int id) {
-//                this.id = id;
-//            }
-//
-//            @Override
-//            public void onClick(View view) {
-//                Bundle bundle = new Bundle();
-//                bundle.putInt("id", id);
-//                Navigation.findNavController(view).navigate(R.id.action_to_tempActivity, bundle);
-//            }
-//        }
     }
 
 

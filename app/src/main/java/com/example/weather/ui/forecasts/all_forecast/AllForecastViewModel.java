@@ -56,10 +56,10 @@ public class AllForecastViewModel extends ViewModel {
                 RepositoryImpl.getInstance().getCurrentWeatherDataByCoord("" + weatherData.getLan(), "" + weatherData.getLon(), "metric")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(temp -> {
+                        .subscribe(Pair -> {
                             Map<Integer, WeatherData> forecasts = liveData.getValue();
                             if (forecasts != null) {
-                                weatherData.setTemperature(temp);
+                                weatherData.setTemperature(Pair.getFirst());
                                 forecasts.put(weatherData.getId(), weatherData);
                             }
                             liveData.setValue(forecasts);
@@ -68,18 +68,10 @@ public class AllForecastViewModel extends ViewModel {
     }
 
     @SuppressLint("CheckResult")
-    public void updateWeatherData(List<WeatherData> list){
-        list.forEach(weatherData->{
-            RepositoryImpl.getInstance().updateWeather(weatherData)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> {
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
-                            System.out.println("Ошибка");
-                        }
-                    });
-        });
+    public void update(WeatherData weatherData){
+        RepositoryImpl.getInstance().updateWeather(weatherData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(()->{},Throwable::printStackTrace);
     }
 }

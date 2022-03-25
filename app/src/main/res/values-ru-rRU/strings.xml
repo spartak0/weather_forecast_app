@@ -19,4 +19,6 @@
     <string name="favorite">Лучший шлак</string>
     <string name="add_to_favourites">Доваить в лучший шлак?</string>
     <string name="hint_is_favorite">Любимки</string>
+    <string name="second_day_forecast">Прогноз на второй день</string>
+    <string name="urrent_temp">Текущая погодка</string>
 </resources>

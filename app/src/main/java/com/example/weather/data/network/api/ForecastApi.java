@@ -26,11 +26,6 @@ public interface ForecastApi {
     @GET("data/2.5/onecall")
     Observable<WeatherEntity> getWeatherDataByCoord(@Query("lat") String lat, @Query("lon") String lon, @Query("units")String units);
 
-    @GET("data/2.5/onecall")
-    Single<WeatherEntity> getWeatherDataByCoordF(@Query("lat") String lat, @Query("lon") String lon, @Query("units")String units);
-
-    @GET("data/2.5/onecall")
-    Call<WeatherEntity> getWeatherDataByCoordC(@Query("lat") String lat, @Query("lon") String lon, @Query("units")String units);
 
     class Instance{
         private static Retrofit getRetrofit(){
@@ -45,7 +40,7 @@ public interface ForecastApi {
                             Request.Builder request = chain.request().newBuilder();
                             HttpUrl originalHttpUrl = chain.request().url();
                             HttpUrl newUrl = originalHttpUrl.newBuilder().addQueryParameter("appid", Constant.API_KEY)
-                                    .addQueryParameter("exclude", "minutely,hourly,alerts").build();
+                                    .addQueryParameter("exclude", "minutely,alerts").build();
                             request.url(newUrl);
                             Response response = chain.proceed(request.build());
                             return response;

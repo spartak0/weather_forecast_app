@@ -18,4 +18,6 @@
     <string name="favorite">Favorite</string>
     <string name="add_to_favourites">Add to favourites</string>
     <string name="hint_is_favorite">Liked </string>
+    <string name="second_day_forecast">Second day forecast</string>
+    <string name="urrent_temp">Сurrent temp</string>
 </resources>
