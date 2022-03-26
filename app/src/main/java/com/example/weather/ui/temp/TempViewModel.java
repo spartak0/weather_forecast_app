@@ -12,6 +12,7 @@ import com.example.weather.domain.model.forecast.WeatherData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -53,13 +54,14 @@ public class TempViewModel extends ViewModel {
                         .subscribe(pair -> {
                             List<Pair<Float,String>> pairList= dailyLiveData.getValue();
                             pairList.add(0,pair);
-                            dailyLiveData.postValue(pairList);
+                            dailyLiveData.setValue(pairList);
                         },Throwable::printStackTrace);
+
                 getDailyWeatherData(""+weatherData.getLan(),""+weatherData.getLon(),1)
                         .subscribe(pair -> {
                             List<Pair<Float,String>> pairList= dailyLiveData.getValue();
                             pairList.add(1,pair);
-                            dailyLiveData.postValue(pairList);
+                            dailyLiveData.setValue(pairList);
                         },Throwable::printStackTrace);
             },Throwable::printStackTrace);
     }

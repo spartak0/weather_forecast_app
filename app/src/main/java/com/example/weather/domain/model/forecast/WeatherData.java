@@ -8,6 +8,10 @@ public class WeatherData {
     private float temperature;
     private boolean isFavorite;
     private boolean secondDayForecast;
+    private float currentTemp;
+    private String currentTempIcon;
+    private float dailyTemp;
+    private String dailyTempIcon;
 
     public WeatherData(int id, String name, float lan, float lon, float temperature, boolean isFavorite) {
         this.id = id;
