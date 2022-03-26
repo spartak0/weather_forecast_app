@@ -30,7 +30,7 @@ import kotlin.Triple;
 public class RepositoryImpl implements Repository {
     final WeatherMapper weatherMapper= new WeatherMapper();
     final DailyMapper dailyMapper= new DailyMapper();
-    final HourlyMapper hourlyMapper= new HourlyMapper();
+    final HourlyMapper hourlyMapper;
     Context context;
     @SuppressLint("StaticFieldLeak")
     static RepositoryImpl instance;
@@ -38,6 +38,7 @@ public class RepositoryImpl implements Repository {
 
     public RepositoryImpl(Context context) {
         this.context = context;
+        hourlyMapper=new HourlyMapper(context);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -95,8 +96,8 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public Observable<HashMap<String, String>> getDailyWeatherDataByCoord(String lat, String lon,int day, String units) {
-        Observable<HashMap<String, String>> floatObservable= ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat, lon, units).map(
+    public Observable<Pair<Float,String>> getDailyWeatherDataByCoord(String lat, String lon,int day, String units) {
+        Observable<Pair<Float,String>> floatObservable= ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat, lon, units).map(
                 weatherEntity -> dailyMapper.toDomain(weatherEntity, day));
         return floatObservable;
     }

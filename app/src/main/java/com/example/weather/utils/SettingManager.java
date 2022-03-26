@@ -26,7 +26,7 @@ public class SettingManager {
         editor.putString("MyLang", lang);
         editor.apply();
     }
-    public void loadLocale(){
+    public void  loadLocale(){
         SharedPreferences preferences = context.getSharedPreferences("Settings", MODE_PRIVATE);
         String language = preferences.getString("MyLang","");
         setLocale(language);

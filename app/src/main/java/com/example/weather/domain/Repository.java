@@ -1,5 +1,7 @@
 package com.example.weather.domain;
 
+import androidx.annotation.HalfFloat;
+
 import com.example.weather.domain.model.forecast.WeatherData;
 
 import java.util.ArrayList;
@@ -28,8 +30,7 @@ public interface Repository {
     Completable updateWeather(WeatherData weatherData);
 
     Observable<Pair<Float,String>> getCurrentWeatherDataByCoord(String lat, String lon, String units);
-
-    Observable<HashMap<String,String>> getDailyWeatherDataByCoord(String lat, String lon,int day , String units);
+    Observable<Pair<Float,String>> getDailyWeatherDataByCoord(String lat, String lon, int day , String units);
     Observable<ArrayList<Triple<String,String,String>>> getHourlyWeatherByCoord(String lat, String lon, String units);
 
 }

@@ -19,5 +19,6 @@
     <string name="add_to_favourites">Add to favourites</string>
     <string name="hint_is_favorite">Liked </string>
     <string name="second_day_forecast">Second day forecast</string>
-    <string name="urrent_temp">Сurrent temp</string>
+    <string name="today_daily_temp">Today temp</string>
+    <string name="tomorrow_daily_temp">Tomorrow temp</string>
 </resources>

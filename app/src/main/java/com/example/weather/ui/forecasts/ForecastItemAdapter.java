@@ -79,7 +79,7 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
         public void bind(WeatherData weatherData, int position) {
             binding.tvCity.setText(weatherData.getName());
             binding.clickable.setOnClickListener(new WeatherItemClickListener(weatherData.getId()));
-            binding.tvCurrentTemp.setText(Integer.toString(Math.round(weatherData.getTemperature())));
+            binding.tvCurrentValue.setText(Integer.toString(Math.round(weatherData.getTemperature())));
             setCurrentCheck(weatherData);
             binding.myToggleButton.setOnClickListener(new View.OnClickListener() {
                 @Override

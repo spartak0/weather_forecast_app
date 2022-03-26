@@ -20,7 +20,7 @@ public class WeatherMapper implements Mapper<WeatherData, WeatherEntity> {
 
     @Override
     public WeatherEntity fromDomain(WeatherData weatherData) {
-        return new WeatherEntity(weatherData.getId(), weatherData.getLan(), weatherData.getLon(),weatherData.getName(),
+        return new WeatherEntity(weatherData.getId(), weatherData.getLan(), weatherData.getLon(),weatherData.getName(), null,
                 weatherData.isFavorite(), weatherData.isSecondDayForecast() ,new Current(), new Daily[]{}, new Hourly[]{});
     }
 }
