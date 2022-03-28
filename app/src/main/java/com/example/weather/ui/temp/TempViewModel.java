@@ -34,7 +34,7 @@ public class TempViewModel extends ViewModel {
         disposable.add(
                 getWeatherById(id).subscribe(weatherData -> {
                     getHourlyWeatherByCoord(weatherData.getLan(), weatherData.getLon())
-                            .subscribe(list -> hourlyLiveData.postValue(list));
+                            .subscribe(list -> hourlyLiveData.postValue(list),Throwable::printStackTrace);
                 }, Throwable::printStackTrace));
     }
 
@@ -87,13 +87,13 @@ public class TempViewModel extends ViewModel {
     }
 
     private Observable<Pair<Float,String>> getDailyWeatherData(String lan, String lon, int day){
-        return RepositoryImpl.getInstance().getDailyWeatherDataByCoord(lan,lon, day, "metric")
+        return RepositoryImpl.getInstance().getDailyWeatherDataByCoord(lan,lon, day)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
     }
 
     private Observable<ArrayList<Triple<String,String,String>>> getHourlyWeatherByCoord(double lat, double lon){
-        return RepositoryImpl.getInstance().getHourlyWeatherByCoord(""+lat,""+lon, "metric")
+        return RepositoryImpl.getInstance().getHourlyWeatherByCoord(""+lat,""+lon)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

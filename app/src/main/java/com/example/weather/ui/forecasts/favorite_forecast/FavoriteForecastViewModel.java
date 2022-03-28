@@ -49,7 +49,7 @@ public class FavoriteForecastViewModel extends ViewModel {
 
     private void fetchCurrentWeather(WeatherData weatherData) {
         disposable.add(
-                RepositoryImpl.getInstance().getCurrentWeatherDataByCoord("" + weatherData.getLan(), "" + weatherData.getLon(), "metric")
+                RepositoryImpl.getInstance().getCurrentWeatherDataByCoord("" + weatherData.getLan(), "" + weatherData.getLon())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(Pair -> {

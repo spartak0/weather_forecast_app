@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi;
 
 import com.example.weather.data.db.entity.WeatherEntity;
 import com.example.weather.data.db.entity.forecast_detail.Hourly;
+import com.example.weather.utils.Constant;
 import com.example.weather.utils.Mapper;
 
 import java.text.DateFormat;
@@ -40,8 +41,8 @@ public class HourlyMapper implements Mapper<List<Triple<String,String,String>>,W
     public ArrayList<Triple<String, String, String>> toDomain(WeatherEntity weatherEntity) {
         ArrayList<Triple<String, String, String>> list = new ArrayList<Triple<String,String,String>>();
         Hourly[] hourlies = weatherEntity.getHourly();
-        SharedPreferences preferences = this.context.getSharedPreferences("Settings", MODE_PRIVATE);
-        String language = preferences.getString("MyLang","");
+        SharedPreferences preferences = this.context.getSharedPreferences(Constant.SETTINGS, MODE_PRIVATE);
+        String language = preferences.getString(Constant.MY_LANG,"");
         for (Hourly hourly : hourlies) {
             Calendar date = Calendar.getInstance();
             date.setTimeInMillis(hourly.getDt()*1000);

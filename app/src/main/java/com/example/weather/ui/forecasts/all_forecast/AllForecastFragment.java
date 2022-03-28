@@ -36,13 +36,16 @@ public class AllForecastFragment extends Fragment {
     ForecastItemAdapter adapter;
     SettingManager settingManager;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentForecastBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         getActivity().setTitle(R.string.location);
-        settingManager= new SettingManager(getContext().getApplicationContext());
+        viewModel = new ViewModelProvider(this).get(AllForecastViewModel.class);
+        settingManager= viewModel.getSettingsManager();
+        adapter = new ForecastItemAdapter(weatherData -> viewModel.update(weatherData));
         return view;
     }
 
@@ -51,10 +54,8 @@ public class AllForecastFragment extends Fragment {
     @SuppressLint("CheckResult")
     @Override
     public void onStart() {
-        super.onStart();
-        viewModel = new ViewModelProvider(this).get(AllForecastViewModel.class);
 
-        adapter = new ForecastItemAdapter(weatherData -> viewModel.update(weatherData));
+        super.onStart();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
         binding.recycler.setLayoutManager(layoutManager);
         binding.recycler.setAdapter(adapter);

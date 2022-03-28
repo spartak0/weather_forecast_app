@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.weather.data.RepositoryImpl;
 import com.example.weather.domain.model.forecast.WeatherData;
+import com.example.weather.utils.SettingManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,7 +55,7 @@ public class AllForecastViewModel extends ViewModel {
 
     private void fetchCurrentWeather(WeatherData weatherData) {
         disposable.add(
-                RepositoryImpl.getInstance().getCurrentWeatherDataByCoord("" + weatherData.getLan(), "" + weatherData.getLon(), "metric")
+                RepositoryImpl.getInstance().getCurrentWeatherDataByCoord("" + weatherData.getLan(), "" + weatherData.getLon())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(Pair -> {
@@ -92,5 +93,9 @@ public class AllForecastViewModel extends ViewModel {
     public void updateAll() {
         ArrayList<WeatherData> list=new ArrayList<>(liveData.getValue().values());
         list.forEach(this::update);
+    }
+
+    public SettingManager getSettingsManager() {
+       return RepositoryImpl.getInstance().getSettingsMenager();
     }
 }

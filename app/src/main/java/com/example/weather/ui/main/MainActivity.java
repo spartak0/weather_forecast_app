@@ -2,6 +2,7 @@ package com.example.weather.ui.main;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -11,23 +12,22 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.weather.R;
+import com.example.weather.data.RepositoryImpl;
 import com.example.weather.databinding.ActivityMainBinding;
+import com.example.weather.utils.Constant;
 import com.example.weather.utils.SettingManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
-    SettingManager settingManager;
+    SettingManager settingManager= RepositoryImpl.getInstance().getSettingsMenager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-
-        settingManager= new SettingManager(getBaseContext());
         settingsToolbar();
         settingManager.loadLocale();
 
@@ -38,10 +38,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void MyAlertDialog(){
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
-                .setCancelable(false)
                 .setTitle(R.string.alert_dialog_title)
                 .setMessage(R.string.alert_dialog_message)
-                .setNegativeButton("ok", (dialogInterface, i) -> finish());
+                .setNegativeButton(R.string.ok_btn, (dialogInterface, i) -> {
+                });
         builder.show();
     }
 
@@ -61,11 +61,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.russian:
-                settingManager.setLocale("ru");
+                settingManager.setLocale(Constant.RU);
                 recreate();
                 break;
             case R.id.english:
-                settingManager.setLocale("en");
+                settingManager.setLocale(Constant.EN);
                 recreate();
                 break;
             case android.R.id.home:
@@ -75,4 +75,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
 }

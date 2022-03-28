@@ -16,6 +16,7 @@ import com.example.weather.domain.mapper.DailyMapper;
 import com.example.weather.domain.mapper.HourlyMapper;
 import com.example.weather.domain.mapper.WeatherMapper;
 import com.example.weather.domain.model.forecast.WeatherData;
+import com.example.weather.utils.SettingManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ public class RepositoryImpl implements Repository {
     final WeatherMapper weatherMapper= new WeatherMapper();
     final DailyMapper dailyMapper= new DailyMapper();
     final HourlyMapper hourlyMapper;
+    final SettingManager settingManager;
     Context context;
     @SuppressLint("StaticFieldLeak")
     static RepositoryImpl instance;
@@ -40,6 +42,7 @@ public class RepositoryImpl implements Repository {
     public RepositoryImpl(Context context) {
         this.context = context;
         hourlyMapper=new HourlyMapper(context);
+        settingManager = new SettingManager(context);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -84,25 +87,30 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public Observable<Pair<Float,String>> getCurrentWeatherDataByCoord(String lat, String lon, String units) {
-        Observable<Pair<Float,String>> tmp= ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat, lon, units).map(
+    public Observable<Pair<Float,String>> getCurrentWeatherDataByCoord(String lat, String lon) {
+        Observable<Pair<Float,String>> tmp= ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat, lon).map(
                 weatherEntity -> new Pair<Float,String>(weatherEntity.getCurrent().getTemp(),weatherEntity.getCurrent().getWeather()[0].getIcon())
         );
         return tmp;
     }
 
     @Override
-    public Observable<Pair<Float,String>> getDailyWeatherDataByCoord(String lat, String lon,int day, String units) {
-        Observable<Pair<Float,String>> floatObservable= ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat, lon, units).map(
+    public Observable<Pair<Float,String>> getDailyWeatherDataByCoord(String lat, String lon,int day) {
+        Observable<Pair<Float,String>> floatObservable= ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat, lon).map(
                 weatherEntity -> dailyMapper.toDomain(weatherEntity, day));
         return floatObservable;
     }
 
     @Override
-    public Observable<ArrayList<Triple<String, String, String>>> getHourlyWeatherByCoord(String lat, String lon, String units) {
-        Observable<ArrayList<Triple<String, String, String>>> tmp = ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat,lon,units).map(
+    public Observable<ArrayList<Triple<String, String, String>>> getHourlyWeatherByCoord(String lat, String lon) {
+        Observable<ArrayList<Triple<String, String, String>>> tmp = ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat,lon).map(
                 hourlyMapper::toDomain);
         return tmp;
+    }
+
+    @Override
+    public SettingManager getSettingsMenager() {
+        return this.settingManager;
     }
 
 

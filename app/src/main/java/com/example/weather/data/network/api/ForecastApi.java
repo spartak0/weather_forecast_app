@@ -24,7 +24,7 @@ import retrofit2.http.Query;
 public interface ForecastApi {
 
     @GET("data/2.5/onecall")
-    Observable<WeatherEntity> getWeatherDataByCoord(@Query("lat") String lat, @Query("lon") String lon, @Query("units")String units);
+    Observable<WeatherEntity> getWeatherDataByCoord(@Query("lat") String lat, @Query("lon") String lon);
 
 
     class Instance{
@@ -40,6 +40,7 @@ public interface ForecastApi {
                             Request.Builder request = chain.request().newBuilder();
                             HttpUrl originalHttpUrl = chain.request().url();
                             HttpUrl newUrl = originalHttpUrl.newBuilder().addQueryParameter("appid", Constant.API_KEY)
+                                    .addQueryParameter("units","metric")
                                     .addQueryParameter("exclude", "minutely,alerts").build();
                             request.url(newUrl);
                             Response response = chain.proceed(request.build());

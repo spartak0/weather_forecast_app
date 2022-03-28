@@ -24,8 +24,8 @@ public class SettingManager {
         config.locale = locale;
         context.getResources().updateConfiguration(config,
                 context.getResources().getDisplayMetrics());
-        SharedPreferences.Editor editor= context.getSharedPreferences("Settings", MODE_PRIVATE).edit();
-        editor.putString("MyLang", lang);
+        SharedPreferences.Editor editor= context.getSharedPreferences(Constant.SETTINGS, MODE_PRIVATE).edit();
+        editor.putString(Constant.MY_LANG, lang);
         editor.apply();
     }
     public void  loadLocale(){
