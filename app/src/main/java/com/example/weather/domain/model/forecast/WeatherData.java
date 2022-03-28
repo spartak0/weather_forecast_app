@@ -5,40 +5,19 @@ public class WeatherData {
     private String name;
     private float lan;
     private float lon;
-    private float temperature;
+    private float currentTemp;
     private boolean isFavorite;
     private boolean secondDayForecast;
-    private float currentTemp;
-    private String currentTempIcon;
-    private float dailyTemp;
-    private String dailyTempIcon;
 
-    public WeatherData(int id, String name, float lan, float lon, float temperature, boolean isFavorite) {
-        this.id = id;
-        this.name = name;
-        this.lan = lan;
-        this.lon = lon;
-        this.temperature = temperature;
-        this.isFavorite = isFavorite;
-    }
 
-    public WeatherData(int id, String name, float lan, float lon, boolean isFavorite, boolean secondDayForecast) {
+    public WeatherData(int id, String name, float lan, float lon, boolean isFavorite, boolean secondDayForecast, float currentTemp) {
         this.id = id;
         this.name = name;
         this.lan = lan;
         this.lon = lon;
         this.isFavorite= isFavorite;
         this.secondDayForecast = secondDayForecast;
-    }
-
-    public WeatherData(String name, float lan, float lon,Boolean isFavorite, boolean secondDayForecast) {
-        this.id = 0;
-        this.name = name;
-        this.lan = lan;
-        this.lon = lon;
-        this.isFavorite= isFavorite;
-        this.secondDayForecast= secondDayForecast;
-
+        this.currentTemp = currentTemp;
     }
 
 
@@ -74,12 +53,12 @@ public class WeatherData {
         this.name = name;
     }
 
-    public float getTemperature() {
-        return temperature;
+    public float getCurrentTemp() {
+        return currentTemp;
     }
 
-    public void setTemperature(float temperature) {
-        this.temperature = temperature;
+    public void setCurrentTemp(float currentTemp) {
+        this.currentTemp = currentTemp;
     }
 
     public boolean isFavorite() {

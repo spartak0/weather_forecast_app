@@ -3,6 +3,7 @@ package com.example.weather.data;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -45,12 +46,7 @@ public class RepositoryImpl implements Repository {
     @Override
     public Observable<List<WeatherData>> getAllWeather() {
         return WeatherDatabase.getInstance(context).weatherDao().getAllWeather()
-                .map((Function<List<WeatherEntity>, List<WeatherData>>) weatherEntities -> weatherEntities.stream().map(new java.util.function.Function<WeatherEntity, WeatherData>() {
-                    @Override
-                    public WeatherData apply(WeatherEntity weatherEntity) {
-                        return weatherMapper.toDomain(weatherEntity);
-                    }
-                }).collect(Collectors.toList()));
+                .map(weatherEntities -> weatherEntities.stream().map(weatherMapper::toDomain).collect(Collectors.toList()));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

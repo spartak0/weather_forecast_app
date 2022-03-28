@@ -35,35 +35,36 @@ public class TempViewModel extends ViewModel {
                 getWeatherById(id).subscribe(weatherData -> {
                     getHourlyWeatherByCoord(weatherData.getLan(), weatherData.getLon())
                             .subscribe(list -> hourlyLiveData.postValue(list));
-                }));
+                }, Throwable::printStackTrace));
     }
 
     @SuppressLint("CheckResult")
     public void fetchWeatherData(int id) {
-        RepositoryImpl.getInstance().getWeatherById(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(weatherData -> {
-                    weatherDataLiveData.setValue(weatherData);
-                }, Throwable::printStackTrace);
+        disposable.add(
+            RepositoryImpl.getInstance().getWeatherById(id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(weatherData -> {
+                        weatherDataLiveData.setValue(weatherData);
+                    }, Throwable::printStackTrace));
     }
     @SuppressLint("CheckResult")
     public void fetchDailyWeather(int id){
+        disposable.add(
             getWeatherById(id).subscribe(weatherData -> {
                 getDailyWeatherData(""+weatherData.getLan(),""+weatherData.getLon(),0)
                         .subscribe(pair -> {
                             List<Pair<Float,String>> pairList= dailyLiveData.getValue();
                             pairList.add(0,pair);
                             dailyLiveData.setValue(pairList);
+                            getDailyWeatherData(""+weatherData.getLan(),""+weatherData.getLon(),1)
+                                    .subscribe(pair2 -> {
+                                        List<Pair<Float,String>> pairList2= dailyLiveData.getValue();
+                                        pairList.add(1,pair2);
+                                        dailyLiveData.setValue(pairList2);
+                                    },Throwable::printStackTrace);
                         },Throwable::printStackTrace);
-
-                getDailyWeatherData(""+weatherData.getLan(),""+weatherData.getLon(),1)
-                        .subscribe(pair -> {
-                            List<Pair<Float,String>> pairList= dailyLiveData.getValue();
-                            pairList.add(1,pair);
-                            dailyLiveData.setValue(pairList);
-                        },Throwable::printStackTrace);
-            },Throwable::printStackTrace);
+            },Throwable::printStackTrace));
     }
 
     public MutableLiveData<List<Pair<Float, String>>> getDailyLiveData() {
@@ -106,17 +107,25 @@ public class TempViewModel extends ViewModel {
     }
     @SuppressLint("CheckResult")
     public void update() {
-        RepositoryImpl.getInstance().updateWeather(weatherDataLiveData.getValue())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+        disposable.add(
+            RepositoryImpl.getInstance().updateWeather(weatherDataLiveData.getValue())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(()->{},Throwable::printStackTrace));
     }
 
     @SuppressLint("CheckResult")
     public void deleteWeatherById(int id){
-        RepositoryImpl.getInstance().deleteWeatherById(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(()->{},Throwable::printStackTrace);
+        disposable.add(
+            RepositoryImpl.getInstance().deleteWeatherById(id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(()->{},Throwable::printStackTrace));
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        disposable.clear();
     }
 }

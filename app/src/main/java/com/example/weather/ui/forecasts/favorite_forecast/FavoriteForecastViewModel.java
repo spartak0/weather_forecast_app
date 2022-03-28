@@ -12,7 +12,6 @@ import com.example.weather.data.RepositoryImpl;
 import com.example.weather.domain.model.forecast.WeatherData;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -56,7 +55,7 @@ public class FavoriteForecastViewModel extends ViewModel {
                         .subscribe(Pair -> {
                             Map<Integer, WeatherData> forecasts = liveData.getValue();
                             if (forecasts != null) {
-                                weatherData.setTemperature(Pair.getFirst());
+                                weatherData.setCurrentTemp(Pair.getFirst());
                                 forecasts.put(weatherData.getId(), weatherData);
                             }
                             liveData.setValue(forecasts);

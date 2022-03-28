@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase;
 import com.example.weather.data.db.dao.WeatherDao;
 import com.example.weather.data.db.entity.WeatherEntity;
 
-@Database(entities = WeatherEntity.class, version = 15)
+@Database(entities = WeatherEntity.class, version = 18)
 public abstract class WeatherDatabase extends RoomDatabase {
     static WeatherDatabase instance;
 

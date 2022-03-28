@@ -21,4 +21,6 @@
     <string name="second_day_forecast">Second day forecast</string>
     <string name="today_daily_temp">Today temp</string>
     <string name="tomorrow_daily_temp">Tomorrow temp</string>
+    <string name="alert_dialog_title">Warning</string>
+    <string name="alert_dialog_message">Connect to the internet for up-to-date information</string>
 </resources>

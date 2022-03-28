@@ -3,7 +3,10 @@ package com.example.weather.data.db.entity;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
+import androidx.room.TypeConverters;
 
+import com.example.weather.data.db.converter.CurrentConverter;
 import com.example.weather.data.db.entity.forecast_detail.Current;
 import com.example.weather.data.db.entity.forecast_detail.Daily;
 import com.example.weather.data.db.entity.forecast_detail.Hourly;
@@ -21,7 +24,7 @@ public class WeatherEntity {
     private boolean secondDayForecast;
     private String timezone;
 
-    @Ignore
+    @TypeConverters({CurrentConverter.class})
     private Current current;
 
     @Ignore

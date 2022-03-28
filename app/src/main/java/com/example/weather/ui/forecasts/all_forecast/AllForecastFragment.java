@@ -1,8 +1,10 @@
 package com.example.weather.ui.forecasts.all_forecast;
 
 import android.annotation.SuppressLint;
+import android.location.SettingInjectorService;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import com.example.weather.databinding.FragmentForecastBinding;
 import com.example.weather.domain.model.forecast.WeatherData;
 import com.example.weather.ui.forecasts.ForecastItemAdapter;
 import com.example.weather.ui.forecasts.IsFavoriteClick;
+import com.example.weather.utils.SettingManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +33,8 @@ public class AllForecastFragment extends Fragment {
 
     FragmentForecastBinding binding;
     AllForecastViewModel viewModel;
-    private ForecastItemAdapter adapter;
+    ForecastItemAdapter adapter;
+    SettingManager settingManager;
 
     @Nullable
     @Override
@@ -38,6 +42,7 @@ public class AllForecastFragment extends Fragment {
         binding = FragmentForecastBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         getActivity().setTitle(R.string.location);
+        settingManager= new SettingManager(getContext().getApplicationContext());
         return view;
     }
 
@@ -49,23 +54,22 @@ public class AllForecastFragment extends Fragment {
         super.onStart();
         viewModel = new ViewModelProvider(this).get(AllForecastViewModel.class);
 
-        adapter = new ForecastItemAdapter(new IsFavoriteClick() {
-            @Override
-            public void OnClick(WeatherData weatherData) {
-                viewModel.update(weatherData);
-            }
-        });
+        adapter = new ForecastItemAdapter(weatherData -> viewModel.update(weatherData));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
         binding.recycler.setLayoutManager(layoutManager);
         binding.recycler.setAdapter(adapter);
-        viewModel.fetchAllSavedWeather();
-        viewModel.getLiveData().observe(this, new Observer<Map<Integer, WeatherData>>() {
-                    @Override
-                    public void onChanged(Map<Integer, WeatherData> integerWeatherDataMap) {
-                        List<WeatherData> list = new ArrayList<>(integerWeatherDataMap.values());
-                        adapter.update(list);
-                    }
-                });
+        if(settingManager.isNetworkAvailable()) viewModel.fetchAllSavedWeather();
+        else viewModel.fetchAllSavedWeatherNotNetwork();
+        viewModel.getLiveData().observe(this, integerWeatherDataMap -> {
+            List<WeatherData> list = new ArrayList<>(integerWeatherDataMap.values());
+            adapter.update(list);
+        });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onPause() {
+        super.onPause();
+        viewModel.updateAll();
+    }
 }

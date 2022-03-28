@@ -4,6 +4,11 @@ public class Current {
     float temp;
     Weather[] weather;
 
+    public Current(float temp, Weather[] weather) {
+        this.temp = temp;
+        this.weather = weather;
+    }
+
     public Weather[] getWeather() {
         return weather;
     }

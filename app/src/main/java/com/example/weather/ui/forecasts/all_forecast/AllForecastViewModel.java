@@ -2,6 +2,7 @@ package com.example.weather.ui.forecasts.all_forecast;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
@@ -11,13 +12,13 @@ import androidx.lifecycle.ViewModel;
 import com.example.weather.data.RepositoryImpl;
 import com.example.weather.domain.model.forecast.WeatherData;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -59,7 +60,7 @@ public class AllForecastViewModel extends ViewModel {
                         .subscribe(Pair -> {
                             Map<Integer, WeatherData> forecasts = liveData.getValue();
                             if (forecasts != null) {
-                                weatherData.setTemperature(Pair.getFirst());
+                                weatherData.setCurrentTemp(Pair.getFirst());
                                 forecasts.put(weatherData.getId(), weatherData);
                             }
                             liveData.setValue(forecasts);
@@ -73,5 +74,23 @@ public class AllForecastViewModel extends ViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(()->{},Throwable::printStackTrace);
+    }
+
+    public void fetchAllSavedWeatherNotNetwork() {
+        disposable.add(RepositoryImpl.getInstance().getAllWeather()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(weatherData -> {
+                    Map<Integer, WeatherData> map = new HashMap<>();
+                    for (WeatherData weatherData1: weatherData){
+                        map.put(weatherData1.getId(), weatherData1);
+                    }
+                    liveData.setValue(map);
+                }, Throwable::printStackTrace));
+    }
+
+    public void updateAll() {
+        ArrayList<WeatherData> list=new ArrayList<>(liveData.getValue().values());
+        list.forEach(this::update);
     }
 }

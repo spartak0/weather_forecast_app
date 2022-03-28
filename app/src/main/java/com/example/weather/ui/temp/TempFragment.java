@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.example.weather.R;
 import com.example.weather.databinding.FragmentTempBinding;
 import com.example.weather.utils.Constant;
+import com.example.weather.utils.SettingManager;
 
 import java.util.ArrayList;
 
@@ -39,6 +40,12 @@ public class TempFragment extends Fragment {
         View view= binding.getRoot();
         viewModel = new ViewModelProvider(this).get(TempViewModel.class);
         getActivity().setTitle(R.string.weather_forecast);
+
+
+        adapter = new TempItemAdapter(getContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false);
+        binding.recyclerView.setLayoutManager(layoutManager);
+        binding.recyclerView.setAdapter(adapter);
         return view;
     }
 
@@ -47,6 +54,7 @@ public class TempFragment extends Fragment {
     public void onStart() {
         super.onStart();
         id = getArguments().getInt("id",0);
+
         viewModel.fetchHourlyWeather(id);
         viewModel.fetchWeatherData(id);
         viewModel.fetchDailyWeather(id);
@@ -73,7 +81,7 @@ public class TempFragment extends Fragment {
         });
 
         viewModel.getHourlyLiveData().observe(this, list->{
-            setAdapter(list);
+            adapter.update(list);
         });
 
 
@@ -86,19 +94,11 @@ public class TempFragment extends Fragment {
                 binding.secondDayCard.setVisibility(View.GONE);
             }
         });
-        binding.cbSecondDayForecast.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewModel.revertIsSecondDailyForecast();
-            }
-        });
+        binding.cbSecondDayForecast.setOnClickListener(view -> viewModel.revertIsSecondDailyForecast());
 
-        binding.btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewModel.deleteWeatherById(id);
-                Navigation.findNavController(view).navigateUp();
-            }
+        binding.btnDelete.setOnClickListener(view -> {
+            viewModel.deleteWeatherById(id);
+            Navigation.findNavController(view).navigateUp();
         });
     }
 
@@ -108,12 +108,12 @@ public class TempFragment extends Fragment {
         viewModel.update();
     }
 
-    void setAdapter(ArrayList<Triple<String,String,String>> list){
-        TempItemAdapter adapter = new TempItemAdapter(getContext(), list);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false);
-        binding.recyclerView.setLayoutManager(layoutManager);
-        binding.recyclerView.setAdapter(adapter);
-    }
+//    void setAdapter(ArrayList<Triple<String,String,String>> list){
+//        TempItemAdapter adapter = new TempItemAdapter(getContext(), list);
+//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false);
+//        binding.recyclerView.setLayoutManager(layoutManager);
+//        binding.recyclerView.setAdapter(adapter);
+//    }
 
 }
 
