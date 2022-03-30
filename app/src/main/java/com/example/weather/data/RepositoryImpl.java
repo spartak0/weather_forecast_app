@@ -42,7 +42,7 @@ public class RepositoryImpl implements Repository {
 
     public RepositoryImpl(Context context) {
         this.context = context;
-        hourlyMapper=new HourlyMapper(context);
+        this.hourlyMapper=new HourlyMapper(context);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -116,24 +116,25 @@ public class RepositoryImpl implements Repository {
 
 
     @Override
-    public void loadLocale(Context context) {
-        if(settingManager==null) this.settingManager=new SettingManager(context);
+    public void loadLocale() {
         this.settingManager.loadLocale();
     }
 
     @Override
-    public void setLocale(Context context, String lang) {
-        if(settingManager==null) this.settingManager=new SettingManager(context);
+    public void setLocale(String lang) {
         this.settingManager.setLocale(lang);
 
     }
 
     @Override
-    public Boolean isNetworkAvailable(Context context) {
-        if(settingManager==null) this.settingManager=new SettingManager(context);
+    public Boolean isNetworkAvailable() {
         return settingManager.isNetworkAvailable();
     }
 
+
+    public void initSettingsManager(Context context) {
+        this.settingManager= new SettingManager(context);
+    }
 
     public static RepositoryImpl getInstance() {
         return instance;

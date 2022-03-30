@@ -162,7 +162,7 @@ public class TempViewModel extends ViewModel {
         disposable.clear();
     }
 
-    public Boolean isNetworkAvailable(Context context) {
-        return RepositoryImpl.getInstance().isNetworkAvailable(context);
+    public Boolean isNetworkAvailable() {
+        return RepositoryImpl.getInstance().isNetworkAvailable();
     }
 }

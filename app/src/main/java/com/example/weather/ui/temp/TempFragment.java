@@ -32,7 +32,6 @@ public class TempFragment extends Fragment {
     private TempViewModel viewModel;
     private int id;
     TempItemAdapter adapter;
-    SettingManager settingManager;
 
     @Nullable
     @Override
@@ -56,7 +55,7 @@ public class TempFragment extends Fragment {
         id = getArguments().getInt("id",0);
         viewModel.fetchWeatherData(id);
 
-        if(viewModel.isNetworkAvailable(requireActivity().getBaseContext())) {
+        if(viewModel.isNetworkAvailable()) {
             viewModel.fetchHourlyWeather(id);
             viewModel.fetchDailyWeather(id);
         }

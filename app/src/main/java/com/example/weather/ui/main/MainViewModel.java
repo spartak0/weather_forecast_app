@@ -9,13 +9,14 @@ import com.example.weather.data.RepositoryImpl;
 public class MainViewModel extends ViewModel {
 
     void setLocale(Context context, String lang){
-        RepositoryImpl.getInstance().setLocale(context, lang);
+        RepositoryImpl.getInstance().setLocale(lang);
     }
 
     void loadLocale(Context context){
-        RepositoryImpl.getInstance().loadLocale(context);
+        RepositoryImpl.getInstance().initSettingsManager(context);
+        RepositoryImpl.getInstance().loadLocale();
     }
-    Boolean isNetworkAvailable(Context context){
-        return RepositoryImpl.getInstance().isNetworkAvailable(context);
+    Boolean isNetworkAvailable(){
+        return RepositoryImpl.getInstance().isNetworkAvailable();
     }
 }

@@ -8,7 +8,7 @@ import com.example.weather.ui.main.MainActivity;
 public class App extends Application {
     @Override
     public void onCreate() {
-        RepositoryImpl.init(getBaseContext());
+        RepositoryImpl.init(getApplicationContext());
         super.onCreate();
     }
 }

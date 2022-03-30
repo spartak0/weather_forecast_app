@@ -113,7 +113,7 @@ public class AllForecastViewModel extends ViewModel {
         list.forEach(this::update);
     }
 
-    public Boolean isNetworkAvailable(Context context) {
-       return RepositoryImpl.getInstance().isNetworkAvailable(context);
+    public Boolean isNetworkAvailable() {
+       return RepositoryImpl.getInstance().isNetworkAvailable();
     }
 }

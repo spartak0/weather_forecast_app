@@ -40,10 +40,10 @@ public interface Repository {
 
     Observable<String> getTimezone(String lat, String lon);
 
-    void loadLocale(Context context);
+    void loadLocale();
 
-    void setLocale(Context context, String lang);
+    void setLocale(String lang);
 
-    Boolean isNetworkAvailable(Context context);
+    Boolean isNetworkAvailable();
 
 }

@@ -57,7 +57,7 @@ public class AllForecastFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
         binding.recycler.setLayoutManager(layoutManager);
         binding.recycler.setAdapter(adapter);
-        if(viewModel.isNetworkAvailable(requireActivity().getBaseContext())) viewModel.fetchAllSavedWeather();
+        if(viewModel.isNetworkAvailable()) viewModel.fetchAllSavedWeather();
         else viewModel.fetchAllSavedWeatherNotNetwork();
         viewModel.getLiveData().observe(this, integerWeatherDataMap -> {
             List<WeatherData> list = new ArrayList<>(integerWeatherDataMap.values());

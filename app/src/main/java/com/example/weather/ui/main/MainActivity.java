@@ -19,7 +19,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
-    SettingManager settingManager;
     MainViewModel viewModel;
 
     @Override
@@ -30,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         settingsToolbar();
         viewModel= new ViewModelProvider(this).get(MainViewModel.class);
         viewModel.loadLocale(getBaseContext());
-        if(!viewModel.isNetworkAvailable(getBaseContext())){
+        if(!viewModel.isNetworkAvailable()){
             MyAlertDialog();
         }
     }
