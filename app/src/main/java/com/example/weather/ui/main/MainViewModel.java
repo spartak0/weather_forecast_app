@@ -8,13 +8,15 @@ import com.example.weather.data.RepositoryImpl;
 
 public class MainViewModel extends ViewModel {
 
-    void setLocale(Context context, String lang){
+    void setLocale(String lang){
         RepositoryImpl.getInstance().setLocale(lang);
     }
 
-    void loadLocale(Context context){
-        RepositoryImpl.getInstance().initSettingsManager(context);
+    void loadLocale(){
         RepositoryImpl.getInstance().loadLocale();
+    }
+    void initSettingsManager(Context context){
+        RepositoryImpl.getInstance().initSettingsManager(context);
     }
     Boolean isNetworkAvailable(){
         return RepositoryImpl.getInstance().isNetworkAvailable();

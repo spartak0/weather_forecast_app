@@ -28,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         settingsToolbar();
         viewModel= new ViewModelProvider(this).get(MainViewModel.class);
-        viewModel.loadLocale(getBaseContext());
+        viewModel.initSettingsManager(getBaseContext());
+        viewModel.loadLocale();
         if(!viewModel.isNetworkAvailable()){
             MyAlertDialog();
         }
@@ -59,11 +60,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.russian:
-                viewModel.setLocale(getBaseContext(), Constant.RU);
+                viewModel.setLocale(Constant.RU);
                 recreate();
                 break;
             case R.id.english:
-                viewModel.setLocale(getBaseContext() ,Constant.EN);
+                viewModel.setLocale(Constant.EN);
                 recreate();
                 break;
             case android.R.id.home:
