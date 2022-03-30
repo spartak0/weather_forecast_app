@@ -39,6 +39,7 @@ public class FavoriteForecastViewModel extends ViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(weatherData -> {
                     weatherData.forEach(this::fetchCurrentWeather);
+                    weatherData.forEach(this::fetchTimeZone);
                     Map<Integer, WeatherData> map = new HashMap<>();
                     weatherData.forEach(weatherData1 -> {
                         map.put(weatherData1.getId(), weatherData1);
@@ -61,6 +62,20 @@ public class FavoriteForecastViewModel extends ViewModel {
                             liveData.setValue(forecasts);
                         },Throwable::printStackTrace)
         );
+    }
+    @SuppressLint("CheckResult")
+    private void fetchTimeZone(WeatherData weatherData) {
+        RepositoryImpl.getInstance().getTimezone(weatherData.getLan()+"",weatherData.getLon()+"")
+                .observeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                    Map<Integer, WeatherData> forecasts = liveData.getValue();
+                    if (forecasts != null) {
+                        weatherData.setTimezone(s);
+                        forecasts.put(weatherData.getId(), weatherData);
+                    }
+                    liveData.setValue(forecasts);
+                },Throwable::printStackTrace);
     }
 
     @SuppressLint("CheckResult")

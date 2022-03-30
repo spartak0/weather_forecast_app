@@ -1,5 +1,7 @@
 package com.example.weather.domain;
 
+import android.content.Context;
+
 import androidx.annotation.HalfFloat;
 
 import com.example.weather.domain.model.forecast.WeatherData;
@@ -36,6 +38,12 @@ public interface Repository {
 
     Observable<ArrayList<Triple<String,String,String>>> getHourlyWeatherByCoord(String lat, String lon);
 
-    SettingManager getSettingsMenager();
+    Observable<String> getTimezone(String lat, String lon);
+
+    void loadLocale(Context context);
+
+    void setLocale(Context context, String lang);
+
+    Boolean isNetworkAvailable(Context context);
 
 }

@@ -1,17 +1,30 @@
 package com.example.weather.ui.temp;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
+import com.example.weather.R;
 import com.example.weather.data.RepositoryImpl;
 import com.example.weather.domain.model.forecast.WeatherData;
+import com.example.weather.utils.Constant;
+import com.example.weather.utils.DailyMapper;
+import com.example.weather.utils.SettingManager;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
@@ -66,6 +79,25 @@ public class TempViewModel extends ViewModel {
                         },Throwable::printStackTrace);
             },Throwable::printStackTrace));
     }
+    @SuppressLint("CheckResult")
+    public void fetchNoNetwork(int id){
+        RepositoryImpl.getInstance().getWeatherById(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(weatherData -> {
+                    ArrayList<Triple<String,String,String>> list = new ArrayList<>();
+                    Calendar calendar= Calendar.getInstance();
+                    DateFormat dateFormat=new SimpleDateFormat("HH:00");
+                    Log.d("TAG", "fetchNoNetwork: "+weatherData.getTimezone());
+                    dateFormat.setTimeZone(TimeZone.getTimeZone(weatherData.getTimezone()));
+                    for(int i =0;i<48;i++){
+                        Triple<String,String,String> triple= new Triple<String,String,String>(dateFormat.format(calendar.getTime()), "","");
+                        list.add(triple);
+                        calendar.add(Calendar.HOUR,1);
+                    }
+                    hourlyLiveData.postValue(list);
+                },Throwable::printStackTrace);
+    }
 
     public MutableLiveData<List<Pair<Float, String>>> getDailyLiveData() {
         return dailyLiveData;
@@ -102,6 +134,7 @@ public class TempViewModel extends ViewModel {
 
     public void revertIsSecondDailyForecast() {
         WeatherData weatherData = weatherDataLiveData.getValue();
+        assert weatherData != null;
         weatherData.setSecondDayForecast(!weatherData.isSecondDayForecast());
         weatherDataLiveData.setValue(weatherData);
     }
@@ -127,5 +160,9 @@ public class TempViewModel extends ViewModel {
     protected void onCleared() {
         super.onCleared();
         disposable.clear();
+    }
+
+    public Boolean isNetworkAvailable(Context context) {
+        return RepositoryImpl.getInstance().isNetworkAvailable(context);
     }
 }

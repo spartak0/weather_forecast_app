@@ -21,6 +21,7 @@ import com.example.weather.utils.SettingManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.reactivex.Completable;
@@ -33,7 +34,7 @@ public class RepositoryImpl implements Repository {
     final WeatherMapper weatherMapper= new WeatherMapper();
     final DailyMapper dailyMapper= new DailyMapper();
     final HourlyMapper hourlyMapper;
-    final SettingManager settingManager;
+    SettingManager settingManager;
     Context context;
     @SuppressLint("StaticFieldLeak")
     static RepositoryImpl instance;
@@ -42,7 +43,6 @@ public class RepositoryImpl implements Repository {
     public RepositoryImpl(Context context) {
         this.context = context;
         hourlyMapper=new HourlyMapper(context);
-        settingManager = new SettingManager(context);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -109,8 +109,29 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public SettingManager getSettingsMenager() {
-        return this.settingManager;
+    public Observable<String> getTimezone(String lat, String lon) {
+        return ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat,lon)
+                .map(WeatherEntity::getTimezone);
+    }
+
+
+    @Override
+    public void loadLocale(Context context) {
+        if(settingManager==null) this.settingManager=new SettingManager(context);
+        this.settingManager.loadLocale();
+    }
+
+    @Override
+    public void setLocale(Context context, String lang) {
+        if(settingManager==null) this.settingManager=new SettingManager(context);
+        this.settingManager.setLocale(lang);
+
+    }
+
+    @Override
+    public Boolean isNetworkAvailable(Context context) {
+        if(settingManager==null) this.settingManager=new SettingManager(context);
+        return settingManager.isNetworkAvailable();
     }
 
 

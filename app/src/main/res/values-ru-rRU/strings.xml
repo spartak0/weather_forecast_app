@@ -24,5 +24,6 @@
     <string name="tomorrow_daily_temp">Завтрашняя</string>
     <string name="alert_dialog_title">Предупреждение</string>
     <string name="alert_dialog_message">Поключите интернета для получения актуальной информации</string>
-    <string name="ok_btn">ok</string>
+    <string name="ok_btn">ок</string>
+    <string name="miss">мимо</string>
 </resources>

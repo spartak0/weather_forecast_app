@@ -8,9 +8,10 @@ public class WeatherData {
     private float currentTemp;
     private boolean isFavorite;
     private boolean secondDayForecast;
+    private String timezone;
 
 
-    public WeatherData(int id, String name, float lan, float lon, boolean isFavorite, boolean secondDayForecast, float currentTemp) {
+    public WeatherData(int id, String name, float lan, float lon, boolean isFavorite, boolean secondDayForecast, float currentTemp, String timezone) {
         this.id = id;
         this.name = name;
         this.lan = lan;
@@ -18,8 +19,16 @@ public class WeatherData {
         this.isFavorite= isFavorite;
         this.secondDayForecast = secondDayForecast;
         this.currentTemp = currentTemp;
+        this.timezone= timezone;
     }
 
+    public String getTimezone() {
+        return timezone;
+    }
+
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
+    }
 
     public int getId() {
         return id;

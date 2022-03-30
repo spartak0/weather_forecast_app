@@ -32,6 +32,7 @@ public class TempFragment extends Fragment {
     private TempViewModel viewModel;
     private int id;
     TempItemAdapter adapter;
+    SettingManager settingManager;
 
     @Nullable
     @Override
@@ -40,7 +41,6 @@ public class TempFragment extends Fragment {
         View view= binding.getRoot();
         viewModel = new ViewModelProvider(this).get(TempViewModel.class);
         getActivity().setTitle(R.string.weather_forecast);
-
 
         adapter = new TempItemAdapter(getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false);
@@ -54,10 +54,13 @@ public class TempFragment extends Fragment {
     public void onStart() {
         super.onStart();
         id = getArguments().getInt("id",0);
-
-        viewModel.fetchHourlyWeather(id);
         viewModel.fetchWeatherData(id);
-        viewModel.fetchDailyWeather(id);
+
+        if(viewModel.isNetworkAvailable(requireActivity().getBaseContext())) {
+            viewModel.fetchHourlyWeather(id);
+            viewModel.fetchDailyWeather(id);
+        }
+        else viewModel.fetchNoNetwork(id);
 
         viewModel.getDailyLiveData().observe(this,pairs -> {
             if (pairs.size()>1) {
@@ -107,14 +110,6 @@ public class TempFragment extends Fragment {
         super.onPause();
         viewModel.update();
     }
-
-//    void setAdapter(ArrayList<Triple<String,String,String>> list){
-//        TempItemAdapter adapter = new TempItemAdapter(getContext(), list);
-//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false);
-//        binding.recyclerView.setLayoutManager(layoutManager);
-//        binding.recyclerView.setAdapter(adapter);
-//    }
-
 }
 
 

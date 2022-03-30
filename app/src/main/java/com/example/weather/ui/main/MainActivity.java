@@ -1,15 +1,13 @@
 package com.example.weather.ui.main;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.weather.R;
 import com.example.weather.data.RepositoryImpl;
@@ -21,7 +19,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
-    SettingManager settingManager= RepositoryImpl.getInstance().getSettingsMenager();
+    SettingManager settingManager;
+    MainViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         settingsToolbar();
-        settingManager.loadLocale();
-
-        if(!settingManager.isNetworkAvailable()){
+        viewModel= new ViewModelProvider(this).get(MainViewModel.class);
+        viewModel.loadLocale(getBaseContext());
+        if(!viewModel.isNetworkAvailable(getBaseContext())){
             MyAlertDialog();
         }
     }
@@ -61,11 +60,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.russian:
-                settingManager.setLocale(Constant.RU);
+                viewModel.setLocale(getBaseContext(), Constant.RU);
                 recreate();
                 break;
             case R.id.english:
-                settingManager.setLocale(Constant.EN);
+                viewModel.setLocale(getBaseContext() ,Constant.EN);
                 recreate();
                 break;
             case android.R.id.home:

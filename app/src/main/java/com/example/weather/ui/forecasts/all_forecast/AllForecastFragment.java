@@ -44,7 +44,6 @@ public class AllForecastFragment extends Fragment {
         View view = binding.getRoot();
         getActivity().setTitle(R.string.location);
         viewModel = new ViewModelProvider(this).get(AllForecastViewModel.class);
-        settingManager= viewModel.getSettingsManager();
         adapter = new ForecastItemAdapter(weatherData -> viewModel.update(weatherData));
         return view;
     }
@@ -54,12 +53,11 @@ public class AllForecastFragment extends Fragment {
     @SuppressLint("CheckResult")
     @Override
     public void onStart() {
-
         super.onStart();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
         binding.recycler.setLayoutManager(layoutManager);
         binding.recycler.setAdapter(adapter);
-        if(settingManager.isNetworkAvailable()) viewModel.fetchAllSavedWeather();
+        if(viewModel.isNetworkAvailable(requireActivity().getBaseContext())) viewModel.fetchAllSavedWeather();
         else viewModel.fetchAllSavedWeatherNotNetwork();
         viewModel.getLiveData().observe(this, integerWeatherDataMap -> {
             List<WeatherData> list = new ArrayList<>(integerWeatherDataMap.values());

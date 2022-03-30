@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import java.util.Locale;
 
@@ -29,8 +30,8 @@ public class SettingManager {
         editor.apply();
     }
     public void  loadLocale(){
-        SharedPreferences preferences = context.getSharedPreferences("Settings", MODE_PRIVATE);
-        String language = preferences.getString("MyLang","");
+        SharedPreferences preferences = context.getSharedPreferences(Constant.SETTINGS, MODE_PRIVATE);
+        String language = preferences.getString(Constant.MY_LANG,"");
         setLocale(language);
     }
 
@@ -40,15 +41,9 @@ public class SettingManager {
         if (connectivity == null) {
             return false;
         }
-
-        // get network info for all of the data interfaces (e.g. WiFi, 3G, LTE, etc.)
         NetworkInfo[] info = connectivity.getAllNetworkInfo();
-
-        // make sure that there is at least one interface to test against
         if (info != null) {
-            // iterate through the interfaces
             for (int i = 0; i < info.length; i++) {
-                // check this interface for a connected state
                 if (info[i].getState() == NetworkInfo.State.CONNECTED) {
                     return true;
                 }

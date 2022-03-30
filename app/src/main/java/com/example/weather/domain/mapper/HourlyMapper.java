@@ -41,8 +41,6 @@ public class HourlyMapper implements Mapper<List<Triple<String,String,String>>,W
     public ArrayList<Triple<String, String, String>> toDomain(WeatherEntity weatherEntity) {
         ArrayList<Triple<String, String, String>> list = new ArrayList<Triple<String,String,String>>();
         Hourly[] hourlies = weatherEntity.getHourly();
-        SharedPreferences preferences = this.context.getSharedPreferences(Constant.SETTINGS, MODE_PRIVATE);
-        String language = preferences.getString(Constant.MY_LANG,"");
         for (Hourly hourly : hourlies) {
             Calendar date = Calendar.getInstance();
             date.setTimeInMillis(hourly.getDt()*1000);

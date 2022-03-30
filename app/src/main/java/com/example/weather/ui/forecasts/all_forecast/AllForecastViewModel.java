@@ -1,6 +1,7 @@
 package com.example.weather.ui.forecasts.all_forecast;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 
@@ -45,12 +46,29 @@ public class AllForecastViewModel extends ViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(weatherData -> {
                     weatherData.forEach(this::fetchCurrentWeather);
+                    weatherData.forEach(this::fetchTimeZone);
                     Map<Integer, WeatherData> map = new HashMap<>();
                     for (WeatherData weatherData1: weatherData){
                         map.put(weatherData1.getId(), weatherData1);
                     }
                     liveData.setValue(map);
                 }, Throwable::printStackTrace));
+    }
+
+    @SuppressLint("CheckResult")
+    private void fetchTimeZone(WeatherData weatherData) {
+        disposable.add(
+        RepositoryImpl.getInstance().getTimezone(weatherData.getLan()+"",weatherData.getLon()+"")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                    Map<Integer, WeatherData> forecasts = liveData.getValue();
+                    if (forecasts != null) {
+                        weatherData.setTimezone(s);
+                        forecasts.put(weatherData.getId(), weatherData);
+                    }
+                    liveData.setValue(forecasts);
+                },Throwable::printStackTrace));
     }
 
     private void fetchCurrentWeather(WeatherData weatherData) {
@@ -95,7 +113,7 @@ public class AllForecastViewModel extends ViewModel {
         list.forEach(this::update);
     }
 
-    public SettingManager getSettingsManager() {
-       return RepositoryImpl.getInstance().getSettingsMenager();
+    public Boolean isNetworkAvailable(Context context) {
+       return RepositoryImpl.getInstance().isNetworkAvailable(context);
     }
 }

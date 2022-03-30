@@ -17,12 +17,12 @@ public class WeatherMapper implements Mapper<WeatherData, WeatherEntity> {
     public WeatherData toDomain(WeatherEntity weatherEntity) {
         return new WeatherData(weatherEntity.getId(),weatherEntity.getName(),
                 weatherEntity.getLat(), weatherEntity.getLon(), weatherEntity.isFavorite(), weatherEntity.isSecondDayForecast(),
-                weatherEntity.getCurrent().getTemp());
+                weatherEntity.getCurrent().getTemp(), weatherEntity.getTimezone());
     }
 
     @Override
     public WeatherEntity fromDomain(WeatherData weatherData) {
-        return new WeatherEntity(weatherData.getId(), weatherData.getLan(), weatherData.getLon(),weatherData.getName(), null,
+        return new WeatherEntity(weatherData.getId(), weatherData.getLan(), weatherData.getLon(),weatherData.getName(), weatherData.getTimezone(),
                 weatherData.isFavorite(), weatherData.isSecondDayForecast() ,new Current(weatherData.getCurrentTemp(), new Weather[]{}), new Daily[]{}, new Hourly[]{});
     }
 }
