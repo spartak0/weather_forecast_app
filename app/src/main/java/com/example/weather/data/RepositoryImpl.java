@@ -3,6 +3,7 @@ package com.example.weather.data;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -15,10 +16,12 @@ import com.example.weather.domain.mapper.DailyMapper;
 import com.example.weather.domain.mapper.HourlyMapper;
 import com.example.weather.domain.mapper.WeatherMapper;
 import com.example.weather.domain.model.forecast.WeatherData;
+import com.example.weather.utils.SettingManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.reactivex.Completable;
@@ -30,7 +33,8 @@ import kotlin.Triple;
 public class RepositoryImpl implements Repository {
     final WeatherMapper weatherMapper= new WeatherMapper();
     final DailyMapper dailyMapper= new DailyMapper();
-    final HourlyMapper hourlyMapper= new HourlyMapper();
+    final HourlyMapper hourlyMapper;
+    SettingManager settingManager;
     Context context;
     @SuppressLint("StaticFieldLeak")
     static RepositoryImpl instance;
@@ -38,18 +42,14 @@ public class RepositoryImpl implements Repository {
 
     public RepositoryImpl(Context context) {
         this.context = context;
+        this.hourlyMapper=new HourlyMapper(context);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public Observable<List<WeatherData>> getAllWeather() {
         return WeatherDatabase.getInstance(context).weatherDao().getAllWeather()
-                .map((Function<List<WeatherEntity>, List<WeatherData>>) weatherEntities -> weatherEntities.stream().map(new java.util.function.Function<WeatherEntity, WeatherData>() {
-                    @Override
-                    public WeatherData apply(WeatherEntity weatherEntity) {
-                        return weatherMapper.toDomain(weatherEntity);
-                    }
-                }).collect(Collectors.toList()));
+                .map(weatherEntities -> weatherEntities.stream().map(weatherMapper::toDomain).collect(Collectors.toList()));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -87,27 +87,54 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public Observable<Pair<Float,String>> getCurrentWeatherDataByCoord(String lat, String lon, String units) {
-        Observable<Pair<Float,String>> tmp= ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat, lon, units).map(
+    public Observable<Pair<Float,String>> getCurrentWeatherDataByCoord(String lat, String lon) {
+        Observable<Pair<Float,String>> tmp= ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat, lon).map(
                 weatherEntity -> new Pair<Float,String>(weatherEntity.getCurrent().getTemp(),weatherEntity.getCurrent().getWeather()[0].getIcon())
         );
         return tmp;
     }
 
     @Override
-    public Observable<HashMap<String, String>> getDailyWeatherDataByCoord(String lat, String lon,int day, String units) {
-        Observable<HashMap<String, String>> floatObservable= ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat, lon, units).map(
+    public Observable<Pair<Float,String>> getDailyWeatherDataByCoord(String lat, String lon,int day) {
+        Observable<Pair<Float,String>> floatObservable= ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat, lon).map(
                 weatherEntity -> dailyMapper.toDomain(weatherEntity, day));
         return floatObservable;
     }
 
     @Override
-    public Observable<ArrayList<Triple<String, String, String>>> getHourlyWeatherByCoord(String lat, String lon, String units) {
-        Observable<ArrayList<Triple<String, String, String>>> tmp = ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat,lon,units).map(
+    public Observable<ArrayList<Triple<String, String, String>>> getHourlyWeatherByCoord(String lat, String lon) {
+        Observable<ArrayList<Triple<String, String, String>>> tmp = ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat,lon).map(
                 hourlyMapper::toDomain);
         return tmp;
     }
 
+    @Override
+    public Observable<String> getTimezone(String lat, String lon) {
+        return ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat,lon)
+                .map(WeatherEntity::getTimezone);
+    }
+
+
+    @Override
+    public void loadLocale() {
+        this.settingManager.loadLocale();
+    }
+
+    @Override
+    public void setLocale(String lang) {
+        this.settingManager.setLocale(lang);
+
+    }
+
+    @Override
+    public Boolean isNetworkAvailable() {
+        return settingManager.isNetworkAvailable();
+    }
+
+
+    public void initSettingsManager(Context context) {
+        this.settingManager= new SettingManager(context);
+    }
 
     public static RepositoryImpl getInstance() {
         return instance;

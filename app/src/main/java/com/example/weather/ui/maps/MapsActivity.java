@@ -54,7 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String locationName= getIntent().getStringExtra(Constant.LOCATION_NAME);
                 Boolean isFavorite = getIntent().getBooleanExtra(Constant.IS_FAVORITE,false);
                 Boolean secondDayForecast = getIntent().getBooleanExtra(Constant.SECOND_DAY_FORECAST, false);
-                WeatherData weatherData= new WeatherData(locationName, viewModel.getMarkerLat(),viewModel.getMarkerLon(), isFavorite, secondDayForecast);
+                WeatherData weatherData= new WeatherData(0,locationName, viewModel.getMarkerLat(),viewModel.getMarkerLon(), isFavorite, secondDayForecast,0, null);
                 RepositoryImpl.getInstance().addWeather(weatherData)
                         .subscribeOn(Schedulers.io())
                         .subscribe(()->{},Throwable::printStackTrace);

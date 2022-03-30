@@ -20,5 +20,10 @@
     <string name="add_to_favourites">Доваить в лучший шлак?</string>
     <string name="hint_is_favorite">Любимки</string>
     <string name="second_day_forecast">Прогноз на второй день</string>
-    <string name="urrent_temp">Текущая погодка</string>
+    <string name="today_daily_temp">Сегодняшняя</string>
+    <string name="tomorrow_daily_temp">Завтрашняя</string>
+    <string name="alert_dialog_title">Предупреждение</string>
+    <string name="alert_dialog_message">Поключите интернета для получения актуальной информации</string>
+    <string name="ok_btn">ок</string>
+    <string name="miss">мимо</string>
 </resources>

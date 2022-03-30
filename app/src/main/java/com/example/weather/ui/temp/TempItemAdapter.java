@@ -1,5 +1,6 @@
 package com.example.weather.ui.temp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +23,8 @@ public class TempItemAdapter extends RecyclerView.Adapter<TempItemAdapter.MyView
     ArrayList<Triple<String,String,String>> list;
     Context context;
 
-    public TempItemAdapter(Context context, ArrayList<Triple<String, String, String>> list) {
-        this.list = list;
+    public TempItemAdapter(Context context) {
+        this.list = new ArrayList<>();
         this.context=context;
     }
 
@@ -41,6 +42,13 @@ public class TempItemAdapter extends RecyclerView.Adapter<TempItemAdapter.MyView
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void update(ArrayList<Triple<String, String, String>> list) {
+        this.list.clear();
+        this.list.addAll(list);
+        notifyDataSetChanged();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder{

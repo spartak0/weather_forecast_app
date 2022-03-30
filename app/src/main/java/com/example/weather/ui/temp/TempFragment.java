@@ -2,6 +2,7 @@ package com.example.weather.ui.temp;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,11 @@ import com.bumptech.glide.Glide;
 import com.example.weather.R;
 import com.example.weather.databinding.FragmentTempBinding;
 import com.example.weather.utils.Constant;
+import com.example.weather.utils.SettingManager;
 
 import java.util.ArrayList;
 
+import kotlin.Pair;
 import kotlin.Triple;
 
 public class TempFragment extends Fragment {
@@ -37,6 +40,11 @@ public class TempFragment extends Fragment {
         View view= binding.getRoot();
         viewModel = new ViewModelProvider(this).get(TempViewModel.class);
         getActivity().setTitle(R.string.weather_forecast);
+
+        adapter = new TempItemAdapter(getContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false);
+        binding.recyclerView.setLayoutManager(layoutManager);
+        binding.recyclerView.setAdapter(adapter);
         return view;
     }
 
@@ -45,51 +53,62 @@ public class TempFragment extends Fragment {
     public void onStart() {
         super.onStart();
         id = getArguments().getInt("id",0);
-        viewModel.fetchHourlyWeather(id);
-        viewModel.fetchCurrentWeather(id);
+        viewModel.fetchWeatherData(id);
 
-        viewModel.getHourlyLiveData().observe(this, list->{
-            setAdapter(list);
-        });
+        if(viewModel.isNetworkAvailable()) {
+            viewModel.fetchHourlyWeather(id);
+            viewModel.fetchDailyWeather(id);
+        }
+        else viewModel.fetchNoNetwork(id);
 
-        viewModel.getCurrentWeather().observe(this, pair -> {
-            binding.tvCurrentTemp.setText(pair.getFirst()+"°");
-            Glide.with(getContext())
-                    .load(Constant.PREFIX_URL_ICON +
-                            pair.getSecond() +
-                            Constant.POSTFIX_URL_ICON)
-                    .into(binding.ivCurrentTemp);
-        });
+        viewModel.getDailyLiveData().observe(this,pairs -> {
+            if (pairs.size()>1) {
+                Pair<Float, String> firstDayPair = pairs.get(0);
+                Pair<Float, String> secondDayPair = pairs.get(1);
 
-//        binding.cbSecondDayForecast.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                viewModel.revertIsSecondDailyForecast();
-//            }
-//        });
+                binding.tvDailyTempValue.setText(Math.round(firstDayPair.getFirst())+"℃");
+                Glide.with(getContext())
+                        .load(Constant.PREFIX_URL_ICON +
+                                firstDayPair.getSecond() +
+                                Constant.POSTFIX_URL_ICON)
+                        .into(binding.ivDailyTemp);
 
-        binding.btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewModel.deleteWeatherById(id);
-                Navigation.findNavController(view).navigateUp();
+                binding.tvDailyTemp2Value.setText(Math.round(secondDayPair.getFirst())+"℃");
+                Glide.with(getContext())
+                        .load(Constant.PREFIX_URL_ICON +
+                                secondDayPair.getSecond() +
+                                Constant.POSTFIX_URL_ICON)
+                        .into(binding.ivDailyTemp2);
             }
         });
+
+        viewModel.getHourlyLiveData().observe(this, list->{
+            adapter.update(list);
+        });
+
+
+        viewModel.getWeatherDataLiveData().observe(this,weatherData -> {
+            binding.cbSecondDayForecast.setChecked(weatherData.isSecondDayForecast());
+            if(binding.cbSecondDayForecast.isChecked()){
+                binding.secondDayCard.setVisibility(View.VISIBLE);
+            }
+            else{
+                binding.secondDayCard.setVisibility(View.GONE);
+            }
+        });
+        binding.cbSecondDayForecast.setOnClickListener(view -> viewModel.revertIsSecondDailyForecast());
+
+        binding.btnDelete.setOnClickListener(view -> {
+            viewModel.deleteWeatherById(id);
+            Navigation.findNavController(view).navigateUp();
+        });
     }
 
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        viewModel.update();
-//    }
-
-    void setAdapter(ArrayList<Triple<String,String,String>> list){
-        TempItemAdapter adapter = new TempItemAdapter(getContext(), list);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false);
-        binding.recyclerView.setLayoutManager(layoutManager);
-        binding.recyclerView.setAdapter(adapter);
+    @Override
+    public void onPause() {
+        super.onPause();
+        viewModel.update();
     }
-
 }
 
 

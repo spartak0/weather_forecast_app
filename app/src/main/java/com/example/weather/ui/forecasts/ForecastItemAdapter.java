@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.weather.R;
@@ -79,7 +78,7 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
         public void bind(WeatherData weatherData, int position) {
             binding.tvCity.setText(weatherData.getName());
             binding.clickable.setOnClickListener(new WeatherItemClickListener(weatherData.getId()));
-            binding.tvCurrentTemp.setText(Integer.toString(Math.round(weatherData.getTemperature())));
+            binding.tvCurrentValue.setText(Integer.toString(Math.round(weatherData.getCurrentTemp())));
             setCurrentCheck(weatherData);
             binding.myToggleButton.setOnClickListener(new View.OnClickListener() {
                 @Override

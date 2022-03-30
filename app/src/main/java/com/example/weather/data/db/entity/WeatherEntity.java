@@ -3,7 +3,10 @@ package com.example.weather.data.db.entity;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
+import androidx.room.TypeConverters;
 
+import com.example.weather.data.db.converter.CurrentConverter;
 import com.example.weather.data.db.entity.forecast_detail.Current;
 import com.example.weather.data.db.entity.forecast_detail.Daily;
 import com.example.weather.data.db.entity.forecast_detail.Hourly;
@@ -19,8 +22,9 @@ public class WeatherEntity {
     private String name;
     private boolean isFavorite;
     private boolean secondDayForecast;
+    private String timezone;
 
-    @Ignore
+    @TypeConverters({CurrentConverter.class})
     private Current current;
 
     @Ignore
@@ -28,6 +32,14 @@ public class WeatherEntity {
 
     @Ignore
     private Hourly[] hourly;
+
+    public String getTimezone() {
+        return timezone;
+    }
+
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
+    }
 
     public boolean isFavorite() {
         return isFavorite;
@@ -101,10 +113,11 @@ public class WeatherEntity {
         this.hourly = hourly;
     }
 
-    public WeatherEntity(int id, float lat, float lon, String name, boolean isFavorite, boolean secondDayForecast, Current current, Daily[] daily, Hourly[] hourly) {
+    public WeatherEntity(int id, float lat, float lon, String name,String timezone, boolean isFavorite , boolean secondDayForecast, Current current, Daily[] daily, Hourly[] hourly) {
         this.id = id;
         this.lat = lat;
         this.lon = lon;
+        this.timezone=timezone;
         this.name = name;
         this.isFavorite = isFavorite;
         this.secondDayForecast = secondDayForecast;

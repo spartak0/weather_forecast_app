@@ -46,7 +46,7 @@
             android:background="@drawable/style_cardview_index">
 
             <TextView
-                android:id="@+id/tv_current_temp"
+                android:id="@+id/tv_current_value"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"

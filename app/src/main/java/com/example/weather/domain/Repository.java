@@ -1,6 +1,11 @@
 package com.example.weather.domain;
 
+import android.content.Context;
+
+import androidx.annotation.HalfFloat;
+
 import com.example.weather.domain.model.forecast.WeatherData;
+import com.example.weather.utils.SettingManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,9 +32,18 @@ public interface Repository {
 
     Completable updateWeather(WeatherData weatherData);
 
-    Observable<Pair<Float,String>> getCurrentWeatherDataByCoord(String lat, String lon, String units);
+    Observable<Pair<Float,String>> getCurrentWeatherDataByCoord(String lat, String lon);
 
-    Observable<HashMap<String,String>> getDailyWeatherDataByCoord(String lat, String lon,int day , String units);
-    Observable<ArrayList<Triple<String,String,String>>> getHourlyWeatherByCoord(String lat, String lon, String units);
+    Observable<Pair<Float,String>> getDailyWeatherDataByCoord(String lat, String lon, int day);
+
+    Observable<ArrayList<Triple<String,String,String>>> getHourlyWeatherByCoord(String lat, String lon);
+
+    Observable<String> getTimezone(String lat, String lon);
+
+    void loadLocale();
+
+    void setLocale(String lang);
+
+    Boolean isNetworkAvailable();
 
 }
