@@ -1,20 +1,13 @@
 package com.example.weather.data.network.api;
 
-import androidx.annotation.NonNull;
-
 import com.example.weather.data.db.entity.WeatherEntity;
 import com.example.weather.utils.Constant;
 
-import java.io.IOException;
-
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -29,23 +22,17 @@ public interface ForecastApi {
 
     class Instance{
         private static Retrofit getRetrofit(){
-            //HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-            //httpLoggingInterceptor.level(HttpLoggingInterceptor.Level.BODY);
 
             OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder()
-                    .addInterceptor(new Interceptor() {
-                        @NonNull
-                        @Override
-                        public Response intercept(@NonNull Chain chain) throws IOException {
-                            Request.Builder request = chain.request().newBuilder();
-                            HttpUrl originalHttpUrl = chain.request().url();
-                            HttpUrl newUrl = originalHttpUrl.newBuilder().addQueryParameter("appid", Constant.API_KEY)
-                                    .addQueryParameter("units","metric")
-                                    .addQueryParameter("exclude", "minutely,alerts").build();
-                            request.url(newUrl);
-                            Response response = chain.proceed(request.build());
-                            return response;
-                        }
+                    .addInterceptor(chain -> {
+                        Request.Builder request = chain.request().newBuilder();
+                        HttpUrl originalHttpUrl = chain.request().url();
+                        HttpUrl newUrl = originalHttpUrl.newBuilder().addQueryParameter("appid", Constant.API_KEY)
+                                .addQueryParameter("units","metric")
+                                .addQueryParameter("exclude", "minutely,alerts").build();
+                        request.url(newUrl);
+                        Response response = chain.proceed(request.build());
+                        return response;
                     });
 
             Retrofit.Builder retrofitBuilder = new Retrofit.Builder();

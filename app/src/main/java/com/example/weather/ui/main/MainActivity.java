@@ -1,7 +1,6 @@
 package com.example.weather.ui.main;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -10,10 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.weather.R;
-import com.example.weather.data.RepositoryImpl;
 import com.example.weather.databinding.ActivityMainBinding;
 import com.example.weather.utils.Constant;
-import com.example.weather.utils.SettingManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class MainActivity extends AppCompatActivity {

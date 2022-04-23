@@ -3,9 +3,7 @@ package com.example.weather.data;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.example.weather.data.db.database.WeatherDatabase;
@@ -19,14 +17,11 @@ import com.example.weather.domain.model.forecast.WeatherData;
 import com.example.weather.utils.SettingManager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.functions.Function;
 import kotlin.Pair;
 import kotlin.Triple;
 
@@ -42,7 +37,7 @@ public class RepositoryImpl implements Repository {
 
     public RepositoryImpl(Context context) {
         this.context = context;
-        this.hourlyMapper=new HourlyMapper(context);
+        this.hourlyMapper=new HourlyMapper();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -101,6 +96,7 @@ public class RepositoryImpl implements Repository {
         return floatObservable;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public Observable<ArrayList<Triple<String, String, String>>> getHourlyWeatherByCoord(String lat, String lon) {
         Observable<ArrayList<Triple<String, String, String>>> tmp = ForecastApi.Instance.getForecastApi().getWeatherDataByCoord(lat,lon).map(

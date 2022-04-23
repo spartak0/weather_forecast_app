@@ -1,10 +1,8 @@
 package com.example.weather.ui.forecasts.all_forecast;
 
 import android.annotation.SuppressLint;
-import android.location.SettingInjectorService;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,19 +19,15 @@ import com.example.weather.R;
 import com.example.weather.databinding.FragmentForecastBinding;
 import com.example.weather.domain.model.forecast.WeatherData;
 import com.example.weather.ui.forecasts.ForecastItemAdapter;
-import com.example.weather.ui.forecasts.IsFavoriteClick;
-import com.example.weather.utils.SettingManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class AllForecastFragment extends Fragment {
 
     FragmentForecastBinding binding;
     AllForecastViewModel viewModel;
     ForecastItemAdapter adapter;
-    SettingManager settingManager;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Nullable

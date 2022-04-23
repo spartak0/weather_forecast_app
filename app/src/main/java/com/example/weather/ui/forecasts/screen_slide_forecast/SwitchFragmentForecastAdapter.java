@@ -14,17 +14,8 @@ import com.example.weather.ui.forecasts.all_forecast.AllForecastFragment;
 
 public class SwitchFragmentForecastAdapter extends FragmentStateAdapter {
 
-
-    public SwitchFragmentForecastAdapter(@NonNull FragmentActivity fragmentActivity) {
-        super(fragmentActivity);
-    }
-
     public SwitchFragmentForecastAdapter(@NonNull Fragment fragment) {
         super(fragment);
-    }
-
-    public SwitchFragmentForecastAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
-        super(fragmentManager, lifecycle);
     }
 
     @NonNull

@@ -1,16 +1,12 @@
 package com.example.weather.domain.mapper;
 
-import android.util.Log;
-
+import com.example.weather.data.db.entity.WeatherEntity;
 import com.example.weather.data.db.entity.forecast_detail.Current;
 import com.example.weather.data.db.entity.forecast_detail.Daily;
-import com.example.weather.data.db.entity.WeatherEntity;
 import com.example.weather.data.db.entity.forecast_detail.Hourly;
 import com.example.weather.data.db.entity.forecast_detail.Weather;
 import com.example.weather.domain.model.forecast.WeatherData;
 import com.example.weather.utils.Mapper;
-
-import java.nio.file.ClosedFileSystemException;
 
 public class WeatherMapper implements Mapper<WeatherData, WeatherEntity> {
     @Override

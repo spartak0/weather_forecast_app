@@ -22,21 +22,11 @@ import java.util.Map;
 
 public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapter.MyViewHolder> {
     private final List<WeatherData> forecasts;
-    private final Map<Integer, WeatherData> updateMap;
     IsFavoriteClick isFavoriteClick;
 
     public ForecastItemAdapter(IsFavoriteClick isFavoriteClick) {
         this.forecasts = new ArrayList<>();
-        this.updateMap= new HashMap<>();
         this.isFavoriteClick=isFavoriteClick;
-    }
-
-    public Map<Integer, WeatherData> getUpdateMap() {
-        return updateMap;
-    }
-
-    public void clearUpdateList(){
-        updateMap.clear();
     }
 
     @NonNull
@@ -80,13 +70,10 @@ public class ForecastItemAdapter extends RecyclerView.Adapter<ForecastItemAdapte
             binding.clickable.setOnClickListener(new WeatherItemClickListener(weatherData.getId()));
             binding.tvCurrentValue.setText(Integer.toString(Math.round(weatherData.getCurrentTemp())));
             setCurrentCheck(weatherData);
-            binding.myToggleButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    weatherData.setFavorite(!weatherData.isFavorite());
-                    setCurrentCheck(weatherData);
-                    isFavoriteClick.OnClick(weatherData);
-                }
+            binding.myToggleButton.setOnClickListener(view -> {
+                weatherData.setFavorite(!weatherData.isFavorite());
+                setCurrentCheck(weatherData);
+                isFavoriteClick.OnClick(weatherData);
             });
 
         }

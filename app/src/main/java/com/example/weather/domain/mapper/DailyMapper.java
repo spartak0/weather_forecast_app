@@ -1,11 +1,6 @@
 package com.example.weather.domain.mapper;
 
 import com.example.weather.data.db.entity.WeatherEntity;
-import com.example.weather.data.db.entity.forecast_detail.Daily;
-import com.example.weather.data.db.entity.forecast_detail.Temp;
-import com.example.weather.utils.Constant;
-
-import java.util.HashMap;
 
 import kotlin.Pair;
 

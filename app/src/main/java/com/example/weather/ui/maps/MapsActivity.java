@@ -36,7 +36,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -47,22 +46,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onStart() {
         super.onStart();
-        binding.floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("CheckResult")
-            @Override
-            public void onClick(View view) {
-                String locationName= getIntent().getStringExtra(Constant.LOCATION_NAME);
-                Boolean isFavorite = getIntent().getBooleanExtra(Constant.IS_FAVORITE,false);
-                Boolean secondDayForecast = getIntent().getBooleanExtra(Constant.SECOND_DAY_FORECAST, false);
-                WeatherData weatherData= new WeatherData(0,locationName, viewModel.getMarkerLat(),viewModel.getMarkerLon(), isFavorite, secondDayForecast,0, null);
-                RepositoryImpl.getInstance().addWeather(weatherData)
-                        .subscribeOn(Schedulers.io())
-                        .subscribe(()->{},Throwable::printStackTrace);
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
-            }
+        binding.floatingActionButton.setOnClickListener(view -> {
+            String locationName= getIntent().getStringExtra(Constant.LOCATION_NAME);
+            Boolean isFavorite = getIntent().getBooleanExtra(Constant.IS_FAVORITE,false);
+            Boolean secondDayForecast = getIntent().getBooleanExtra(Constant.SECOND_DAY_FORECAST, false);
+            WeatherData weatherData= new WeatherData(0,locationName, viewModel.getMarkerLat(),viewModel.getMarkerLon(), isFavorite, secondDayForecast,0, null);
+            RepositoryImpl.getInstance().addWeather(weatherData)
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(()->{},Throwable::printStackTrace);
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
     }
 
@@ -71,14 +66,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         setDefaultMarker();
 
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(@NonNull LatLng latLng) {
-                mMap.clear();
-                mMap.addMarker(new MarkerOptions().position(latLng));
-                viewModel.setMarker(latLng);
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            }
+        mMap.setOnMapClickListener(latLng -> {
+            mMap.clear();
+            mMap.addMarker(new MarkerOptions().position(latLng));
+            viewModel.setMarker(latLng);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         });
     }
 

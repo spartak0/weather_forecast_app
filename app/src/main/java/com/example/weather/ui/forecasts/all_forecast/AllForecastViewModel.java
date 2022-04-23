@@ -1,9 +1,7 @@
 package com.example.weather.ui.forecasts.all_forecast;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
@@ -12,11 +10,9 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.weather.data.RepositoryImpl;
 import com.example.weather.domain.model.forecast.WeatherData;
-import com.example.weather.utils.SettingManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
