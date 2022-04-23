@@ -32,6 +32,22 @@ public class WeatherEntity {
     @Ignore
     private Hourly[] hourly;
 
+    public WeatherEntity(int id, float lat, float lon, String name,String timezone, boolean isFavorite , boolean secondDayForecast, Current current, Daily[] daily, Hourly[] hourly) {
+        this.id = id;
+        this.lat = lat;
+        this.lon = lon;
+        this.timezone=timezone;
+        this.name = name;
+        this.isFavorite = isFavorite;
+        this.secondDayForecast = secondDayForecast;
+        this.current = current;
+        this.daily = daily;
+        this.hourly=hourly;
+    }
+
+    public WeatherEntity() {
+    }
+
     public String getTimezone() {
         return timezone;
     }
@@ -110,21 +126,5 @@ public class WeatherEntity {
 
     public void setHourly(Hourly[] hourly) {
         this.hourly = hourly;
-    }
-
-    public WeatherEntity(int id, float lat, float lon, String name,String timezone, boolean isFavorite , boolean secondDayForecast, Current current, Daily[] daily, Hourly[] hourly) {
-        this.id = id;
-        this.lat = lat;
-        this.lon = lon;
-        this.timezone=timezone;
-        this.name = name;
-        this.isFavorite = isFavorite;
-        this.secondDayForecast = secondDayForecast;
-        this.current = current;
-        this.daily = daily;
-        this.hourly=hourly;
-    }
-
-    public WeatherEntity() {
     }
 }

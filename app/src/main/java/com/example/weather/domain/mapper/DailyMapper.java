@@ -10,7 +10,7 @@ public class DailyMapper implements com.example.weather.utils.DailyMapper<Pair<F
     @Override
     public Pair<Float, String> toDomain(WeatherEntity weatherEntity, int day) {
 
-        return new Pair<Float,String>(weatherEntity.getDaily()[day].getTemp().getDay(), weatherEntity.getDaily()[day].getWeather()[0].getIcon());
+        return new Pair<>(weatherEntity.getDaily()[day].getTemp().getDay(), weatherEntity.getDaily()[day].getWeather()[0].getIcon());
     }
 
     @Override
